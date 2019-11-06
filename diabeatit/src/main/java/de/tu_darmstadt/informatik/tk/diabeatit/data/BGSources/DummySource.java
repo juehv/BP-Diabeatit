@@ -22,6 +22,10 @@ public class DummySource implements BgDataSource {
     public static final String ACTION_DUMMYSOURCE_TRIGGER = DummySource.class.getCanonicalName() + ".TRIGGER";
 
 
+    /**
+     * The template for the readings created by this source. Note that the timestamp will be
+     * overwritten by the current system time.
+     */
     public BgReading dummyReading;
 
     public DummySource() {
@@ -63,12 +67,12 @@ public class DummySource implements BgDataSource {
     }
 
     @Override
-    public void register(BgDataManager manager) {
+    public void onRegister(BgDataManager manager) {
         Log.d("BGDATA", "DummySource registering with manager");
     }
 
     @Override
-    public void unregister(BgDataManager manager) {
+    public void onUnregister(BgDataManager manager) {
         Log.d("BGDATA", "DummySource unregistering with manager");
     }
 }

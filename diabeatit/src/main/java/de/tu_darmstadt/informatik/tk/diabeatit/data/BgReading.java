@@ -5,10 +5,18 @@ import androidx.annotation.NonNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * Represents a single point of data reading the BG values
+ */
 public class BgReading {
 
+    /**
+     * Unit of a BgReading
+     */
     public enum Unit {
+        /** mg/dL */
         MGDL,
+        /** Mmol/L */
         MMOLL;
 
         @Override
@@ -24,9 +32,15 @@ public class BgReading {
         }
     }
 
+    /**
+     * The source a BgReading was received from
+     */
     public enum Source {
+        /** The reading was provided manually */
         MANUAL,
+        /** The reading was provided by an external source that is not a sensor, e.g. NightScout */
         EXTERNAL,
+        /** The reading was provided by a supported Sensor */
         SENSOR;
 
         @Override
@@ -50,10 +64,17 @@ public class BgReading {
         source = Source.SENSOR;
     }
 
+    /**
+     * The timestamp of this reading, represented by the number of millseconds since the Unix Epoch
+     */
     public long timestamp;
+    /** The raw value reported, not normalized to a certain unit */
     public double rawValue;
+    /** The Unit of the raw value */
     public Unit rawUnit;
+    /** The kind of Source this reading is originating from */
     public Source source;
+    // not sure about this one but it was in the original source, so it might prove usefull
     public String direction; // ??
 
     @NonNull

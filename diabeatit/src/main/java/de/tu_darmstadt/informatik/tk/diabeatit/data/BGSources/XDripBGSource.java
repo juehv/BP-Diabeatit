@@ -56,10 +56,10 @@ public class XDripBGSource implements BgDataSource {
     }
 
     @Override
-    public void register(BgDataManager manager) {
+    public void onRegister(BgDataManager manager) {
     }
 
     @Override
-    public void unregister(BgDataManager manager) {
+    public void onUnregister(BgDataManager manager) {
     }
 }

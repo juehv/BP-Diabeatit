@@ -7,6 +7,10 @@ import android.util.Log;
 
 import java.util.List;
 
+/**
+ * This class is responsible for managing the various BG sources and sinks, as well as to provide a
+ * consistent interface the rest of the App can interact with
+ */
 public class BgDataManager extends BroadcastReceiver {
     private BgDataSource currentSource;
     private BgDataSink currentSink;
@@ -16,15 +20,18 @@ public class BgDataManager extends BroadcastReceiver {
         this.setSource(source, context);
     }
 
-    /** Sets the source of BG Data values */
+    /**
+     * Sets the source of BG Data values. This also re-registers itself as a BroadcastReceiver with
+     * the IntentFilter provided by the source
+     */
     public void setSource(BgDataSource source, Context context) {
         if (this.currentSource != null) {
-            this.currentSource.unregister(this);
+            this.currentSource.onUnregister(this);
             if (context != null)
                 context.unregisterReceiver(this);
         }
         this.currentSource = source;
-        this.currentSource.register(this);
+        this.currentSource.onRegister(this);
         if (context != null)
             context.registerReceiver(this, this.currentSource.getIntentFilter());
     }
@@ -32,11 +39,17 @@ public class BgDataManager extends BroadcastReceiver {
     /** Sets the sink for BG Data */
     public void setSink(BgDataSink sink) {
         if (this.currentSink != null)
-            this.currentSink.unregister(this);
+            this.currentSink.onUnregister(this);
         this.currentSink = sink;
-        this.currentSink.register(this);
+        this.currentSink.onRegister(this);
     }
 
+    /** Handle a reading not originating from the current source, e.g. a manual entry */
+    public void handleReading(BgReading reading) {
+        this.currentSink.onNewReading(reading);
+    }
+
+    // Gets called whenever an Intent we registered for is being broadcast throughout system
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("BGDATA", String.format("Received intent %s", intent));
@@ -45,7 +58,7 @@ public class BgDataManager extends BroadcastReceiver {
 
         if (readings != null)
             for(BgReading r : readings) {
-                this.currentSink.reportNewReading(r);
+                this.currentSink.onNewReading(r);
             }
     }
 }

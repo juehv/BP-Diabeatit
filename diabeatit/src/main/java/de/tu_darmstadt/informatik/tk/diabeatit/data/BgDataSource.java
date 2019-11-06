@@ -18,8 +18,8 @@ public interface BgDataSource {
     List<BgReading> handleNewData(Intent intent);
     /** Get intent filter for this */
     IntentFilter getIntentFilter();
-    /** Register with a manager */
-    public void register(BgDataManager manager);
-    /** Unregister with a manager */
-    public void unregister(BgDataManager manager);
+    /** Registered with a manager */
+    public void onRegister(BgDataManager manager);
+    /** Unregistered with a manager */
+    public void onUnregister(BgDataManager manager);
 }
