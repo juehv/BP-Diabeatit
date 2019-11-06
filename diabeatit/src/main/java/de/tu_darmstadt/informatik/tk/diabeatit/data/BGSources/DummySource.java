@@ -27,7 +27,6 @@ public class DummySource implements BgDataSource {
     public DummySource() {
         dummyReading = new BgReading();
         dummyReading.rawValue = 100;
-        dummyReading.rawUnit = BgReading.Unit.MGDL;
         dummyReading.direction = "NOT_COMPUTABLE";
         dummyReading.source = BgReading.Source.EXTERNAL;
     }

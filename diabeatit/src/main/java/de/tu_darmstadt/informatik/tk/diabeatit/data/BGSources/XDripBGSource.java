@@ -41,7 +41,6 @@ public class XDripBGSource implements BgDataSource {
         reading.rawValue = bundle.getDouble(EXTRA_BG_ESIMATE);
         reading.direction = bundle.getString(EXTRA_BG_SLOPE_NAME);
         reading.timestamp = bundle.getLong(EXTRA_TIMESTAMP);
-        reading.rawUnit = BgReading.Unit.MGDL; // FIXME: this the correct unit?
         // not sure what the RAW value is, and not sure if we'd need the SOURCE either.
 
         ArrayList<BgReading> results = new ArrayList<BgReading>();

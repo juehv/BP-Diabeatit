@@ -44,6 +44,12 @@ public class BgReading {
         }
     }
 
+    public BgReading() {
+        // these _seem_ to be the defaults
+        rawUnit = Unit.MGDL;
+        source = Source.SENSOR;
+    }
+
     public long timestamp;
     public double rawValue;
     public Unit rawUnit;
