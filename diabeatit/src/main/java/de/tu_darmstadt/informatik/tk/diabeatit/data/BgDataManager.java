@@ -20,11 +20,13 @@ public class BgDataManager extends BroadcastReceiver {
     public void setSource(BgDataSource source, Context context) {
         if (this.currentSource != null) {
             this.currentSource.unregister(this);
-            context.unregisterReceiver(this);
+            if (context != null)
+                context.unregisterReceiver(this);
         }
         this.currentSource = source;
         this.currentSource.register(this);
-        context.registerReceiver(this, this.currentSource.getIntentFilter());
+        if (context != null)
+            context.registerReceiver(this, this.currentSource.getIntentFilter());
     }
 
     /** Sets the sink for BG Data */
@@ -37,7 +39,7 @@ public class BgDataManager extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("BGDATA", String.format("Received intent %s", intent.toString()));
+        Log.d("BGDATA", String.format("Received intent %s", intent));
 
         List<BgReading> readings = this.currentSource.handleNewData(intent);
 
