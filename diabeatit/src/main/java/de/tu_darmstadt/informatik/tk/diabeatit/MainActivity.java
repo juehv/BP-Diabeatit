@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DummySource.ACTION_DUMMYSORUCE_TRIGGER);
+                Intent i = new Intent(DummySource.ACTION_DUMMYSOURCE_TRIGGER);
                 getApplicationContext().sendBroadcast(i);
             }
         });
