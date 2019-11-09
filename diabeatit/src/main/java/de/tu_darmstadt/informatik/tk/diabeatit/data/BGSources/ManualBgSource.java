@@ -33,20 +33,28 @@ public class ManualBgSource implements BgDataSource {
      */
     public final static String EXTRA_TIMESTAMP = ManualBgSource.class.getCanonicalName() + ".TIMESTAMP";
 
-    /** Create a new proper Intent to be handled by this source of a reading in the mg/dl Unit */
-    public static Intent createIntentMGDL(double reading, long timestamp) {
-        Intent i = new Intent(ACTION_NEW_MANUAL_BG_READING);
-        i.putExtra(EXTRA_BG_READING, reading);
-        i.putExtra(EXTRA_UNIT, "mg/dl");
-        i.putExtra(EXTRA_TIMESTAMP, timestamp);
-        return i;
+
+    /**
+     * Create a proper Intent to be consumed by a ManualBgSource
+     * @param reading The raw reading, is assumed to be in mg/dl
+     * @param timestamp The timestamp of the reading in ms since the unix epoch
+     * @return A new Intent that will be handled by a ManualBgSource
+     */
+    public static Intent createIntent(double reading, long timestamp) {
+        return createIntent(reading, timestamp, BgReading.Unit.MGDL);
     }
 
-    /** Create a new proper Intent to be handled by this source of a reading in the Mmol/l Unit */
-    public static Intent createIntentMMOLL(double reading, long timestamp) {
+    /**
+     * Create a proper Intent to be consumed by a ManualBgSource
+     * @param reading The read value
+     * @param timestamp The timestamp of the reading, in ms since the unix epoch
+     * @param unit The Unit of the reading
+     * @return A new Intent that will be handled by a ManualBgSource
+     */
+    public static Intent createIntent(double reading, long timestamp, BgReading.Unit unit) {
         Intent i = new Intent(ACTION_NEW_MANUAL_BG_READING);
         i.putExtra(EXTRA_BG_READING, reading);
-        i.putExtra(EXTRA_UNIT, "Mmol/l");
+        i.putExtra(EXTRA_UNIT, unit.toString());
         i.putExtra(EXTRA_TIMESTAMP, timestamp);
         return i;
     }

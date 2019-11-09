@@ -27,7 +27,7 @@ public class BgReading {
                 case MMOLL:
                     return "Mmol/L";
                 default:
-                    return "UNK";
+                    throw new UnsupportedOperationException("Reached unreachable code");
             }
         }
     }
