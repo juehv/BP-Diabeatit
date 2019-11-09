@@ -64,6 +64,15 @@ public class BgReading {
         source = Source.SENSOR;
     }
 
+    /** Creates a new BgReading that is a copy of another */
+    public BgReading(BgReading other) {
+        timestamp = other.timestamp;
+        rawValue = other.rawValue;
+        rawUnit = other.rawUnit;
+        source = other.source;
+        direction = new String(other.direction);
+    }
+
     /**
      * The timestamp of this reading, represented by the number of millseconds since the Unix Epoch
      */
