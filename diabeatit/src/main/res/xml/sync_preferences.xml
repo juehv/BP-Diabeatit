@@ -17,14 +17,14 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
-        app:key="sync"
-        app:title="@string/sync_title" />
+        app:key="entry3"
+        app:title="Entry 1" />
 
     <SwitchPreferenceCompat
-        app:dependency="sync"
-        app:key="attachment"
-        app:summaryOff="@string/attachment_summary_off"
-        app:summaryOn="@string/attachment_summary_on"
-        app:title="@string/attachment_title" />
+        app:dependency="entry3"
+        app:key="entry4"
+        app:summaryOff="Do stuff (off)"
+        app:summaryOn="Do stuff (on)"
+        app:title="Entry 2" />
 
 </PreferenceScreen>
