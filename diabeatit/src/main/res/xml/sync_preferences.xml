@@ -21,7 +21,6 @@
         app:title="Entry 1" />
 
     <SwitchPreferenceCompat
-        app:dependency="entry3"
         app:key="entry4"
         app:summaryOff="Do stuff (off)"
         app:summaryOn="Do stuff (on)"

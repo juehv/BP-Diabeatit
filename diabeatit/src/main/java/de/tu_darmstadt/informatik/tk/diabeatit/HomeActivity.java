@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         // Assistant
 
         View nestedScrollView = (View) findViewById(R.id.assistant_scrollview);
-        BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
+        final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
         final ImageButton assistant_slide = (ImageButton) findViewById(R.id.assistant_slide_button);
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -67,6 +67,17 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(View view, float v) {}
+        });
+
+        ImageButton slide_btn = (ImageButton) findViewById(R.id.assistant_slide_button);
+
+        slide_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                assistant.setState(assistant.getState() == BottomSheetBehavior.STATE_EXPANDED ? BottomSheetBehavior.STATE_COLLAPSED : BottomSheetBehavior.STATE_EXPANDED);
+
+            }
         });
 
         // Drawer
