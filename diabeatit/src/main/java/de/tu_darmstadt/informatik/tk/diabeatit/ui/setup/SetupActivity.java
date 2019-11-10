@@ -5,25 +5,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.R;
 
 public class SetupActivity
         extends AppCompatActivity
         implements SensorSelection.OnFragmentInteractionListener,
-                   SensorSettings.OnFragmentInteractionListener {
+                   SensorSettings.OnFragmentInteractionListener,
+                    WelcomeButton.OnFragmentInteractionListener {
 
     TextView title;
     TextView explanation;
@@ -33,7 +25,7 @@ public class SetupActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        SensorSelection settings = new SensorSelection();
+        WelcomeButton settings = new WelcomeButton();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.setup_step_frame, settings);
@@ -54,6 +46,16 @@ public class SetupActivity
         ft.commit();
 
         title.setText("Richte deinen Sensor ein");
+        explanation.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void startSetup() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.setup_step_frame, new SensorSelection());
+        ft.commit();
+        title.setText("Wähle deinen Sensor aus");
         explanation.setVisibility(View.INVISIBLE);
     }
 }

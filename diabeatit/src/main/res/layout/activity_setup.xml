@@ -15,13 +15,13 @@
             android:id="@+id/setup_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wilkommen!"
+            android:text="Wilkommen bei DiaBEATit!"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
         <TextView
             android:id="@+id/setup_explanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wähle deinen Sensor aus"
+            android:text="Das Setup wird dir dabei helfen die App einzurichten"
             />
 
     <FrameLayout
