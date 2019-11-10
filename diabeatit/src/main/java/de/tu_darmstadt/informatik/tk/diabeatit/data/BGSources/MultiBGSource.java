@@ -1,6 +1,6 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
-import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
@@ -68,13 +68,13 @@ public class MultiBGSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         // XXX: This only checks actions so far -- this might not suffice later on
         ArrayList<BgReading> readings = new ArrayList<>();
         for (BgDataSource src : sources) {
             IntentFilter filter = src.getIntentFilter();
             if (filter.matchAction(intent.getAction())) {
-                List<BgReading> sourceReadings = src.handleNewData(intent);
+                List<BgReading> sourceReadings = src.handleNewData(context, intent);
                 readings.addAll(sourceReadings);
             }
         }
@@ -124,17 +124,17 @@ public class MultiBGSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
         currentlyRegistered = true;
         for (BgDataSource src : sources) {
-            src.onRegister(manager);
+            src.onRegister(context, manager);
         }
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
         for (BgDataSource src : sources) {
-            src.onUnregister(manager);
+            src.onUnregister(context, manager);
         }
         currentlyRegistered = false;
     }

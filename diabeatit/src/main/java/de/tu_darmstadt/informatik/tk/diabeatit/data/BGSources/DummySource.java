@@ -1,5 +1,6 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSink;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
@@ -41,7 +41,7 @@ public class DummySource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         ArrayList<BgReading> list = new ArrayList<>();
 
         BgReading reading = new BgReading();
@@ -67,12 +67,12 @@ public class DummySource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
         Log.d("BGDATA", "DummySource registering with manager");
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
         Log.d("BGDATA", "DummySource unregistering with manager");
     }
 }

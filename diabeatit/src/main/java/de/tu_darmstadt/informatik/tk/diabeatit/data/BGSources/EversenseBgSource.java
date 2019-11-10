@@ -1,5 +1,6 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class EversenseBgSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         ArrayList<BgReading> readings = new ArrayList<>();
 
         Bundle b = intent.getExtras();
@@ -60,12 +61,12 @@ public class EversenseBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
 
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
 
     }
 }

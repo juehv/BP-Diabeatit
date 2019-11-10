@@ -1,9 +1,9 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.AndroidRuntimeException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class ManualBgSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         Bundle b = intent.getExtras();
         if (b == null) {
             Log.w("BGDATA", "ManualBgSource: Received Intent with proper action but no extras");
@@ -103,10 +103,10 @@ public class ManualBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
     }
 }

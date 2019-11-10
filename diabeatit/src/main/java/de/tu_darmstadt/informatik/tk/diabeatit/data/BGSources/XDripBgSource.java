@@ -1,5 +1,6 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 /**
  * A source that interacts with the XDrip app
  */
-public class XDripBGSource implements BgDataSource {
+public class XDripBgSource implements BgDataSource {
     // used intents
     public final static String ACTION_NEW_BG_ESTIMATE = "com.eveningoutpost.dexdrip.BgEstimate";
     public final static String EXTRA_BG_ESIMATE = "com.eveningoutpost.dexdrip.Extras.BgEstimate";
@@ -32,7 +33,7 @@ public class XDripBGSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle == null) return null;
 
@@ -56,10 +57,10 @@ public class XDripBGSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
     }
 }

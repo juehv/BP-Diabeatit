@@ -41,7 +41,7 @@ public class MultiBgSink implements BgDataSink {
 
     @Override
     public void onNewReading(BgReading reading) {
-        for (BgDataSink sink : sinks) {
+       for (BgDataSink sink : sinks) {
             BgReading r = new BgReading(reading);
             sink.onNewReading(r);
         }

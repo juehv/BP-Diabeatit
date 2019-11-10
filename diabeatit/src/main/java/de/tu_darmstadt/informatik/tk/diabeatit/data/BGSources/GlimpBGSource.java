@@ -1,10 +1,9 @@
 package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class GlimpBGSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Intent intent) {
+    public List<BgReading> handleNewData(Context context, Intent intent) {
         ArrayList<BgReading> results = new ArrayList<>();
 
         Bundle b = intent.getExtras();
@@ -51,12 +50,12 @@ public class GlimpBGSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(BgDataManager manager) {
+    public void onRegister(Context context, BgDataManager manager) {
 
     }
 
     @Override
-    public void onUnregister(BgDataManager manager) {
+    public void onUnregister(Context context, BgDataManager manager) {
 
     }
 }
