@@ -9,7 +9,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Los gehts!"
+        android:layout_gravity="bottom|right"
+        android:text="Los geht's"
         android:id="@+id/setup_start_button" />
 
 </FrameLayout>
