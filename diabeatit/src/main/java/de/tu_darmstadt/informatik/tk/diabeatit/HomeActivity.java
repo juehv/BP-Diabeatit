@@ -30,6 +30,8 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import de.tu_darmstadt.informatik.tk.diabeatit.ui.setup.SetupActivity;
+
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -87,6 +89,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (menuItem.getItemId() == R.id.nav_settings)
                     startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                else if (menuItem.getItemId() == R.id.nav_setup)
+                    startActivity(new Intent(HomeActivity.this, SetupActivity.class));
                 return true;
             }
         });
