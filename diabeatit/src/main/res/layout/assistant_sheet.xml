@@ -10,43 +10,86 @@
         android:id="@+id/assistant_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_blue_dark"
         android:clipToPadding="true"
+        android:background="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="52dp"
+        app:behavior_peekHeight="?attr/actionBarSize"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
+            android:background="@android:color/background_light"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/assistant_peek"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assistant"
-                android:textColor="@android:color/white"
-                android:textAllCaps="true"
-                android:textSize="36sp"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:drawableLeft="@drawable/ic_slideup"
-                android:paddingLeft="16dp"
-                android:drawablePadding="-68dp" />
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/holo_orange_light" >
+
+                <ImageButton
+                    android:id="@+id/assistant_slide_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_slideup"
+                    android:padding="4dp"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/assistant_status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_alert"
+                    android:padding="4dp"
+                    android:background="@android:color/transparent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:paddingEnd="4dp"
+                    android:layout_toLeftOf="@+id/assistant_status_icon"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/assistant_peek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2 Warnungen"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/assistant_peek_second"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="und 3 weitere..."
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_height="match_parent"
+                android:padding="16dp"
                 android:text="Assistant cards go here"
-                android:textAlignment="center"
-                android:textColor="@android:color/white" />
+                android:textAlignment="center" />
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

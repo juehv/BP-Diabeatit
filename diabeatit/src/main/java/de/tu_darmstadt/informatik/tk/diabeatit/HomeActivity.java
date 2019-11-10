@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -48,23 +49,25 @@ public class HomeActivity extends AppCompatActivity {
 
         View nestedScrollView = (View) findViewById(R.id.assistant_scrollview);
         BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
-        final TextView peek = (TextView) findViewById(R.id.assistant_peek);
+        final ImageButton assistant_slide = (ImageButton) findViewById(R.id.assistant_slide_button);
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(View bottomSheet, int newState) {
 
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED)
-                    peek.setCompoundDrawablesWithIntrinsicBounds(peek.getContext().getDrawable(R.drawable.ic_slideup), null, null, null);
+                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slideup));
 
                 if (newState == BottomSheetBehavior.STATE_EXPANDED)
-                    peek.setCompoundDrawablesWithIntrinsicBounds(peek.getContext().getDrawable(R.drawable.ic_slidedown), null, null, null);
+                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slidedown));
 
             }
 
             @Override
             public void onSlide(View view, float v) {}
         });
+
+        // Drawer
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
