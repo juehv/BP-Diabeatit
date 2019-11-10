@@ -25,6 +25,9 @@ public class SetupActivity
         implements SensorSelection.OnFragmentInteractionListener,
                    SensorSettings.OnFragmentInteractionListener {
 
+    TextView title;
+    TextView explanation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,10 @@ public class SetupActivity
         ft.replace(R.id.setup_step_frame, settings);
         ft.commit();
 
+        title = findViewById(R.id.setup_title);
+        explanation = findViewById(R.id.setup_explanation);
+
+        setTitle("Setup");
 
     }
 
@@ -45,5 +52,8 @@ public class SetupActivity
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.setup_step_frame, frm);
         ft.commit();
+
+        title.setText("Richte deinen Sensor ein");
+        explanation.setVisibility(View.INVISIBLE);
     }
 }
