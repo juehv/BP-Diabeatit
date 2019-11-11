@@ -21,8 +21,7 @@
         app:title="Entry 1"
         app:useSimpleSummaryProvider="true" />
 
-    <ListPreference
-        app:defaultValue="reply"
+    <EditTextPreference
         app:key="entry2"
         app:title="Entry 2"
         app:useSimpleSummaryProvider="true" />
