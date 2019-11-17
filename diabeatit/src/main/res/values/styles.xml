@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="NavigationDevice" parent="AppTheme">
+        <item name="listPreferredItemHeightSmall">64dp</item>
+    </style>
+
 </resources>

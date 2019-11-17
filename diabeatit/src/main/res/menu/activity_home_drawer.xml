@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Navigation">
+            <menu>
+                <item
+                    android:id="@+id/nav_home"
+                    android:icon="@drawable/ic_home"
+                    android:title="Home" />
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_settings_alt"
+                    android:title="Settings" />
+                <item
+                    android:id="@+id/nav_setup"
+                    android:icon="@drawable/ic_settings"
+                    android:title="Setup" />
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="Devices">
+        <menu>
+            <!--item
+                android:title="@null"
+                app:actionLayout="@layout/device_layout" />
+            <item
+                android:title="@null"
+                app:actionLayout="@layout/device_layout" /-->
+            <item
+                android:id="@+id/nav_device_sensor"
+                android:icon="@drawable/ic_device"
+                android:iconTint="@color/colorPrimary"
+                android:title="Sensor" />
+            <item
+                android:id="@+id/nav_device_pump"
+                android:icon="@drawable/ic_device"
+                android:title="Pump" />
+            <item
+                android:id="@+id/nav_device_tracker"
+                android:icon="@drawable/ic_device"
+                android:title="Tracker" />
+        </menu>
+    </item>
+
+</menu>
