@@ -3,6 +3,7 @@ package de.tu_darmstadt.informatik.tk.diabeatit;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.setup.SetupActivity;
 
@@ -47,6 +49,10 @@ public class HomeActivity extends AppCompatActivity {
 
         // TODO
 
+        // FAB
+
+        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.manual_entry_fab_menu);
+
         // Assistant
 
         View nestedScrollView = (View) findViewById(R.id.assistant_scrollview);
@@ -56,6 +62,9 @@ public class HomeActivity extends AppCompatActivity {
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(View bottomSheet, int newState) {
+
+                menuMultipleActions.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
+                menuMultipleActions.collapseImmediately();
 
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED)
                     assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slideup));
