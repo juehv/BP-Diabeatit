@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
 
 /** A source that combines multiple sources  */
-public class MultiBGSource implements BgDataSource {
+public class MultiSource<T> implements DataSource<T> {
     private boolean currentlyRegistered;
-    private ArrayList<BgDataSource> sources;
+    private ArrayList<DataSource<T>> sources;
 
-    public MultiBGSource() {
+    public MultiSource() {
         sources = new ArrayList<>();
         currentlyRegistered = false;
     }
@@ -26,10 +26,10 @@ public class MultiBGSource implements BgDataSource {
     /**
      * Add a new source.
      *
-     * @param src A BgDataSource to register
-     * @throws UnsupportedOperationException if this source is currently registered with a BgDataManager
+     * @param src A DataSource to register
+     * @throws UnsupportedOperationException if this source is currently registered with a DataManager
      */
-    public void addSource(BgDataSource src) {
+    public MultiSource<T> addSource(DataSource<T> src) {
         if (currentlyRegistered) {
             throw new UnsupportedOperationException("Cannot modify sources while actively registered");
         }
@@ -37,15 +37,17 @@ public class MultiBGSource implements BgDataSource {
         if (!sources.contains(src)) {
             sources.add(src);
         }
+
+        return this;
     }
 
     /**
      * Remove a previously registered source.
      *
-     * @param src A BgDataSource to remove
-     * @throws UnsupportedOperationException if this source is currently registered with a BgDataManager
+     * @param src A DataSource to remove
+     * @throws UnsupportedOperationException if this source is currently registered with a DataManager
      */
-    public void removeSource(BgDataSource src) {
+    public void removeSource(DataSource<T> src) {
         if (currentlyRegistered) {
             throw new UnsupportedOperationException("Cannot modify sources while actively registered");
         }
@@ -58,7 +60,7 @@ public class MultiBGSource implements BgDataSource {
      *
      * @return An Iterator over all BgDataSources currently registered
      */
-    public Iterator<BgDataSource> getSources() {
+    public Iterator<DataSource<T>> getSources() {
         return sources.iterator();
     }
 
@@ -68,13 +70,13 @@ public class MultiBGSource implements BgDataSource {
     }
 
     @Override
-    public List<BgReading> handleNewData(Context context, Intent intent) {
+    public List<T> handleNewData(Context context, Intent intent) {
         // XXX: This only checks actions so far -- this might not suffice later on
-        ArrayList<BgReading> readings = new ArrayList<>();
-        for (BgDataSource src : sources) {
+        ArrayList<T> readings = new ArrayList<>();
+        for (DataSource<T> src : sources) {
             IntentFilter filter = src.getIntentFilter();
             if (filter.matchAction(intent.getAction())) {
-                List<BgReading> sourceReadings = src.handleNewData(context, intent);
+                List<T> sourceReadings = src.handleNewData(context, intent);
                 readings.addAll(sourceReadings);
             }
         }
@@ -85,7 +87,7 @@ public class MultiBGSource implements BgDataSource {
     public IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();
 
-        for (BgDataSource src : sources) {
+        for (DataSource src : sources) {
             filter = combineIntentFilters(filter, src.getIntentFilter());
         }
 
@@ -103,37 +105,21 @@ public class MultiBGSource implements BgDataSource {
             if (!combined.hasAction(temp))
                 combined.addAction(temp);
         }
-        // add categories
-        for (Iterator<String> it = b.categoriesIterator(); it.hasNext(); temp = it.next()) {
-            if (!combined.hasCategory(temp)) {
-                combined.addCategory(temp);
-            }
-        }
-        // add schemes
-        for (Iterator<String> it = b.schemesIterator(); it.hasNext(); temp = it.next()) {
-            if (!combined.hasDataScheme(temp)) {
-                combined.addDataScheme(temp);
-            }
-        }
-
-        // TODO: add  missing stuff:
-        //  - authorities
-        //  - paths
 
         return combined;
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager<T> manager) {
         currentlyRegistered = true;
-        for (BgDataSource src : sources) {
+        for (DataSource<T> src : sources) {
             src.onRegister(context, manager);
         }
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
-        for (BgDataSource src : sources) {
+    public void onUnregister(Context context, DataManager<T> manager) {
+        for (DataSource<T> src : sources) {
             src.onUnregister(context, manager);
         }
         currentlyRegistered = false;

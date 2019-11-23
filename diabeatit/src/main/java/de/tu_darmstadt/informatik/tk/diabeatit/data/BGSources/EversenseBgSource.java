@@ -8,11 +8,11 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
-public class EversenseBgSource implements BgDataSource {
+public class EversenseBgSource implements DataSource<BgReading> {
     // Intents
     public final static String ACTION_NEW_READING = "com.senseonics.AndroidAPSEventSubscriber.BROADCAST";
     public final static String EXTRA_GLUCOSE_LEVELS = "glucoseLevels";
@@ -61,12 +61,12 @@ public class EversenseBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager manager) {
 
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
+    public void onUnregister(Context context, DataManager manager) {
 
     }
 }

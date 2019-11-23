@@ -28,6 +28,7 @@
         fab:fab_icon="@drawable/ic_fab_note" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_manual_insulin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:fab_colorNormal="@android:color/background_light"
@@ -37,6 +38,7 @@
         fab:fab_icon="@drawable/ic_fab_insulin" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_manual_carbs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:fab_colorNormal="@android:color/background_light"
@@ -46,6 +48,7 @@
         fab:fab_icon="@drawable/ic_fab_carbs" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_manual_sports"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:fab_colorNormal="@android:color/background_light"

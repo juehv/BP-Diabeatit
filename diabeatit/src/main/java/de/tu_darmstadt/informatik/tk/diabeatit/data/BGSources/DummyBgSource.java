@@ -9,17 +9,17 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
 /**
  * A dummy source that can be triggered by broadcasting an intent of ACTION_DUMMYSOURCE_TRIGGER
  */
-public class DummySource implements BgDataSource {
+public class DummyBgSource implements DataSource<BgReading> {
     // List of intents
-    /** Broadcasting an Intent with this implies a DummySource should trigger a reading */
-    public static final String ACTION_DUMMYSOURCE_TRIGGER = DummySource.class.getCanonicalName() + ".TRIGGER";
+    /** Broadcasting an Intent with this implies a DummyBgSource should trigger a reading */
+    public static final String ACTION_DUMMYSOURCE_TRIGGER = DummyBgSource.class.getCanonicalName() + ".TRIGGER";
 
 
     /**
@@ -28,7 +28,7 @@ public class DummySource implements BgDataSource {
      */
     public BgReading dummyReading;
 
-    public DummySource() {
+    public DummyBgSource() {
         dummyReading = new BgReading();
         dummyReading.rawValue = 100;
         dummyReading.direction = "NOT_COMPUTABLE";
@@ -67,12 +67,12 @@ public class DummySource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
-        Log.d("BGDATA", "DummySource registering with manager");
+    public void onRegister(Context context, DataManager manager) {
+        Log.d("BGDATA", "DummyBgSource registering with manager");
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
-        Log.d("BGDATA", "DummySource unregistering with manager");
+    public void onUnregister(Context context, DataManager manager) {
+        Log.d("BGDATA", "DummyBgSource unregistering with manager");
     }
 }

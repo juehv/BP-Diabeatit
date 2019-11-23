@@ -8,11 +8,11 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
-public class DexcomBgSource implements BgDataSource {
+public class DexcomBgSource implements DataSource<BgReading> {
     // Intents
     public final static String ACTION_NEW_READING = "com.dexcom.cgm.EXTERNAL_BROADCAST";
     public final static String BUNDLE_GLUCOSE_VALUES = "glucoseValues";
@@ -55,13 +55,13 @@ public class DexcomBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager manager) {
         // TODO: We might need to ask for permissions here..
         //       See original source.
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
+    public void onUnregister(Context context, DataManager manager) {
 
     }
 }

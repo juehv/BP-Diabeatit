@@ -3,9 +3,9 @@ package de.tu_darmstadt.informatik.tk.diabeatit;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.MenuItem;
@@ -28,10 +28,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualCarbsEntryActivity;
+import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualInsulinEntryActivity;
+import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualSportsEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.setup.SetupActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -52,6 +56,17 @@ public class HomeActivity extends AppCompatActivity {
         // FAB
 
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.manual_entry_fab_menu);
+        FloatingActionButton manualInsulinButton = (FloatingActionButton) findViewById(R.id.fab_manual_insulin);
+        FloatingActionButton manualCarbsButton = (FloatingActionButton) findViewById(R.id.fab_manual_carbs);
+        FloatingActionButton manualSportsButton = (FloatingActionButton) findViewById(R.id.fab_manual_sports);
+
+        // set the onClickListeners, so we change the Activity on click.
+        manualInsulinButton.setOnClickListener((v) ->
+                startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class)));
+        manualCarbsButton.setOnClickListener((v) ->
+                startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class)));
+        manualSportsButton.setOnClickListener((v) ->
+                startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class)));
 
         // Assistant
 
