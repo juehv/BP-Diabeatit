@@ -4,19 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.security.Key;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.R;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsEntry;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsSources.ManualSportsSource;
 
 public class ManualSportsEntryActivity extends AppCompatActivity {
 
@@ -28,6 +34,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
     ToggleButton buttonHeavy;
     Button selectTimestampFrom;
     Button selectTimestampUntil;
+    Button enterButton;
 
     int fromYear, fromMonth, fromDayOfMonth, fromHour, fromMinute;
     int untilYear, untilMonth, untilDayOfMonth, untilHour, untilMinute;
@@ -48,12 +55,14 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
         buttonHeavy = findViewById(R.id.button_heavy);
         selectTimestampFrom = findViewById(R.id.button_select_from);
         selectTimestampUntil = findViewById(R.id.button_select_until);
+        enterButton = findViewById(R.id.button_enter);
 
         buttonLight.setOnCheckedChangeListener((v, c) -> buttonLightOnCheckChanged(c));
         buttonMedium.setOnCheckedChangeListener((v, c) -> buttonMediumOnCheckChanged(c));
         buttonHeavy.setOnCheckedChangeListener((v, c) -> buttonHeavyOnCheckChanged(c));
         selectTimestampFrom.setOnClickListener(v -> selectTimestampFromOnClick());
         selectTimestampUntil.setOnClickListener(v -> selectTimestampUntilOnClick());
+        enterButton.setOnClickListener(v -> enterButtonOnClick());
 
         buttonMedium.setChecked(true);
 
@@ -186,5 +195,54 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
                 },
                 untilHour, untilMinute, true);
         picker.show();
+    }
+
+    private void enterButtonOnClick() {
+        try {
+            Calendar from = new Calendar.Builder()
+                    .setFields(
+                            Calendar.YEAR, fromYear,
+                            Calendar.MONTH, fromMonth,
+                            Calendar.DAY_OF_MONTH, fromDayOfMonth,
+                            Calendar.HOUR_OF_DAY, fromHour,
+                            Calendar.MINUTE, fromMinute
+                    )
+                    .setTimeZone(Calendar.getInstance().getTimeZone())
+                    .build();
+            long tsFrom = from.toInstant().toEpochMilli();
+
+            Calendar until = new Calendar.Builder()
+                    .setFields(
+                            Calendar.YEAR, untilYear,
+                            Calendar.MONTH, untilMonth,
+                            Calendar.DAY_OF_MONTH, untilDayOfMonth,
+                            Calendar.HOUR_OF_DAY, untilHour,
+                            Calendar.MINUTE, untilMinute)
+                    .setTimeZone(Calendar.getInstance().getTimeZone())
+                    .build();
+            long tsUntil = until.toInstant().toEpochMilli();
+
+            SportsEntry.Level level;
+
+            if (buttonLight.isChecked()) {
+                level = SportsEntry.Level.LOW;
+            } else if (buttonMedium.isChecked()) {
+                level = SportsEntry.Level.MEDIUM;
+            } else if (buttonHeavy.isChecked()) {
+                level = SportsEntry.Level.HIGH;
+            } else {
+                throw new UnsupportedOperationException();
+            }
+
+            String notes = this.notes.getText().toString().trim();
+
+            Intent i = ManualSportsSource.createProperIntent(tsFrom, tsUntil, level.toInt(), notes);
+
+            getApplicationContext().sendBroadcast(i);
+            finish();
+        } catch (Exception ex) {
+            Toast t = Toast.makeText(this, String.format("Unhandled Exception: %s", ex.toString()), Toast.LENGTH_LONG);
+            t.show();
+        }
     }
 }

@@ -75,7 +75,8 @@
             <EditText
                 android:id="@+id/edit_text_notes"
                 android:layout_margin="2dp"
-                android:layout_span="2" />
+                android:layout_span="2"
+                android:inputType="text"/>
         </TableRow>
     </TableLayout>
     <Button

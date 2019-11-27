@@ -111,19 +111,23 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
     private void enterButtonClick() {
         try {
-            Date d = new Date();
-            d.setYear(year);
-            d.setMonth(month);
-            d.setDate(dayOfMonth);
-            d.setHours(hour);
-            d.setMinutes(minute);
-            long timestamp = d.getTime();
+            Calendar c = new Calendar.Builder()
+                    .setFields(
+                            Calendar.YEAR, year,
+                            Calendar.MONTH, month,
+                            Calendar.DAY_OF_MONTH, dayOfMonth,
+                            Calendar.HOUR_OF_DAY, hour,
+                            Calendar.MINUTE, minute)
+                    .setTimeZone(Calendar.getInstance().getTimeZone())
+                    .build();
+            long timestamp = c.toInstant().toEpochMilli();
             String amountString = amountEditText.getText().toString().trim();
             double amount = (double) Double.parseDouble(amountString); // TODO test
             String notes = notesText.getText().toString();
 
             Intent i = ManualBolusSource.createIntent(timestamp, amount, notes);
             getApplicationContext().sendBroadcast(i);
+            finish();
         }
         catch (Exception ex) {
             Toast t = Toast.makeText(this,

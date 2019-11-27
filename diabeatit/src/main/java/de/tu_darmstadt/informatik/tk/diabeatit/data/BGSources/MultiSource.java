@@ -3,6 +3,7 @@ package de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,12 +99,12 @@ public class MultiSource<T> implements DataSource<T> {
     private static IntentFilter combineIntentFilters(IntentFilter a, IntentFilter b) {
         IntentFilter combined = new IntentFilter(a);
 
-        String temp = "";
-
         // add actions
-        for (Iterator<String> it = b.actionsIterator(); it.hasNext(); temp = it.next()) {
-            if (!combined.hasAction(temp))
-                combined.addAction(temp);
+        Iterator<String> it = b.actionsIterator();
+        while (it.hasNext()) {
+            String action = it.next();
+            if (!combined.hasAction(action))
+                combined.addAction(action);
         }
 
         return combined;

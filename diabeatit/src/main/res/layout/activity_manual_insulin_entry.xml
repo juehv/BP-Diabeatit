@@ -73,7 +73,6 @@
                     android:inputType="text" />
             </TableRow>
         </TableLayout>
-
         <Button
             android:id="@+id/button_enter"
             android:layout_alignParentBottom="true"
