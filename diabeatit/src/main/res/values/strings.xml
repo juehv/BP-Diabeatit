@@ -36,4 +36,7 @@
     <string name="select">Select</string>
     <string name="timepoint">Timepoint:</string>
     <string name="notes">Notes</string>
+    <string name="carbs">Carbs:</string>
+    <string name="kcal">kcal</string>
+    <string name="enter">Enter</string>
 </resources>
