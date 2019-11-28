@@ -3,12 +3,15 @@ package de.tu_darmstadt.informatik.tk.diabeatit;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.data.Bolus;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BolusSources.ManualBolusSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.CarbsEntry;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.CarbsSources.ManualCarbsSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.DummySink;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.ManualBgSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.MultiSource;
@@ -21,6 +24,7 @@ public class MainApp extends Application {
     private DataManager<BgReading> bgDataManager;
     private DataManager<Bolus> bolusDataManager;
     private DataManager<SportsEntry> sportsDataManager;
+    private DataManager<CarbsEntry> carbsDataManager;
 
     @Override
     public void onCreate() {
@@ -42,6 +46,11 @@ public class MainApp extends Application {
                 new MultiSource<SportsEntry>()
                     .addSource(new ManualSportsSource()),
                 new DummySink<SportsEntry>(),
+                ctx);
+        carbsDataManager = new DataManager<CarbsEntry>(
+                new MultiSource<CarbsEntry>()
+                    .addSource(new ManualCarbsSource()),
+                new DummySink<>(),
                 ctx);
     }
 
