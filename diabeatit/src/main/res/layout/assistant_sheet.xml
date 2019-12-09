@@ -29,7 +29,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#F57F17" >
+                android:background="#F9A825" >
 
                 <ImageButton
                     android:id="@+id/assistant_slide_button"
