@@ -10,6 +10,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.DummySink;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.DummyBgSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
@@ -27,8 +28,8 @@ public class BgDataManagerTest {
     public void testReadingsBeingReceived() {
         // setup all dummies
         DummyBgSource src = new DummyBgSource();
-        DummySink sink = new DummySink();
-        DataManager mgr = new DataManager(src, sink, null);
+        DummySink<BgReading> sink = new DummySink<>();
+        DataManager<BgReading> mgr = new DataManager<BgReading>(src, sink, null);
 
         // fake receiving some data (can be null since DummyBgSource does not interact with it)
         mgr.onReceive(null, null);
