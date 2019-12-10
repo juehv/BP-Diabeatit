@@ -8,11 +8,11 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
-public class GlimpBGSource implements BgDataSource {
+public class GlimpBGSource implements DataSource<BgReading> {
     // Intents
     public final static String ACTION_NEW_MEASUREMENT = "it.ct.glicemia.ACTION_GLUCOSE_MEASURED";
     public final static String EXTRA_VALUE = "mySGV";
@@ -50,12 +50,12 @@ public class GlimpBGSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager manager) {
 
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
+    public void onUnregister(Context context, DataManager manager) {
 
     }
 }

@@ -12,15 +12,15 @@ import java.util.List;
  * At this point a copy of the one found in the `app` module.
  * TODO: Refactor when the constraints and design are more clear
  */
-public interface BgDataSource {
+public interface DataSource<T> {
     boolean advancedFilteringSupported();
 
     /** Handle new data being broadcast */
-    List<BgReading> handleNewData(Context context, Intent intent);
+    List<T> handleNewData(Context context, Intent intent);
     /** Get intent filter for this */
     IntentFilter getIntentFilter();
     /** Registered with a manager */
-    public void onRegister(Context context, BgDataManager manager);
+    public void onRegister(Context context, DataManager<T> manager);
     /** Unregistered with a manager */
-    public void onUnregister(Context context, BgDataManager manager);
+    public void onUnregister(Context context, DataManager<T> manager);
 }

@@ -9,14 +9,14 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
 /**
- * A BgDataSource that responds to manual entries
+ * A DataSource that responds to manual entries
  */
-public class ManualBgSource implements BgDataSource {
+public class ManualBgSource implements DataSource<BgReading> {
     // intents
     /** Represents a new manual reading */
     public final static String ACTION_NEW_MANUAL_BG_READING = ManualBgSource.class.getCanonicalName() + ".NEW_READING";
@@ -103,10 +103,10 @@ public class ManualBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager<BgReading> manager) {
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
+    public void onUnregister(Context context, DataManager<BgReading> manager) {
     }
 }

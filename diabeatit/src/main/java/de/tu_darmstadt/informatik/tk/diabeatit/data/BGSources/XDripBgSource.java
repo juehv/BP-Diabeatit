@@ -8,14 +8,14 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataSource;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
 
 /**
  * A source that interacts with the XDrip app
  */
-public class XDripBgSource implements BgDataSource {
+public class XDripBgSource implements DataSource<BgReading> {
     // used intents
     public final static String ACTION_NEW_BG_ESTIMATE = "com.eveningoutpost.dexdrip.BgEstimate";
     public final static String EXTRA_BG_ESIMATE = "com.eveningoutpost.dexdrip.Extras.BgEstimate";
@@ -57,10 +57,10 @@ public class XDripBgSource implements BgDataSource {
     }
 
     @Override
-    public void onRegister(Context context, BgDataManager manager) {
+    public void onRegister(Context context, DataManager manager) {
     }
 
     @Override
-    public void onUnregister(Context context, BgDataManager manager) {
+    public void onUnregister(Context context, DataManager manager) {
     }
 }

@@ -2,13 +2,29 @@ package de.tu_darmstadt.informatik.tk.diabeatit;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.ContactsContract;
+import android.util.Log;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSinks.DummySink;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.DummySource;
-import de.tu_darmstadt.informatik.tk.diabeatit.data.BgDataManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import de.tu_darmstadt.informatik.tk.diabeatit.data.Bolus;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.BolusSources.ManualBolusSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.CarbsEntry;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.CarbsSources.ManualCarbsSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DummySink;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.ManualBgSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.BGSources.MultiSource;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.BgReading;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.DataManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsEntry;
+import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsSources.ManualSportsSource;
 
 public class MainApp extends Application {
-    private BgDataManager bgDataManager;
+    private DataManager<BgReading> bgDataManager;
+    private DataManager<Bolus> bolusDataManager;
+    private DataManager<SportsEntry> sportsDataManager;
+    private DataManager<CarbsEntry> carbsDataManager;
 
     @Override
     public void onCreate() {
@@ -16,6 +32,31 @@ public class MainApp extends Application {
 
         Context ctx = getApplicationContext();
 
-        bgDataManager = new BgDataManager(new DummySource(), new DummySink(), ctx);
+        bgDataManager = new DataManager<>(
+                new MultiSource<BgReading>()
+                    .addSource(new ManualBgSource()),
+                new DummySink<BgReading>(),
+                ctx);
+        bolusDataManager = new DataManager<Bolus>(
+                new MultiSource<Bolus>()
+                    .addSource(new ManualBolusSource()),
+                new DummySink<Bolus>(),
+                ctx);
+        sportsDataManager = new DataManager<SportsEntry>(
+                new MultiSource<SportsEntry>()
+                    .addSource(new ManualSportsSource()),
+                new DummySink<SportsEntry>(),
+                ctx);
+        carbsDataManager = new DataManager<CarbsEntry>(
+                new MultiSource<CarbsEntry>()
+                    .addSource(new ManualCarbsSource()),
+                new DummySink<>(),
+                ctx);
+    }
+
+    @Override
+    public void sendBroadcast(Intent intent) {
+        Log.d("BROADCAST", intent.toString());
+        super.sendBroadcast(intent);
     }
 }
