@@ -39,4 +39,6 @@
     <string name="carbs">Carbs:</string>
     <string name="kcal">kcal</string>
     <string name="enter">Enter</string>
+    <string name="battery_test_string">The battery of your fitness tracker \"<font color="#CC0000FF"><u>FitBit</u></font>\" is at <font color='#FF0000'>10%</font>.</string>
+    <string name="sensor_test_string">Your blood glucose sensor \"<font color="#CC0000FF"><u>Dieter\'s Sensor</u></font>\" is not connected to your phone. Check it\'s battery level and your <font color="#CC0000FF"><u>Bluetooth settings</u></font>.</string>
 </resources>

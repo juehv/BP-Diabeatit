@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="true"
-        android:background="@android:color/background_light"
+        android:background="#EFEFEF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,7 +21,6 @@
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
-            android:background="@android:color/background_light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
@@ -29,7 +28,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#F9A825" >
+                android:background="#FF0000" >
 
                 <ImageButton
                     android:id="@+id/assistant_slide_button"
@@ -61,17 +60,17 @@
                         android:id="@+id/assistant_peek"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2 Warnungen"
                         android:textColor="@android:color/white"
                         android:textSize="24sp"
                         android:textAlignment="textEnd"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="Urgent Alert" />
 
                     <TextView
                         android:id="@+id/assistant_peek_second"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="und 3 weitere..."
+                        android:text="and 3 more..."
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
                         android:textAlignment="textEnd"
@@ -81,12 +80,7 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:text="Assistant cards go here"
-                android:textAlignment="center" />
+            <include layout="@layout/assistant_cards" />
 
         </LinearLayout>
 
