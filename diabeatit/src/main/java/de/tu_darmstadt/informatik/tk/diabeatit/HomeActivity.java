@@ -8,6 +8,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualCarbsEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualInsulinEntryActivity;
@@ -64,7 +67,10 @@ public class HomeActivity extends AppCompatActivity {
 
         View nestedScrollView = (View) findViewById(R.id.assistant_scrollview);
         final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
-        final ImageButton assistant_slide = (ImageButton) findViewById(R.id.assistant_slide_button);
+        //final ImageButton assistantSlideUp = (ImageButton) findViewById(R.id.assistant_slide_button_up);
+        //final ImageButton assistantSlideDown = (ImageButton) findViewById(R.id.assistant_slide_button_up);
+        final RelativeLayout assistantPeek = (RelativeLayout) findViewById(R.id.assistant_peek);
+        final RelativeLayout assistantPeekAlt = (RelativeLayout) findViewById(R.id.assistant_peek_alt);
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -73,11 +79,8 @@ public class HomeActivity extends AppCompatActivity {
                 entryMenu.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
                 entryMenu.collapseImmediately();
 
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
-                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slideup));
-
-                if (newState == BottomSheetBehavior.STATE_EXPANDED)
-                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slidedown));
+                assistantPeek.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
+                assistantPeekAlt.setVisibility(newState != BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
 
             }
 
@@ -85,14 +88,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onSlide(View view, float v) {}
         });
 
-        ImageButton slide_btn = (ImageButton) findViewById(R.id.assistant_slide_button);
-
-        slide_btn.setOnClickListener(new View.OnClickListener() {
+        assistantPeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                assistant.setState(assistant.getState() == BottomSheetBehavior.STATE_EXPANDED ? BottomSheetBehavior.STATE_COLLAPSED : BottomSheetBehavior.STATE_EXPANDED);
-
+                assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
