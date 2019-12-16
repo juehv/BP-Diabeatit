@@ -15,34 +15,8 @@
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:stretchColumns="1">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="@string/timepoint"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_margin="2dp"
-                    android:textAlignment="textEnd"
-                    android:labelFor="@id/edit_text_date_time"/>
-
-                <TextView
-                    android:id="@+id/edit_text_date_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_margin="2dp"/>
-
-                <Button
-                    android:id="@+id/button_select_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select"
-                    android:layout_margin="2dp"/>
-            </TableRow>
+            android:stretchColumns="1"
+            android:layout_margin="5dp">
             <TableRow>
                 <TextView
                     android:text="Bolus:"
@@ -53,7 +27,8 @@
                 <EditText
                     android:id="@+id/edit_text_bolus"
                     android:inputType="numberDecimal"
-                    android:layout_margin="2dp" />
+                    android:layout_margin="2dp"
+                    android:text="0" />
                 <TextView
                     android:text="U"
                     android:layout_margin="2dp" />
@@ -72,14 +47,24 @@
                     android:layout_span="2"
                     android:inputType="text" />
             </TableRow>
+            <TableRow>
+                <Button
+                    android:id="@+id/btn_date_time"
+                    android:layout_span="3"
+                    android:layout_height="72dp"
+                    android:text="DATE/TIME"/>
+            </TableRow>
         </TableLayout>
         <Button
             android:id="@+id/button_enter"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enter"/>
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/cardview_light_background"
+            android:background="@color/colorPrimary"
+            android:text="@string/enter" />
 
     </RelativeLayout>
 
