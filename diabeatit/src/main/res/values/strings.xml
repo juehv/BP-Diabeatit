@@ -39,4 +39,5 @@
     <string name="carbs">Carbs:</string>
     <string name="kcal">kcal</string>
     <string name="enter">Enter</string>
+    <string name="title_activity_setup_insight">SetupInsight</string>
 </resources>
