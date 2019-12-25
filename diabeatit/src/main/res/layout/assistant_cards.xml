@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="8dp" >
 
-    <include layout="@layout/assistant_example_cards" />
+    <include layout="@layout/assistant_card_list" />
 
     <!--RelativeLayout
         android:layout_width="match_parent"
@@ -146,6 +146,7 @@
     </androidx.cardview.widget.CardView-->
 
     <Button
+        android:id="@+id/alert_clear_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -186,6 +187,7 @@
 
     <androidx.cardview.widget.CardView
         xmlns:card="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/alert_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
@@ -207,6 +209,7 @@
 
     <androidx.cardview.widget.CardView
         xmlns:card="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/alert_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"

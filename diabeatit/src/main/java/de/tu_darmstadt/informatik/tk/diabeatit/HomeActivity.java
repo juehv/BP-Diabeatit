@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,10 +27,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.Alert;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.AlertsManager;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualCarbsEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualInsulinEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualSportsEntryActivity;
@@ -94,6 +101,17 @@ public class HomeActivity extends AppCompatActivity {
                 assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+
+        final AlertsManager tmp = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list));
+        List<Alert> as = new ArrayList<Alert>();
+        as.add(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_battery_alert), "Battery low", "The battery is low."));
+        as.add(new Alert(Alert.Urgency.INFO, getDrawable(R.drawable.ic_timeline), "Lorem Ipsum", "Lorem Ipsum!"));
+        as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Broken", "Line<br>Break"));
+        tmp.setAlerts(as);
+
+        findViewById(R.id.alert_clear_all).setOnClickListener(view ->
+                tmp.clearAlerts()
+        );
 
         // Drawer
 
