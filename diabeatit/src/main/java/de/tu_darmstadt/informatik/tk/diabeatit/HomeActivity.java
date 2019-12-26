@@ -30,12 +30,14 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.Alert;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.AlertManagementListener;
 import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.AlertsManager;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualCarbsEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualInsulinEntryActivity;
@@ -102,15 +104,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        final AlertsManager tmp = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list));
+        final AlertsManager alerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
+
+        Button alertClearB = findViewById(R.id.alert_clear_all);
+        TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
+
+        alertClearB.setOnClickListener(view -> alerts.clearAlerts());
+
+        alerts.attachListener(new AlertManagementListener() {
+            @Override
+            public void onAlertsCleared() {
+                alertClearB.setVisibility(View.GONE);
+                alertEmptyT.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAlertAdded(int totalAlerts) {
+                alertClearB.setVisibility(View.VISIBLE);
+                alertEmptyT.setVisibility(View.GONE);
+            }
+        });
+
         List<Alert> as = new ArrayList<Alert>();
         as.add(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_battery_alert), "Battery low", "The battery is low."));
         as.add(new Alert(Alert.Urgency.INFO, getDrawable(R.drawable.ic_timeline), "Lorem Ipsum", "Lorem Ipsum!"));
-        as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Broken", "Line<br>Break"));
-        tmp.setAlerts(as);
+        as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Multiline", "Line<br>Break"));
+        alerts.setAlerts(as);
 
-        findViewById(R.id.alert_clear_all).setOnClickListener(view ->
-                tmp.clearAlerts()
+        findViewById(R.id.alert_settings).setOnClickListener(
+                view -> alerts.addAlert(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Alert", "Test alert"))
         );
 
         // Drawer

@@ -14,13 +14,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <ViewStub
+        <!--ViewStub
             android:id="@+id/card_label_stub"
             android:inflatedId="@+id/card_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" /-->
 
-        <!--TextView
+        <TextView
             android:id="@+id/card_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:text="urgent" /-->
+            android:text="urgent" />
 
         <ImageView
             android:id="@+id/card_icon"

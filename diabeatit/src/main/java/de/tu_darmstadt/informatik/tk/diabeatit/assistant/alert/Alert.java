@@ -13,19 +13,21 @@ public class Alert {
    */
   public enum Urgency {
 
-    INFO(1, R.layout.label_info),
-	WARNING(2, R.layout.label_warning),
-	URGENT(3, R.layout.label_urgent);
+    INFO(1, R.string.alert_label_info, R.drawable.label_gray),
+	WARNING(2, R.string.alert_label_warning, R.drawable.label_amber),
+	URGENT(3, R.string.alert_label_urgent, R.drawable.label_red);
 
-    private int priority, label;
+    private int priority, stringId, background;
 
-    Urgency(int p, int l) {
+    Urgency(int p, int s, int b) {
       priority = p;
-      label = l;
+      stringId = s;
+      background = b;
 	}
 
 	public int getPriority() { return priority; }
-	public int getLabel() { return label; }
+	public int getStringId() { return stringId; }
+	public int getBackground() { return background; }
 
   }
 
