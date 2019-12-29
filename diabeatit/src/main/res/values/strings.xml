@@ -48,5 +48,6 @@
     <string name="alert_label_urgent">urgent</string>
     <string name="alert_undo_text">Undo deletion?</string>
     <string name="alert_undo_action">Undo</string>
+    <string name="title_activity_alert_history">History</string>
 
 </resources>

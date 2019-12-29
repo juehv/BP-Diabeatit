@@ -100,6 +100,8 @@ public class AlertsManager {
 
     alertAdapter.notifyItemRemoved(index);
 
+	for (AlertManagementListener l : listeners) l.onAlertRemoved(alert);
+
     if (alerts.isEmpty())
 	  for (AlertManagementListener l : listeners) l.onAlertsCleared();
 
@@ -107,10 +109,14 @@ public class AlertsManager {
 
   public void clearAlerts() {
 
-	alerts.clear();
+	Alert[] removed = alerts.toArray(new Alert[0]);
 
-    //alertAdapter.notifyItemRangeRemoved(0, alertAdapter.getItemCount()); // -- does not work
+	alerts.clear();
 	alertAdapter.notifyDataSetChanged();
+
+	for (AlertManagementListener l : listeners)
+	  for (Alert a : removed)
+	    l.onAlertRemoved(a);
 
 	for (AlertManagementListener l : listeners) l.onAlertsCleared();
 
