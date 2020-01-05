@@ -17,27 +17,6 @@
                 android:layout_margin="2dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textAlignment="textEnd"
-                android:text="@string/timepoint"
-                android:labelFor="@id/edit_text_timestamp"/>
-            <EditText
-                android:id="@+id/edit_text_timestamp"
-                android:inputType="text"
-                android:enabled="false"
-                android:layout_margin="2dp" />
-            <Button
-                android:id="@+id/button_select_timestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:text="@string/select" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textAlignment="textEnd"
                 android:text="@string/carbs"
                 android:labelFor="@id/edit_text_carbs"/>
             <EditText
@@ -68,15 +47,46 @@
                 android:layout_span="2"
                 />
         </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_timestamp"
+                android:layout_span="3"
+                android:layout_height="72dp"
+                android:layout_width="match_parent"
+                android:text="DATE/TIME" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:labelFor="@id/iv_picture"
+                android:text="Picture:" />
+            <ImageView
+                android:id="@+id/iv_picture"
+                android:layout_height="200dp"
+                android:layout_width="200dp"
+                android:background="@color/cardview_shadow_start_color"
+                />
+            <Button
+                android:id="@+id/btn_take_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select..." />
+        </TableRow>
+        <TableRow android:layout_weight="1.0" />
+        <TableRow>
+            <Button
+                android:id="@+id/button_enter"
+                android:layout_span="3"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:text="Enter"
+                android:textColor="@color/cardview_light_background"
+                android:background="@color/colorPrimary"
+                />
+        </TableRow>
     </TableLayout>
-
-    <Button
-        android:id="@+id/button_enter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/enter" />
-
-
 </RelativeLayout>
