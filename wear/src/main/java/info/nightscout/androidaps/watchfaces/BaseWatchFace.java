@@ -375,7 +375,7 @@ public  abstract class BaseWatchFace extends WatchFace implements SharedPreferen
                 mCOB1.setVisibility(View.GONE);
                 mCOB2.setVisibility(View.GONE);
             }
-        //deal with cases where there is only the value shown for COB, and not the label
+        //deal with cases where there is only the value shown for COB, and not the label_red
         } else if (mCOB2 != null) {
             mCOB2.setText(sCOB2);
             if (sharedPrefs.getBoolean("show_cob", true)) {
@@ -400,7 +400,7 @@ public  abstract class BaseWatchFace extends WatchFace implements SharedPreferen
                 mIOB1.setVisibility(View.GONE);
                 mIOB2.setVisibility(View.GONE);
             }
-        //deal with cases where there is only the value shown for IOB, and not the label
+        //deal with cases where there is only the value shown for IOB, and not the label_red
         } else if (mIOB2 != null) {
             if (sharedPrefs.getBoolean("show_iob", true)) {
                 mIOB2.setVisibility(View.VISIBLE);

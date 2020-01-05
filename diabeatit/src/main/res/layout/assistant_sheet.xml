@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="true"
-        android:background="@android:color/background_light"
+        android:background="#EFEFEF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,18 +21,39 @@
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
-            android:background="@android:color/background_light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/assistant_peek_alt"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#F9A825" >
+                android:visibility="gone" >
 
-                <ImageButton
-                    android:id="@+id/assistant_slide_button"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:textSize="20dp"
+                    android:textColor="#666666"
+                    android:text="Current Alerts"
+                    android:drawableStart="@drawable/ic_notification"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#888888"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/assistant_peek"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#FF0000" >
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_slideup"
@@ -58,20 +79,20 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/assistant_peek"
+                        android:id="@+id/assistant_peek_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2 Warnungen"
                         android:textColor="@android:color/white"
                         android:textSize="24sp"
                         android:textAlignment="textEnd"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="Urgent Alert" />
 
                     <TextView
-                        android:id="@+id/assistant_peek_second"
+                        android:id="@+id/assistant_peek_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="und 3 weitere..."
+                        android:text="and 3 more..."
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
                         android:textAlignment="textEnd"
@@ -81,12 +102,7 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:text="Assistant cards go here"
-                android:textAlignment="center" />
+            <include layout="@layout/assistant_cards" />
 
         </LinearLayout>
 

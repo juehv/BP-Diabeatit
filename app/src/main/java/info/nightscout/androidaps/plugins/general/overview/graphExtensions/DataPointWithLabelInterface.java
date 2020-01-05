@@ -47,7 +47,7 @@ public interface DataPointWithLabelInterface extends DataPointInterface{
     void setY(double y);
 
     /**
-     * @return the label value
+     * @return the label_red value
      */
     String getLabel();
 

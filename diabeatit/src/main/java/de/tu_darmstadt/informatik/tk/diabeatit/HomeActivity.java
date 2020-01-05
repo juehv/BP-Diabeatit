@@ -8,10 +8,11 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,8 +26,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.Inflater;
+
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.Alert;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.AlertManagementListener;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.AlertsManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.DismissedAlertsManager;
+import de.tu_darmstadt.informatik.tk.diabeatit.assistant.alert.Global;
+import de.tu_darmstadt.informatik.tk.diabeatit.ui.AlertHistoryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualCarbsEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualInsulinEntryActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.ui.ManualSportsEntryActivity;
@@ -45,14 +58,19 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // FAB
+        setupManualEntry();
+        setupAssistant();
+        setupDrawer();
 
-        entryMenu = (FloatingActionsMenu) findViewById(R.id.manual_entry_fab_menu);
-        FloatingActionButton manualInsulinButton = (FloatingActionButton) findViewById(R.id.fab_manual_insulin);
-        FloatingActionButton manualCarbsButton = (FloatingActionButton) findViewById(R.id.fab_manual_carbs);
-        FloatingActionButton manualSportsButton = (FloatingActionButton) findViewById(R.id.fab_manual_sports);
+    }
 
-        // set the onClickListeners, so we change the Activity on click.
+    private void setupManualEntry() {
+
+        entryMenu = findViewById(R.id.manual_entry_fab_menu);
+        FloatingActionButton manualInsulinButton = findViewById(R.id.fab_manual_insulin);
+        FloatingActionButton manualCarbsButton = findViewById(R.id.fab_manual_carbs);
+        FloatingActionButton manualSportsButton = findViewById(R.id.fab_manual_sports);
+
         manualInsulinButton.setOnClickListener((v) ->
                 startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class)));
         manualCarbsButton.setOnClickListener((v) ->
@@ -60,11 +78,14 @@ public class HomeActivity extends AppCompatActivity {
         manualSportsButton.setOnClickListener((v) ->
                 startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class)));
 
-        // Assistant
+    }
 
-        View nestedScrollView = (View) findViewById(R.id.assistant_scrollview);
+    private void setupAssistant() {
+
+        View nestedScrollView = findViewById(R.id.assistant_scrollview);
         final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
-        final ImageButton assistant_slide = (ImageButton) findViewById(R.id.assistant_slide_button);
+        final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
+        final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -73,11 +94,8 @@ public class HomeActivity extends AppCompatActivity {
                 entryMenu.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
                 entryMenu.collapseImmediately();
 
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
-                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slideup));
-
-                if (newState == BottomSheetBehavior.STATE_EXPANDED)
-                    assistant_slide.setImageDrawable(assistant_slide.getContext().getDrawable(R.drawable.ic_slidedown));
+                assistantPeek.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
+                assistantPeekAlt.setVisibility(newState != BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
 
             }
 
@@ -85,43 +103,79 @@ public class HomeActivity extends AppCompatActivity {
             public void onSlide(View view, float v) {}
         });
 
-        ImageButton slide_btn = (ImageButton) findViewById(R.id.assistant_slide_button);
+        assistantPeek.setOnClickListener(view -> assistant.setState(BottomSheetBehavior.STATE_EXPANDED));
 
-        slide_btn.setOnClickListener(new View.OnClickListener() {
+        final AlertsManager alerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
+        Global.dismissedAlerts = new DismissedAlertsManager();
+
+        Button alertClearB = findViewById(R.id.alert_clear_all);
+        TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
+
+        alertClearB.setOnClickListener(view -> alerts.clearAlerts());
+
+        alerts.attachListener(new AlertManagementListener() {
             @Override
-            public void onClick(View view) {
+            public void onAlertsCleared() {
+                alertClearB.setVisibility(View.GONE);
+                alertEmptyT.setVisibility(View.VISIBLE);
+            }
 
-                assistant.setState(assistant.getState() == BottomSheetBehavior.STATE_EXPANDED ? BottomSheetBehavior.STATE_COLLAPSED : BottomSheetBehavior.STATE_EXPANDED);
+            @Override
+            public void onAlertAdded(int totalAlerts) {
+                alertClearB.setVisibility(View.VISIBLE);
+                alertEmptyT.setVisibility(View.GONE);
+            }
 
+            @Override
+            public void onAlertRemoved(Alert alert) {
+                Global.dismissedAlerts.addAlert(alert);
             }
         });
 
-        // Drawer
+        CardView alertSettingsC = findViewById(R.id.alert_settings);
+        // TODO Open relevant settings page
+
+        CardView alertHistoryC = findViewById(R.id.alert_history);
+        alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
+
+        // TODO Example alerts - Remove
+        List<Alert> as = new ArrayList<Alert>();
+        as.add(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_battery_alert), "Battery low", "The battery is low."));
+        as.add(new Alert(Alert.Urgency.INFO, getDrawable(R.drawable.ic_timeline), "Lorem Ipsum", "Lorem Ipsum!"));
+        as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Multiline", "Line<br>Break"));
+        alerts.setAlerts(as);
+
+        // TODO Testing - Remove
+        findViewById(R.id.alert_settings).setOnClickListener(
+                view -> alerts.addAlert(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_face_sad), "BG Alert", "Blood glucose level critical!"))
+        );
+
+    }
+
+    private void setupDrawer() {
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_settings, R.id.nav_device_sensor, R.id.nav_device_pump, R.id.nav_device_tracker)
                 .setDrawerLayout(drawer)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+        navView.setNavigationItemSelectedListener(menuItem -> {
 
-                if (menuItem.getItemId() == R.id.nav_settings)
-                    startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
-                else if (menuItem.getItemId() == R.id.nav_setup)
-                    startActivity(new Intent(HomeActivity.this, SetupActivity.class));
-                else if (menuItem.getItemId() == R.id.nav_home)
-                    drawer.closeDrawers();
-                return true;
-            }
+            if (menuItem.getItemId() == R.id.nav_settings)
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+            else if (menuItem.getItemId() == R.id.nav_setup)
+                startActivity(new Intent(HomeActivity.this, SetupActivity.class));
+            else if (menuItem.getItemId() == R.id.nav_home)
+                drawer.closeDrawers();
+            return true;
+
         });
 
     }

@@ -457,7 +457,7 @@ public class BgGraphBuilder {
             if(Math.abs(hourTick - timeNow) > (8 * (end_time-start_time)/60)){
                 xAxisValues.add(new AxisValue(fuzz(hourTick)).setLabel(timeFormat.format(hourTick)));
             } else {
-                //don't print hour label if too close to now to avoid overlaps
+                //don't print hour label_red if too close to now to avoid overlaps
                 xAxisValues.add(new AxisValue(fuzz(hourTick)).setLabel(""));
             }
 

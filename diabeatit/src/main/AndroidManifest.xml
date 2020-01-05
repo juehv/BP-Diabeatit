@@ -15,6 +15,9 @@
         <activity android:name=".ui.ManualInsulinEntryActivity" />
         <activity android:name=".ui.setup.SetupActivity" />
         <activity
+            android:name=".ui.AlertHistoryActivity"
+            android:label="@string/title_activity_alert_history" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
