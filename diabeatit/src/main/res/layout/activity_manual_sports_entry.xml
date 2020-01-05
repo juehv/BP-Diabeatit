@@ -10,38 +10,9 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:stretchColumns="1">
 
-        <TableRow>
-            <TextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textAlignment="textEnd"
-                android:layout_margin="2dp"
-                android:text="From:" />
-            <EditText
-                android:id="@+id/edit_text_timestamp_from"
-                android:enabled="false"
-                android:layout_margin="2dp"/>
-            <Button
-                android:id="@+id/button_select_from"
-                android:text="@string/select"
-                android:layout_margin="2dp"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textAlignment="textEnd"
-                android:layout_margin="2dp"
-                android:text="Until:" />
-            <EditText
-                android:id="@+id/edit_text_timestamp_until"
-                android:enabled="false"
-                android:layout_margin="2dp" />
-            <Button
-                android:id="@+id/button_select_until"
-                android:text="@string/select"
-                android:layout_margin="2dp" />
-        </TableRow>
         <TableRow>
             <TextView
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -78,13 +49,30 @@
                 android:layout_span="2"
                 android:inputType="text"/>
         </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_timestamp_start"
+                android:layout_span="3"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:text="TIMESTAMP/START" />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/btn_timestamp_end"
+                android:layout_span="3"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:text="TIMESTAMP/END" />
+        </TableRow>
     </TableLayout>
     <Button
         android:id="@+id/button_enter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:textColor="@color/cardview_light_background"
+        android:background="@color/colorPrimary"
         android:text="Enter" />
 </RelativeLayout>

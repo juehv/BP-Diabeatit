@@ -6,17 +6,15 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.text.Html;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.security.Key;
-import java.sql.Time;
 import java.text.DateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,88 +23,69 @@ import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsEntry;
 import de.tu_darmstadt.informatik.tk.diabeatit.data.SportsSources.ManualSportsSource;
 
 public class ManualSportsEntryActivity extends AppCompatActivity {
-
-    EditText timestampFrom;
-    EditText timestampUntil;
     EditText notes;
     ToggleButton buttonLight;
     ToggleButton buttonMedium;
     ToggleButton buttonHeavy;
-    Button selectTimestampFrom;
-    Button selectTimestampUntil;
+    Button timestampStartButton;
+    Button timestampEndButton;
     Button enterButton;
 
-    int fromYear, fromMonth, fromDayOfMonth, fromHour, fromMinute;
-    int untilYear, untilMonth, untilDayOfMonth, untilHour, untilMinute;
+    Calendar start;
+    Calendar end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_sports_entry);
 
-        resetFromTimestamp();
-        resetUntilTimestamp();
+        resetStart();
+        resetEnd();
 
-        timestampFrom = findViewById(R.id.edit_text_timestamp_from);
-        timestampUntil = findViewById(R.id.edit_text_timestamp_until);
         notes = findViewById(R.id.edit_text_notes);
         buttonLight = findViewById(R.id.button_light);
         buttonMedium = findViewById(R.id.button_medium);
         buttonHeavy = findViewById(R.id.button_heavy);
-        selectTimestampFrom = findViewById(R.id.button_select_from);
-        selectTimestampUntil = findViewById(R.id.button_select_until);
         enterButton = findViewById(R.id.button_enter);
+        timestampStartButton = findViewById(R.id.btn_timestamp_start);
+        timestampEndButton = findViewById(R.id.btn_timestamp_end);
 
         buttonLight.setOnCheckedChangeListener((v, c) -> buttonLightOnCheckChanged(c));
         buttonMedium.setOnCheckedChangeListener((v, c) -> buttonMediumOnCheckChanged(c));
         buttonHeavy.setOnCheckedChangeListener((v, c) -> buttonHeavyOnCheckChanged(c));
-        selectTimestampFrom.setOnClickListener(v -> selectTimestampFromOnClick());
-        selectTimestampUntil.setOnClickListener(v -> selectTimestampUntilOnClick());
         enterButton.setOnClickListener(v -> enterButtonOnClick());
+        timestampStartButton.setOnClickListener(v -> selectTimestampStart());
+        timestampEndButton.setOnClickListener(v -> selectTimestampEnd());
 
         buttonMedium.setChecked(true);
 
         updateTexts();
     }
 
-    private void resetFromTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        fromYear = cal.get(Calendar.YEAR);
-        fromMonth = cal.get(Calendar.MONTH);
-        fromDayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        fromHour = cal.get(Calendar.HOUR_OF_DAY);
-        fromMinute = cal.get(Calendar.MINUTE);
+    private void resetStart() {
+        start = new Calendar.Builder()
+                .setInstant(Instant.now().toEpochMilli())
+                .setTimeZone(Calendar.getInstance().getTimeZone())
+                .build();
     }
 
-    private void resetUntilTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        untilYear = cal.get(Calendar.YEAR);
-        untilMonth = cal.get(Calendar.MONTH);
-        untilDayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        untilHour = cal.get(Calendar.HOUR_OF_DAY);
-        untilMinute = cal.get(Calendar.MINUTE);
+    private void resetEnd() {
+        end = new Calendar.Builder()
+                .setInstant(Instant.now().toEpochMilli())
+                .setTimeZone(Calendar.getInstance().getTimeZone())
+                .build();
     }
 
     private void updateTexts() {
-        Date from = new Date();
-        from.setYear(fromYear - 1900);
-        from.setMonth(fromMonth);
-        from.setDate(fromDayOfMonth);
-        from.setHours(fromHour);
-        from.setMinutes(fromMinute);
-        from.setSeconds(0);
-        String f = DateFormat.getDateTimeInstance().format(from);
-        timestampFrom.setText(f);
+        String s = DateFormat.getDateTimeInstance().format(start.getTime());
+        String e = DateFormat.getDateTimeInstance().format(end.getTime());
 
-        Date until = new Date();
-        until.setYear(untilYear - 1900);
-        until.setMonth(untilMonth);
-        until.setDate(untilDayOfMonth);
-        until.setHours(untilHour);
-        until.setMinutes(untilMinute);
-        until.setSeconds(0);
-        String u = DateFormat.getDateTimeInstance().format(until);
-        timestampUntil.setText(u);
+
+        String startButtonHtml = String.format("<b>Start of activity</b><br /><small>%s</small>", s);
+        String endButtonHtml = String.format("<b>End of activity</b><br /><small>%s</small>", e);
+
+        timestampStartButton.setText(Html.fromHtml(startButtonHtml));
+        timestampEndButton.setText(Html.fromHtml(endButtonHtml));
     }
 
     private void buttonLightOnCheckChanged(boolean isChecked) {
@@ -148,79 +127,50 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void selectTimestampFromOnClick() {
-        DatePickerDialog picker = new DatePickerDialog(
-                this,
+    private void selectTimestampStart() {
+        selectDate(start, () -> selectTime(start, this::updateTexts));
+    }
+
+    private void selectTimestampEnd() {
+        selectDate(end, () -> selectTime(end, this::updateTexts));
+    }
+
+    private void selectDate(Calendar cal, Runnable finished) {
+        DatePickerDialog diag = new DatePickerDialog(this,
                 (v, y, m, d) -> {
-                    fromYear = y;
-                    fromMonth = m;
-                    fromDayOfMonth = d;
-                    updateTexts();
-                    pickFromTime();
+                    cal.set(Calendar.YEAR, y);
+                    cal.set(Calendar.MONTH, m);
+                    cal.set(Calendar.DAY_OF_MONTH, d);
+                    if (finished != null) {
+                        finished.run();
+                    }
                 },
-                fromYear, fromMonth, fromDayOfMonth);
-        picker.show();
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH));
+        diag.show();
     }
 
-    private void pickFromTime() {
-        TimePickerDialog picker = new TimePickerDialog(this,
+    private void selectTime(Calendar cal, Runnable finished) {
+        TimePickerDialog diag = new TimePickerDialog(this,
                 (v, h, m) -> {
-                    fromHour = h;
-                    fromMinute = m;
-                    updateTexts();
+                    cal.set(Calendar.HOUR_OF_DAY, h);
+                    cal.set(Calendar.MINUTE, m);
+                    if (finished != null) {
+                        finished.run();
+                    }
                 },
-                fromHour, fromMinute, true);
-        picker.show();
-    }
-
-    private void selectTimestampUntilOnClick() {
-        DatePickerDialog picker = new DatePickerDialog(this,
-                (v, y, m, d) -> {
-                    untilYear = y;
-                    untilMonth = m;
-                    untilDayOfMonth = d;
-                    updateTexts();
-                    pickUntilTime();
-                },
-                untilYear, untilMonth, untilDayOfMonth);
-        picker.show();
-    }
-
-    private void pickUntilTime() {
-        TimePickerDialog picker = new TimePickerDialog(this,
-                (v, h, m) -> {
-                    untilHour = h;
-                    untilMinute = m;
-                    updateTexts();
-                },
-                untilHour, untilMinute, true);
-        picker.show();
+                cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE),
+                true);
+        diag.show();
     }
 
     private void enterButtonOnClick() {
         try {
-            Calendar from = new Calendar.Builder()
-                    .setFields(
-                            Calendar.YEAR, fromYear,
-                            Calendar.MONTH, fromMonth,
-                            Calendar.DAY_OF_MONTH, fromDayOfMonth,
-                            Calendar.HOUR_OF_DAY, fromHour,
-                            Calendar.MINUTE, fromMinute
-                    )
-                    .setTimeZone(Calendar.getInstance().getTimeZone())
-                    .build();
-            long tsFrom = from.toInstant().toEpochMilli();
 
-            Calendar until = new Calendar.Builder()
-                    .setFields(
-                            Calendar.YEAR, untilYear,
-                            Calendar.MONTH, untilMonth,
-                            Calendar.DAY_OF_MONTH, untilDayOfMonth,
-                            Calendar.HOUR_OF_DAY, untilHour,
-                            Calendar.MINUTE, untilMinute)
-                    .setTimeZone(Calendar.getInstance().getTimeZone())
-                    .build();
-            long tsUntil = until.toInstant().toEpochMilli();
+            long tsFrom = start.toInstant().toEpochMilli();
+            long tsUntil = end.toInstant().toEpochMilli();
 
             SportsEntry.Level level;
 
