@@ -5,57 +5,57 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import de.tu_darmstadt.informatik.tk.diabeatit.HomeActivity;
 import de.tu_darmstadt.informatik.tk.diabeatit.R;
 
 public class SetupActivity
-        extends AppCompatActivity
-        implements SensorSelection.OnFragmentInteractionListener,
-                   SensorSettings.OnFragmentInteractionListener,
-                    WelcomeButton.OnFragmentInteractionListener {
+        extends AppCompatActivity {
 
-    TextView title;
-    TextView explanation;
+    protected TextView title, explanation;
+    protected Button startSetup, showSetup, returnHome;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        WelcomeButton settings = new WelcomeButton();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.setup_step_frame, settings);
-        ft.commit();
-
         title = findViewById(R.id.setup_title);
         explanation = findViewById(R.id.setup_explanation);
+        startSetup = (Button) findViewById(R.id.start_setup_button);
+        showSetup = (Button) findViewById(R.id.show_setup_button);
+        returnHome = (Button) findViewById(R.id.return_to_home_screen);
+
+        startSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SetupActivity.this, ActualSetup.class));
+            }
+        });
+
+        showSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SetupActivity.this, SetupInsight.class));
+            }
+        });
+
+        returnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SetupActivity.this, HomeActivity.class));
+            }
+        });
 
         setTitle("Setup");
 
     }
 
-    @Override
-    public void onFragmentInteraction(Fragment frm) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.setup_step_frame, frm);
-        ft.commit();
 
-        title.setText("Richte deinen Sensor ein");
-        explanation.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void startSetup() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.setup_step_frame, new SensorSelection());
-        ft.commit();
-        title.setText("Wähle deinen Sensor aus");
-        explanation.setVisibility(View.INVISIBLE);
-    }
 }

@@ -10,7 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ManualSportsEntryActivity"></activity>
+        <activity android:name=".ui.setup.ActualSetup"></activity>
+        <activity
+            android:name=".ui.setup.SetupInsight"
+            android:label="@string/title_activity_setup_insight"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.ManualSportsEntryActivity" />
         <activity android:name=".ui.ManualCarbsEntryActivity" />
         <activity android:name=".ui.ManualInsulinEntryActivity" />
         <activity android:name=".ui.setup.SetupActivity" />

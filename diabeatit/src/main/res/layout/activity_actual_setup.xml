@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_top"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/setup_headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="32dp"
+        android:text="WillChangePerView"
+        android:textAlignment="center"
+        android:textSize="40dp" />
+
+    <RelativeLayout
+        android:id="@+id/relative_bottom_groups"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
+
+        <RadioGroup
+            android:id="@+id/profil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp">
+
+            <RadioButton
+                android:id="@+id/profil_nightscout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Nightscout-Profil"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/profil_simple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Einfaches Profil"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/profil_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Lokales Profil"
+                android:textSize="32sp"/>
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/insulintyp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp">
+
+            <RadioButton
+                android:id="@+id/insulintyp_rapid_acting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Rapid-Acting Oref"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/insulintyp_ultra_rapid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Ultra-Rapid Oref"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/insulintyp_free_peak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Free-Peak Oref"
+                android:textSize="32sp"/>
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/bg_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp">
+
+            <RadioButton
+                android:id="@+id/bg_source_xdrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="xDrip"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_nightscout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Nightscout-Client BZ"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_mm640g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="MM640g"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_glimp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Glimp"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_dexcom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="gepatchte Dexcom App"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_poctech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Poctech"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_tomato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Tomato (MiaoMiao)"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/bg_source_eversense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Eversense App (gepatcht)"
+                android:textSize="30sp"/>
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/pump"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp">
+
+            <RadioButton
+                android:id="@+id/pump_danar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="DanaR"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_danar_korean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="DanaR Korean"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_danar_v2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="DanaRv2"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_danar_s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="DanaRS"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_accu_chek_insight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Accu-Chek Insight"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_accu_chek_combo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Accu-Chek Combo"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_medtronic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Medtronic"
+                android:textSize="32sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_ict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="ICT"
+                android:textSize="30sp"/>
+
+            <RadioButton
+                android:id="@+id/pump_virtual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checkButton"
+                android:text="Virtuelle Pumpe"
+                android:textSize="30sp"/>
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_bottom_buttons"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/go_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#FF9800"
+            android:onClick="prev"
+            android:text="Zurück" />
+
+        <Button
+            android:id="@+id/go_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#FF9800"
+            android:onClick="next"
+            android:text="Vor" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="160dp"
+            android:layout_marginBottom="8dp"
+            android:background="#99C34A"
+            android:text="Speichern"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
