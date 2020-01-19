@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#009688</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorFont">#202020</color>
+
+    <color name="colorInfo">#C0C0C0</color>
+    <color name="colorWarning">#F9A825</color>
+    <color name="colorImportant">#FF5555</color>
+
     <color name="prediction">#ff00ff</color>
     <color name="basal">#00ffff</color>
     <color name="iob">#1e88e5</color>
@@ -36,9 +46,9 @@
     <color name="tempTargetConfirmation">#77dd77</color>
 
 
-    <color name="colorPrimary">#212121</color>
+    <!-- color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#40bbaa</color>
+    <color name="colorAccent">#40bbaa</color -->
     <color name="mdtp_accent_color">#40bbaa</color>
     <color name="colorInitializingBorder">#00695c</color>
 

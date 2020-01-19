@@ -10,23 +10,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.setup.ActualSetup"></activity>
+        <activity android:name="info.nightscout.androidaps.ui.setup.ActualSetup"></activity>
         <activity
-            android:name=".ui.setup.SetupInsight"
+            android:name="info.nightscout.androidaps.ui.setup.SetupInsight"
             android:label="@string/title_activity_setup_insight"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.ManualSportsEntryActivity" />
-        <activity android:name=".ui.ManualCarbsEntryActivity" />
-        <activity android:name=".ui.ManualInsulinEntryActivity" />
-        <activity android:name=".ui.setup.SetupActivity" />
+        <activity android:name="info.nightscout.androidaps.ui.ManualSportsEntryActivity" />
+        <activity android:name="info.nightscout.androidaps.ui.ManualCarbsEntryActivity" />
+        <activity android:name="info.nightscout.androidaps.ui.ManualInsulinEntryActivity" />
+        <activity android:name="info.nightscout.androidaps.ui.setup.SetupActivity" />
         <activity
-            android:name=".ui.AlertHistoryActivity"
+            android:name="info.nightscout.androidaps.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="info.nightscout.androidaps.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".HomeActivity"
+            android:name="info.nightscout.androidaps.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
