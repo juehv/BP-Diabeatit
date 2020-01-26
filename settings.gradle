@@ -1,1 +1,1 @@
-include ':app', ':wear', ':diabeatit'
+include ':app', ':wear'

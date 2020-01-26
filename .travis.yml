@@ -13,13 +13,13 @@ android:
   - extra-google-m2repository
   - extra-android-m2repository
   - extra-google-google_play_services
-  
+
 before_install:
   - yes | sdkmanager "platforms;android-28"
 
 script:
   # Unit tests
-  - ./gradlew testDebugUnitTest
+  - ./gradlew testFullDebugUnitTest
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
