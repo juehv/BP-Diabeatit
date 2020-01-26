@@ -1,9 +1,8 @@
 package info.nightscout.androidaps.plugins.insulin;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import info.nightscout.androidaps.data.Profile;
-import info.nightscout.androidaps.utils.BolusWizard;
+import info.nightscout.androidaps.plugins.insulin.prediction.PredictionInputs;
+import info.nightscout.androidaps.plugins.insulin.prediction.PredictionModel;
 
 public class BolusCalculatorBuilder {
     // TODO: Better defaults!
@@ -20,7 +19,8 @@ public class BolusCalculatorBuilder {
     private boolean useSuperBolus = false;
     private boolean useTrend = true;
 
-    private BGPredictionModel predictionModel = new SlopeBGPredictionModel(); // current default
+    private PredictionModel predictionModel;
+    private PredictionInputs inputs;
 
     public void setProfile(Profile profile) {
         this.profile = profile;
@@ -66,9 +66,11 @@ public class BolusCalculatorBuilder {
         useTrend = flag;
     }
 
-    public void setPredictionModel(BGPredictionModel model) {
+    public void setPredictionModel(PredictionModel model) {
         this.predictionModel = model;
     }
+
+    public void setPredictionInputs(PredictionInputs inputs) { this.inputs = inputs; }
 
     public BolusCalculator build() {
         if (profile == null) return null;
@@ -80,6 +82,7 @@ public class BolusCalculatorBuilder {
         calc.setUseSuperBolus(useSuperBolus);
         calc.setUseTrend(useTrend);
         calc.setPredictionModel(predictionModel);
+        calc.setPredictionInputs(inputs);
         return calc;
     }
 }
