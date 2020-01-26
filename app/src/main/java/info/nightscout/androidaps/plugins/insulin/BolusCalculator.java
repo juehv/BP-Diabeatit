@@ -1,5 +1,7 @@
 package info.nightscout.androidaps.plugins.insulin;
 
+import android.content.Context;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +10,9 @@ import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.logging.L;
+import info.nightscout.androidaps.plugins.insulin.prediction.PredictionInputs;
+import info.nightscout.androidaps.plugins.insulin.prediction.PredictionModel;
+import info.nightscout.androidaps.plugins.insulin.prediction.SlopeBGPredictionModel;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.GlucoseStatus;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.T;
@@ -16,7 +21,8 @@ public class BolusCalculator {
     private Logger log = LoggerFactory.getLogger(L.CORE);
 
     // inputs
-    private BGPredictionModel predictionModel;
+    private PredictionModel predictionModel;
+    private PredictionInputs predictionInputs;
     private Profile profile;
     private int carbs;
     private double cob;
@@ -110,6 +116,7 @@ public class BolusCalculator {
     }
 
     private void calcualateInsulinFromBG() {
+        insulinFromBG = 0;
         if (useBg && bg > 0) {
             // TODO: Inclusive interval on both ends here, is this okay?
             if (bg >= targetBgLow && bg <= targetBgHigh) {
@@ -120,16 +127,16 @@ public class BolusCalculator {
                 bgDiff = bg - targetBgHigh;
             }
             insulinFromBG = bgDiff / isf;
-        } else {
-            insulinFromBG = 0.0;
         }
     }
 
     private void calculateInsulinFromTrend() {
         insulinFromTrend = 0.0;
         if (useTrend) {
+            /* TODO
             trend = predictionModel.get15minDelta(profile);
             insulinFromTrend = Profile.fromMgdlToUnits(trend, profile.getUnits()) / isf;
+             */
         }
     }
 
@@ -225,12 +232,20 @@ public class BolusCalculator {
         return correction;
     }
 
-    public void setPredictionModel(BGPredictionModel model) {
+    public void setPredictionInputs(PredictionInputs inputs) {
+        this.predictionInputs = inputs;
+    }
+
+    public PredictionInputs getPredictionInputs() {
+        return predictionInputs;
+    }
+
+    public void setPredictionModel(PredictionModel model) {
         predictionModel = model;
         calculate();
     }
 
-    public BGPredictionModel getPredictionModel() {
+    public PredictionModel getPredictionModel() {
         return this.predictionModel;
     }
 
