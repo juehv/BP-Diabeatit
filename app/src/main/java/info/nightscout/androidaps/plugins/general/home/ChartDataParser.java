@@ -14,6 +14,8 @@ import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
 import org.joda.time.DateTime;
+import com.jjoe64.graphview.series.Series;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +41,16 @@ import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorP
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.Round;
 import kotlin.random.Random;
+import info.nightscout.androidaps.Constants;
+import info.nightscout.androidaps.data.Profile;
+import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.logging.L;
+import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
+import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
+import info.nightscout.androidaps.utils.Round;
+import lecho.lib.hellocharts.model.ComboLineColumnChartData;
+import lecho.lib.hellocharts.view.ComboLineColumnChartView;
 
 public class ChartDataParser {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
