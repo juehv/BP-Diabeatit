@@ -35,7 +35,6 @@ import info.nightscout.androidaps.Config;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.IobTotal;
-import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.interfaces.Constraint;
@@ -335,6 +334,8 @@ public class HomeFragment extends Fragment {
                 });
             }
         }).start();
+
+        data.forceUpdate();
 
         if (L.isEnabled(L.OVERVIEW))
             Profiler.log(log, from, updateGUIStart);
