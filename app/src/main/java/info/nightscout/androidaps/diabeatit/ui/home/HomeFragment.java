@@ -3,24 +3,27 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.jjoe64.graphview.GraphView;
+
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -30,7 +33,6 @@ import info.nightscout.androidaps.Config;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.IobTotal;
-import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.interfaces.Constraint;
@@ -43,29 +45,19 @@ import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.general.home.ChartDataParser;
 import info.nightscout.androidaps.plugins.general.nsclient.data.NSDeviceStatus;
 import info.nightscout.androidaps.plugins.general.overview.OverviewPlugin;
-import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.Profiler;
 import info.nightscout.androidaps.utils.SP;
 import info.nightscout.androidaps.utils.T;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
-import lecho.lib.hellocharts.model.ComboLineColumnChartData;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.ComboLineColumnChartView;
+
 
 public class HomeFragment extends Fragment {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
 
-    private ComboLineColumnChartView chart;
-    private ComboLineColumnChartData data;
     private HomeViewModel homeViewModel;
     private int rangeToDisplay = 6; // for graph
+    private GraphView graph;
+    private ChartDataParser data;
 
 
     private int numberOfLines = 1;
@@ -96,10 +88,9 @@ public class HomeFragment extends Fragment {
                 //textView.setText(s);
             }
         });
-
-        chart = root.findViewById(R.id.chart);
-        generateValues();
-        generateData();
+        Log.d("MAIN", "Getting graph and creating data");
+        graph = root.findViewById(R.id.chart);
+        data = new ChartDataParser(graph);
         scheduleUpdateGUI("");
         return root;
     }
@@ -110,91 +101,7 @@ public class HomeFragment extends Fragment {
         Fragment childFragment = new BolusCalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.bolus_calculator_fragment_container, childFragment).commit();
-    }
-
-    private void generateValues() {
-        for (int i = 0; i < maxNumberOfLines; ++i) {
-            for (int j = 0; j < numberOfPoints; ++j) {
-                randomNumbersTab[i][j] = (float) Math.random() * 50f + 5;
-            }
-        }
-    }
-
-    private void generateData() {
-        // Chart looks the best when line data and column data have similar maximum viewports.
-        data = new ComboLineColumnChartData(generateColumnData(), generateLineData());
-
-        if (hasAxes) {
-            Axis axisX = new Axis();
-            Axis axisY = new Axis().setHasLines(true);
-            if (hasAxesNames) {
-                axisX.setName("Axis X");
-                axisY.setName("Axis Y");
-            }
-            data.setAxisXBottom(axisX);
-            data.setAxisYLeft(axisY);
-        } else {
-            data.setAxisXBottom(null);
-            data.setAxisYLeft(null);
-        }
-
-        chart.setComboLineColumnChartData(data);
-    }
-
-    private LineChartData generateLineData() {
-
-        List<Line> lines = new ArrayList<Line>();
-        for (int i = 0; i < numberOfLines; ++i) {
-
-            List<PointValue> values = new ArrayList<PointValue>();
-            for (int j = 0; j < numberOfPoints; ++j) {
-                values.add(new PointValue(j, randomNumbersTab[i][j]));
-            }
-
-            Line line = new Line(values);
-            line.setColor(ChartUtils.COLORS[i]);
-            line.setCubic(isCubic);
-            line.setHasLabels(hasLabels);
-            line.setHasLines(hasLines);
-            line.setHasPoints(hasPoints);
-            lines.add(line);
-        }
-
-        LineChartData lineChartData = new LineChartData(lines);
-
-        return lineChartData;
-
-    }
-
-    private ColumnChartData generateColumnData() {
-        int numSubcolumns = 1;
-        int numColumns = 12;
-        // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
-        List<Column> columns = new ArrayList<Column>();
-        List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
-
-            values = new ArrayList<SubcolumnValue>();
-            for (int j = 0; j < numSubcolumns; ++j) {
-                values.add(new SubcolumnValue((float) Math.random() * 50 + 5, ChartUtils.COLOR_GREEN));
-            }
-
-            columns.add(new Column(values));
-        }
-
-        ColumnChartData columnChartData = new ColumnChartData(columns);
-        return columnChartData;
-    }
-
-    private void addLineToData() {
-        if (data.getLineChartData().getLines().size() >= maxNumberOfLines) {
-            Toast.makeText(getActivity(), "Samples app uses max 4 lines!", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            ++numberOfLines;
-        }
-
-        generateData();
+        scheduleUpdateGUI("onViewCreated");
     }
 
     public void scheduleUpdateGUI(final String from) {
@@ -298,9 +205,10 @@ public class HomeFragment extends Fragment {
             if (L.isEnabled(L.OVERVIEW))
                 Profiler.log(log, from + " - 1st graph - START", updateGUIStart);
 
-            final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
-            chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
-
+            // final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
+            // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
+            data.clearSeries();
+            data.addBgReadings(fromTime, endTime, lowLine, highLine, null);
 /*
             // **** In range Area ****
             graphData.addInRangeArea(fromTime, endTime, lowLine, highLine);
@@ -401,7 +309,18 @@ public class HomeFragment extends Fragment {
                 });
             }
             */
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(() -> {
+                    // finally enforce drawing of graphs
+                    data.forceUpdate();
+                    if (L.isEnabled(L.OVERVIEW))
+                        Profiler.log(log, from + " - onDataChanged", updateGUIStart);
+                });
+            }
         }).start();
+
+        data.forceUpdate();
 
         if (L.isEnabled(L.OVERVIEW))
             Profiler.log(log, from, updateGUIStart);

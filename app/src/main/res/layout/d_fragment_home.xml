@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
 
-    <lecho.lib.hellocharts.view.ComboLineColumnChartView
+    <com.jjoe64.graphview.GraphView
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="250dp"
