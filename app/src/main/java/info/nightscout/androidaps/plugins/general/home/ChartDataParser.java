@@ -1,6 +1,11 @@
 package info.nightscout.androidaps.plugins.general.home;
 
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
+
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
@@ -12,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import info.nightscout.androidaps.Constants;
-import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
@@ -31,6 +34,8 @@ public class ChartDataParser {
     private List<BgReading> bgReadingsArray;
     private String units;
     private List<Series> series = new ArrayList<>();
+
+    private Series bgSeries;
 
     private IobCobCalculatorPlugin iobCobCalculatorPlugin;
 
@@ -55,6 +60,15 @@ public class ChartDataParser {
 
     public void clearSeries() {
         series.clear();
+    }
+
+    public static List<BgReading> getDummyPredictions() {
+        ArrayList<BgReading> preds = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            preds.add(new BgReading().date(System.currentTimeMillis() + 5*60*1000*i).value(110.0d));
+        }
+
+        return preds;
     }
 
     public void addBgReadings(long fromTime, long toTime, double lowLine, double highLine, List<BgReading> predictions) {
@@ -100,6 +114,8 @@ public class ChartDataParser {
         // set manual y bounds to have nice steps
         graph.getGridLabelRenderer().setNumVerticalLabels(numOfVertLines);
 
+
+        bgSeries = new PointsWithLabelGraphSeries(bg);
         series.add(new PointsWithLabelGraphSeries<>(bg));
     }
 
@@ -123,5 +139,26 @@ public class ChartDataParser {
 
         // draw it
         graph.onDataChanged(false, false);
+    }
+
+    public void addNowLine() {
+        long now = System.currentTimeMillis();
+        LineGraphSeries<DataPoint> seriesNow;
+        DataPoint[] nowPoints = new DataPoint[]{
+                new DataPoint(now, 0),
+                new DataPoint(now, maxY)
+        };
+
+        seriesNow = new LineGraphSeries<>(nowPoints);
+        seriesNow.setDrawDataPoints(false);
+        // custom paint to make a dotted line
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        paint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+        paint.setColor(Color.BLACK);
+        seriesNow.setCustomPaint(paint);
+
+        this.series.add(seriesNow);
     }
 }

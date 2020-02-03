@@ -49,6 +49,7 @@ import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.Profiler;
 import info.nightscout.androidaps.utils.SP;
 import info.nightscout.androidaps.utils.T;
+import lecho.lib.hellocharts.model.ChartData;
 
 
 public class HomeFragment extends Fragment {
@@ -208,7 +209,8 @@ public class HomeFragment extends Fragment {
             // final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
             data.clearSeries();
-            data.addBgReadings(fromTime, endTime, lowLine, highLine, null);
+            data.addBgReadings(fromTime, endTime, lowLine, highLine, ChartDataParser.getDummyPredictions());
+            data.addNowLine();
 /*
             // **** In range Area ****
             graphData.addInRangeArea(fromTime, endTime, lowLine, highLine);
@@ -319,8 +321,6 @@ public class HomeFragment extends Fragment {
                 });
             }
         }).start();
-
-        data.forceUpdate();
 
         if (L.isEnabled(L.OVERVIEW))
             Profiler.log(log, from, updateGUIStart);
