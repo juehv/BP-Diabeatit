@@ -3,40 +3,36 @@ package info.nightscout.androidaps;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import info.nightscout.androidaps.assistant.alert.Alert;
-import info.nightscout.androidaps.assistant.alert.AlertManagementListener;
+import info.nightscout.androidaps.assistant.alert.AlertStore;
+import info.nightscout.androidaps.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.assistant.alert.AlertsManager;
-import info.nightscout.androidaps.assistant.alert.DismissedAlertsManager;
-import info.nightscout.androidaps.assistant.alert.Global;
 import info.nightscout.androidaps.ui.AlertHistoryActivity;
 import info.nightscout.androidaps.ui.ManualCarbsEntryActivity;
 import info.nightscout.androidaps.ui.ManualInsulinEntryActivity;
@@ -87,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(View bottomSheet, int newState) {
+            public void onStateChanged(@NotNull View bottomSheet, int newState) {
 
                 entryMenu.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
                 entryMenu.collapseImmediately();
@@ -98,36 +94,55 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSlide(View view, float v) {}
+            public void onSlide(@NotNull View view, float v) {}
         });
 
         assistantPeek.setOnClickListener(view -> assistant.setState(BottomSheetBehavior.STATE_EXPANDED));
 
-        final AlertsManager alerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
-        Global.dismissedAlerts = new DismissedAlertsManager();
+        AlertStore.activeAlerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
 
         Button alertClearB = findViewById(R.id.alert_clear_all);
         TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
 
-        alertClearB.setOnClickListener(view -> alerts.clearAlerts());
+        alertClearB.setOnClickListener(view -> AlertStore.clearAlerts());
 
-        alerts.attachListener(new AlertManagementListener() {
-            @Override
-            public void onAlertsCleared() {
-                alertClearB.setVisibility(View.GONE);
-                alertEmptyT.setVisibility(View.VISIBLE);
-            }
+        AlertStore.attachListener(new AlertStoreListener() {
 
             @Override
-            public void onAlertAdded(int totalAlerts) {
+            public void onNewAlert(Alert alert) {
+
                 alertClearB.setVisibility(View.VISIBLE);
                 alertEmptyT.setVisibility(View.GONE);
+
             }
 
             @Override
-            public void onAlertRemoved(Alert alert) {
-                Global.dismissedAlerts.addAlert(alert);
+            public void onAlertDismissed(Alert alert) {}
+
+            @Override
+            public void onAlertRestored(Alert alert) {
+
+                onNewAlert(alert);
+
             }
+
+            @Override
+            public void onAlertsCleared() {
+
+                alertClearB.setVisibility(View.GONE);
+                alertEmptyT.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onDataSetInit() {
+
+                int len = AlertStore.getActiveAlerts().length;
+                alertClearB.setVisibility(len == 0 ? View.GONE : View.VISIBLE);
+                alertEmptyT.setVisibility(len == 0 ? View.VISIBLE : View.GONE);
+
+            }
+
         });
 
         CardView alertSettingsC = findViewById(R.id.alert_settings);
@@ -137,15 +152,15 @@ public class HomeActivity extends AppCompatActivity {
         alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
 
         // TODO Example alerts - Remove
-        List<Alert> as = new ArrayList<Alert>();
+        List<Alert> as = new ArrayList<>();
         as.add(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_battery_alert), "Battery low", "The battery is low."));
         as.add(new Alert(Alert.Urgency.INFO, getDrawable(R.drawable.ic_timeline), "Lorem Ipsum", "Lorem Ipsum!"));
         as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Multiline", "Line<br>Break"));
-        alerts.setAlerts(as);
+        AlertStore.initAlerts(as.toArray(new Alert[0]));
 
         // TODO Testing - Remove
         findViewById(R.id.alert_settings).setOnClickListener(
-                view -> alerts.addAlert(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_face_sad), "BG Alert", "Blood glucose level critical!"))
+                view -> AlertStore.newAlert(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_face_sad), "BG Alert", "Blood glucose level critical!"))
         );
 
     }

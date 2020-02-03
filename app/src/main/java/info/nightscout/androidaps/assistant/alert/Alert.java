@@ -40,6 +40,8 @@ public class Alert {
   public String title, desc;
   public Date timestamp;
 
+  public boolean active = true;
+
   public Alert(Urgency urgency, Drawable icon, String title, String descriptionHtml) {
 
 	this(urgency, icon, title, descriptionHtml, new Date());

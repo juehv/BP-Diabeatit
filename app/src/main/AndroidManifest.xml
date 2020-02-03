@@ -57,16 +57,6 @@
         <activity
             android:name="info.nightscout.androidaps.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity
-            android:name="info.nightscout.androidaps.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <activity android:name=".MainActivity">
             <!-- intent-filter>
@@ -322,6 +312,7 @@
             android:label="@string/title_activity_rileylink_settings"
             android:theme="@style/Theme.AppCompat.NoTitle" />
         <activity android:name=".plugins.pump.medtronic.dialog.MedtronicHistoryActivity" />
+        <activity android:name=".HomeActivity" />
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 

@@ -16,114 +16,83 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import info.nightscout.androidaps.R;
+import de.tu_darmstadt.informatik.tk.diabeatit.R;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class AlertsManager {
 
-  private final Context CONTEXT;
-  private List<Alert> alerts = new ArrayList<Alert>();
-
-  private RecyclerView recycler;
-  private RecyclerView.LayoutManager layoutManager;
-  private AlertAdapter alertAdapter;
-
-  private View alertView;
-
-  private List<AlertManagementListener> listeners;
+  private List<Alert> alerts = new ArrayList<>();
 
   public AlertsManager(Context context, RecyclerView recycler, View alertView) {
 
-    CONTEXT = context;
-	this.recycler = recycler;
-	this.alertView = alertView;
+	RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+	AlertAdapter alertAdapter = new AlertAdapter(context, alerts);
 
-	layoutManager = new LinearLayoutManager(CONTEXT);
-	alertAdapter = new AlertAdapter(CONTEXT, alerts);
+	recycler.setLayoutManager(layoutManager);
+	recycler.setAdapter(alertAdapter);
+	recycler.setItemAnimator(new SlideInLeftAnimator());
+	new ItemTouchHelper(new SwipeToDismissCallback(alertAdapter, alertView)).attachToRecyclerView(recycler);
 
-	this.recycler.setLayoutManager(layoutManager);
-	this.recycler.setAdapter(alertAdapter);
-	this.recycler.setItemAnimator(new SlideInLeftAnimator());
-	new ItemTouchHelper(new SwipeToDismissCallback(alertAdapter, this)).attachToRecyclerView(this.recycler);
+	AlertStore.attachListener(new AlertStoreListener() {
 
-	listeners = new ArrayList<AlertManagementListener>();
+	  @Override
+	  public void onNewAlert(Alert alert) {
 
-  }
+		if (alerts.contains(alert)) return;
 
-  public void attachListener(AlertManagementListener listener) {
+		alerts.add(alert);
+		sort();
 
-	listeners.add(listener);
+		alertAdapter.notifyItemInserted(alerts.indexOf(alert));
 
-  }
+	  }
 
-  public void detachListener(AlertManagementListener listener) {
+	  @Override
+	  public void onAlertDismissed(Alert alert) {
 
-	listeners.remove(listener);
+		if (!alerts.contains(alert)) return;
 
-  }
+		int index = alerts.indexOf(alert);
+		alerts.remove(index);
 
-  public void setAlerts(List<Alert> data) {
+		alertAdapter.notifyItemRemoved(index);
 
-    alerts.clear();
-    alerts.addAll(data);
-    alerts.sort((alert0, alert1) -> alert1.URGENCY.getPriority() - alert0.URGENCY.getPriority());
+	  }
 
-    alertAdapter.notifyDataSetChanged();
+	  @Override
+	  public void onAlertRestored(Alert alert) {
 
-    for (AlertManagementListener l : listeners) l.onAlertAdded(alerts.size());
+	    onNewAlert(alert);
 
-  }
+	  }
 
-  public void addAlert(Alert alert) {
+	  @Override
+	  public void onAlertsCleared() {}
 
-    if (alerts.contains(alert)) return;
+	  @Override
+	  public void onDataSetInit() {
 
-    alerts.add(alert);
-    alerts.sort((alert0, alert1) -> alert1.URGENCY.getPriority() - alert0.URGENCY.getPriority());
+		alerts.clear();
+		alerts.addAll(Arrays.asList(AlertStore.getActiveAlerts()));
+		sort();
 
-    alertAdapter.notifyItemInserted(alerts.indexOf(alert));
+		alertAdapter.notifyDataSetChanged();
 
-	for (AlertManagementListener l : listeners) l.onAlertAdded(alerts.size());
+	  }
 
-  }
-
-  public void removeAlert(Alert alert) {
-
-    if (!alerts.contains(alert)) return;
-
-    int index = alerts.indexOf(alert);
-    alerts.remove(index);
-
-    alertAdapter.notifyItemRemoved(index);
-
-	for (AlertManagementListener l : listeners) l.onAlertRemoved(alert);
-
-    if (alerts.isEmpty())
-	  for (AlertManagementListener l : listeners) l.onAlertsCleared();
+	});
 
   }
 
-  public void clearAlerts() {
+  private void sort() {
 
-	Alert[] removed = alerts.toArray(new Alert[0]);
-
-	alerts.clear();
-	alertAdapter.notifyDataSetChanged();
-
-	for (AlertManagementListener l : listeners)
-	  for (Alert a : removed)
-	    l.onAlertRemoved(a);
-
-	for (AlertManagementListener l : listeners) l.onAlertsCleared();
-
-  }
-
-  public View getAlertView() {
-
-    return alertView;
+	alerts.sort((alert0, alert1) -> alert1.URGENCY.getPriority() - alert0.URGENCY.getPriority());
 
   }
 
@@ -132,15 +101,16 @@ public class AlertsManager {
 class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   private AlertAdapter adapter;
-  private AlertsManager mgr;
+  private View alertView;
 
   private Alert lastRemoved;
 
-  public SwipeToDismissCallback(AlertAdapter adapter, AlertsManager mgr) {
+  SwipeToDismissCallback(AlertAdapter adapter, View alertView) {
 
-	super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+	super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
 	this.adapter = adapter;
-	this.mgr = mgr;
+	this.alertView = alertView;
 
   }
 
@@ -153,7 +123,7 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
   public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
     Alert toRemove = adapter.alerts.get(viewHolder.getAdapterPosition());
-    mgr.removeAlert(toRemove);
+    AlertStore.dismissAlert(toRemove);
     lastRemoved = toRemove;
 
     showUndoDialog();
@@ -162,8 +132,8 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   private void showUndoDialog() {
 
-	Snackbar snackbar = Snackbar.make(mgr.getAlertView(), R.string.alert_undo_text, Snackbar.LENGTH_LONG);
-	snackbar.setAction(R.string.alert_undo_action, v -> mgr.addAlert(lastRemoved));
+	Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
+	snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
 	snackbar.show();
 
   }
@@ -173,13 +143,13 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHolder> {
 
   private final Context CONTEXT;
-  public List<Alert> alerts;
+  List<Alert> alerts;
 
-  public static class AlertViewHolder extends RecyclerView.ViewHolder {
+  static class AlertViewHolder extends RecyclerView.ViewHolder {
 
-	public CardView card;
+	CardView card;
 
-	public AlertViewHolder(CardView card) {
+	AlertViewHolder(CardView card) {
 
 	  super(card);
 	  this.card = card;
@@ -188,21 +158,21 @@ class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHolder> {
 
   }
 
-  public AlertAdapter(Context context, List<Alert> alerts) {
+  AlertAdapter(Context context, List<Alert> alerts) {
 
     CONTEXT = context;
 	this.alerts = alerts;
 
   }
 
+  @NotNull
   @Override
   public AlertAdapter.AlertViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 	CardView card = (CardView) LayoutInflater.from(parent.getContext())
 			.inflate(R.layout.assistant_card, parent, false);
 
-	AlertViewHolder holder = new AlertViewHolder(card);
-	return holder;
+	return new AlertViewHolder(card);
 
   }
 

@@ -12,53 +12,72 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import info.nightscout.androidaps.R;
+import de.tu_darmstadt.informatik.tk.diabeatit.R;
 
 public class DismissedAlertsManager {
 
-  private DismissedAlertAdapter alertAdapter = null;
+  private DismissedAlertAdapter alertAdapter;
 
   private List<Alert> alerts = new ArrayList<>();
 
-  public void init(Context context, RecyclerView recycler) {
-
-    //if (alertAdapter != null) return;
+  public DismissedAlertsManager(Context context, RecyclerView recycler) {
 
 	alertAdapter = new DismissedAlertAdapter(context, alerts);
 
 	recycler.setLayoutManager(new LinearLayoutManager(context));
 	recycler.setAdapter(alertAdapter);
 
-	alertAdapter.notifyDataSetChanged();
+	AlertStore.attachListener(new AlertStoreListener() {
+
+	  @Override
+	  public void onNewAlert(Alert alert) {}
+
+	  @Override
+	  public void onAlertDismissed(Alert alert) {
+
+		alerts.add(alert);
+		sort();
+
+		alertAdapter.notifyDataSetChanged();
+
+	  }
+
+	  @Override
+	  public void onAlertRestored(Alert alert) {
+
+		if (!alerts.contains(alert)) return;
+
+		int index = alerts.indexOf(alert);
+		alerts.remove(index);
+
+		alertAdapter.notifyItemRemoved(index);
+
+	  }
+
+	  @Override
+	  public void onAlertsCleared() {}
+
+	  @Override
+	  public void onDataSetInit() {
+
+		alerts.clear();
+		alerts.addAll(Arrays.asList(AlertStore.getDismissedAlerts()));
+		sort();
+
+		alertAdapter.notifyDataSetChanged();
+
+	  }
+
+	});
 
   }
 
-  public void addAlerts(List<Alert> alertList) {
+  private void sort() {
 
-	alerts.addAll(0, alertList);
-
-	if (alertAdapter != null)
-	  alertAdapter.notifyItemRangeInserted(0, alertList.size());
-
-  }
-
-  public void addAlert(Alert alert) {
-
-	alerts.add(0, alert);
-
-	if (alertAdapter != null)
-	  alertAdapter.notifyItemInserted(0);
-
-  }
-
-  public void clearAlerts() {
-
-	alerts.clear();
-
-	if (alertAdapter != null)
-	  alertAdapter.notifyDataSetChanged();
+	alerts.sort((alert0, alert1) -> alert1.timestamp.compareTo(alert0.timestamp));
 
   }
 
@@ -67,7 +86,7 @@ public class DismissedAlertsManager {
 class DismissedAlertAdapter extends RecyclerView.Adapter<DismissedAlertAdapter.DismissedAlertViewHolder> {
 
   private final Context CONTEXT;
-  public List<Alert> alerts;
+  private List<Alert> alerts;
 
   public static class DismissedAlertViewHolder extends RecyclerView.ViewHolder {
 
@@ -95,8 +114,7 @@ class DismissedAlertAdapter extends RecyclerView.Adapter<DismissedAlertAdapter.D
 	RelativeLayout view = (RelativeLayout) LayoutInflater.from(parent.getContext())
 			.inflate(R.layout.alert_history_entry, parent, false);
 
-	DismissedAlertViewHolder holder = new DismissedAlertViewHolder(view);
-	return holder;
+	return new DismissedAlertViewHolder(view);
 
   }
 
@@ -111,7 +129,7 @@ class DismissedAlertAdapter extends RecyclerView.Adapter<DismissedAlertAdapter.D
 	TextView titleV = view.findViewById(R.id.alert_history_entry_title);
 	TextView descV = view.findViewById(R.id.alert_history_entry_description);
 
-	timeV.setText(new SimpleDateFormat("d.M H:mm").format(alert.timestamp));
+	timeV.setText(new SimpleDateFormat("d.M. H:mm").format(alert.timestamp));
 	urgencyV.setText(CONTEXT.getString(alert.URGENCY.getStringId()));
 	urgencyV.setTextColor(CONTEXT.getColor(alert.URGENCY.getRawColor()));
 	titleV.setText(alert.title);

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import info.nightscout.androidaps.HomeActivity;
 import info.nightscout.androidaps.R;
 
 public class SetupActivity

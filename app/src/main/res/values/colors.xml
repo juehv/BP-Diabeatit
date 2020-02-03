@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#2196F3</color>
-    <color name="colorAccent">#009688</color>
+    <!-- DIABEATIT -->
+    <color name="d_primary">#03A9F4</color>
+    <color name="d_primaryDark">#2196F3</color>
+    <color name="d_accent">#009688</color>
+
+    <color name="d_info">#C0C0C0</color>
+    <color name="d_warning">#F9A825</color>
+    <color name="d_important">#FF5555</color>
+
+    <!-- LEGACY -->
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorFont">#202020</color>
-
-    <color name="colorInfo">#C0C0C0</color>
-    <color name="colorWarning">#F9A825</color>
-    <color name="colorImportant">#FF5555</color>
 
     <color name="prediction">#ff00ff</color>
     <color name="basal">#00ffff</color>
