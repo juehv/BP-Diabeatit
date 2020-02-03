@@ -62,6 +62,8 @@ public class ChartDataParser {
     private String units;
     private List<Series> series = new ArrayList<>();
 
+    private Series bgSeries;
+
     private IobCobCalculatorPlugin iobCobCalculatorPlugin;
 
     public ChartDataParser(GraphView graph) {
@@ -254,5 +256,26 @@ public class ChartDataParser {
 
         // draw it
         graph.onDataChanged(false, false);
+    }
+
+    public void addNowLine() {
+        long now = System.currentTimeMillis();
+        LineGraphSeries<DataPoint> seriesNow;
+        DataPoint[] nowPoints = new DataPoint[]{
+                new DataPoint(now, 0),
+                new DataPoint(now, maxY)
+        };
+
+        seriesNow = new LineGraphSeries<>(nowPoints);
+        seriesNow.setDrawDataPoints(false);
+        // custom paint to make a dotted line
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        paint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+        paint.setColor(Color.BLACK);
+        seriesNow.setCustomPaint(paint);
+
+        this.series.add(seriesNow);
     }
 }

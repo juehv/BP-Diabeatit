@@ -335,8 +335,6 @@ public class HomeFragment extends Fragment {
             }
         }).start();
 
-        data.forceUpdate();
-
         if (L.isEnabled(L.OVERVIEW))
             Profiler.log(log, from, updateGUIStart);
     }
