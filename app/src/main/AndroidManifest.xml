@@ -57,7 +57,7 @@
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />
         <activity
-            android:name="info.nightscout.androidaps.SettingsActivity"
+            android:name="info.nightscout.androidaps.diabeatit.ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
 
         <activity android:name=".MainActivity">

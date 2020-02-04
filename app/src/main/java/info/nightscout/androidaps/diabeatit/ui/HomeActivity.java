@@ -31,7 +31,6 @@ import java.util.List;
 
 import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 import info.nightscout.androidaps.R;
-import info.nightscout.androidaps.SettingsActivity;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
