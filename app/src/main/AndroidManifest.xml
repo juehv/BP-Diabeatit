@@ -44,18 +44,24 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
+        <activity
+            android:name=".diabeatit.ui.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".diabeatit.ui.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
         <activity android:name=".diabeatit.ui.setup.ActualSetup" />
         <activity
             android:name=".diabeatit.ui.setup.SetupInsight"
             android:label="@string/title_activity_setup_insight"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".diabeatit.ui.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" />
         <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" />
         <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" />
@@ -63,9 +69,6 @@
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />
-        <activity
-            android:name="info.nightscout.androidaps.diabeatit.ui.SettingsActivity"
-            android:label="@string/title_activity_settings" />
 
         <activity android:name=".MainActivity">
             <!-- intent-filter>
