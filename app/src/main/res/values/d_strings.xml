@@ -48,6 +48,7 @@
     <string name="alert_undo_text">Undo deletion?</string>
     <string name="alert_undo_action">Undo</string>
     <string name="title_activity_alert_history">History</string>
+    <string name="alert_no_data">No Alerts</string>
 
     <string name="title_activity_setup_insight">SetupInsight</string>
 </resources>
