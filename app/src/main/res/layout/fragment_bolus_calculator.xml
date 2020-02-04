@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorBackground"
-    tools:context="info.nightscout.androidaps.ui.home.BolusCalculatorFragment">
+    tools:context=".diabeatit.ui.home.BolusCalculatorFragment">
 
     <EditText
         android:textColor="@color/colorFont"

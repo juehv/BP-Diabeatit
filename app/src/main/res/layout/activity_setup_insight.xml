@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="info.nightscout.androidaps.ui.setup.SetupInsight">
+    tools:context=".diabeatit.ui.setup.SetupInsight">
 
     <TextView
         android:id="@+id/insight_title"

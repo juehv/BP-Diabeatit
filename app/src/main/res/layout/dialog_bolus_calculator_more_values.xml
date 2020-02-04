@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@color/colorBackground"
-    tools:context="info.nightscout.androidaps.ui.home.BolusCalculatorMoreValuesDialog">
+    tools:context=".diabeatit.ui.home.BolusCalculatorMoreValuesDialog">
 
     <TableRow
         android:layout_width="match_parent"

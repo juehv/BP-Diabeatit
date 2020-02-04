@@ -1,15 +1,13 @@
-package info.nightscout.androidaps.ui;
+package info.nightscout.androidaps.diabeatit.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.text.DateFormat;

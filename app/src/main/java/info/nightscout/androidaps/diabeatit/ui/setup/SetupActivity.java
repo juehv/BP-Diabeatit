@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.ui.setup;
+package info.nightscout.androidaps.diabeatit.ui.setup;
 
 import androidx.appcompat.app.AppCompatActivity;
 

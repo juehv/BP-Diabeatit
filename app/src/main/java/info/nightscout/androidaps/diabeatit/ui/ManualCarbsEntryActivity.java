@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.ui;
+package info.nightscout.androidaps.diabeatit.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.time.Instant;

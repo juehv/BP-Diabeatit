@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.ui.home;
+package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

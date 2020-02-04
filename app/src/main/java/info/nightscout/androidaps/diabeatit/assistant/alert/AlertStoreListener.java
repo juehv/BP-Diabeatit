@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.assistant.alert;
+package info.nightscout.androidaps.diabeatit.assistant.alert;
 
 public interface AlertStoreListener {
 

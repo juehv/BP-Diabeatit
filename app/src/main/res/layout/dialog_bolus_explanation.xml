@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/colorBackground"
-    tools:context="info.nightscout.androidaps.ui.home.BolusCalculatorExplanationDialog">
+    tools:context=".diabeatit.ui.home.BolusCalculatorExplanationDialog">
 
         <ImageView
             android:id="@+id/imageView"

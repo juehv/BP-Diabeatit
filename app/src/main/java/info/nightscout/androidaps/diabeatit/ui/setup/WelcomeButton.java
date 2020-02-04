@@ -1,7 +1,6 @@
-package info.nightscout.androidaps.ui.setup;
+package info.nightscout.androidaps.diabeatit.ui.setup;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,34 +10,25 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Button;
 
 import info.nightscout.androidaps.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SensorSelection.OnFragmentInteractionListener} interface
+ * {@link WelcomeButton.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SensorSelection#newInstance} factory method to
+ * Use the {@link WelcomeButton#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SensorSelection extends Fragment {
-
-    ListView sensorList;
-    TextView sensorView;
-    SearchView sensorSearch;
-    String[] sensors;
-    ArrayAdapter<String> adapter;
-
+public class WelcomeButton extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private Button startButton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -46,7 +36,7 @@ public class SensorSelection extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SensorSelection() {
+    public WelcomeButton() {
         // Required empty public constructor
     }
 
@@ -54,14 +44,16 @@ public class SensorSelection extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment SensorSelection.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment WelcomeButton.
      */
     // TODO: Rename and change types and number of parameters
-    public static SensorSelection newInstance() {
-        SensorSelection fragment = new SensorSelection();
+    public static WelcomeButton newInstance(String param1, String param2) {
+        WelcomeButton fragment = new WelcomeButton();
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);*/
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,48 +68,24 @@ public class SensorSelection extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        sensorSearch = view.findViewById(R.id.setup_sensor_search);
-        sensorSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return true;
-            }
-        });
-
-        sensorList = view.findViewById(R.id.setup_sensor_list);
-        sensorView = view.findViewById(R.id.setup_sensor_list_view);
-        sensors = getResources().getStringArray(R.array.sensors);
-        adapter = new ArrayAdapter<String>(view.getContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                sensors);
-        sensorList.setAdapter(adapter);
-        sensorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onFragmentInteraction(new SensorSettings());
-            }
-        });
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_welcome_button, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sensor_selection, container, false);
-    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        startButton = view.findViewById(R.id.setup_start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnFragmentInteractionListener l = (OnFragmentInteractionListener) v.getContext();
+                l.startSetup();
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+            }
+        });
     }
 
     @Override
@@ -148,7 +116,6 @@ public class SensorSelection extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Fragment frm);
+        void startSetup();
     }
 }
