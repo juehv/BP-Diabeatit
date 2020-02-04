@@ -15,9 +15,9 @@ public class Alert {
    */
   public enum Urgency {
 
-    INFO(1, R.string.alert_label_info, R.drawable.label_gray, R.color.colorInfo),
-	WARNING(2, R.string.alert_label_warning, R.drawable.label_amber, R.color.colorWarning),
-	URGENT(3, R.string.alert_label_urgent, R.drawable.label_red, R.color.colorImportant);
+    INFO(1, R.string.alert_label_info, R.drawable.label_gray, R.color.d_info),
+	WARNING(2, R.string.alert_label_warning, R.drawable.label_amber, R.color.d_warning),
+	URGENT(3, R.string.alert_label_urgent, R.drawable.label_red, R.color.d_important);
 
     private int priority, stringId, background, rawColor;
 

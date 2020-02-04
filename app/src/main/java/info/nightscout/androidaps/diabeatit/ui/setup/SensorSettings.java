@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
 
 /**

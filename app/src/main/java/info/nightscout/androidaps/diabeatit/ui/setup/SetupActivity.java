@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
 public class SetupActivity
         extends AppCompatActivity {

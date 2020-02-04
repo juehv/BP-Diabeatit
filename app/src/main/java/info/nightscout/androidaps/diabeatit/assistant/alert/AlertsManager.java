@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.tu_darmstadt.informatik.tk.diabeatit.R;
+import info.nightscout.androidaps.R;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class AlertsManager {
