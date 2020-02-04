@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- DIABEATIT -->
-    <color name="d_primary">#03A9F4</color>
-    <color name="d_primaryDark">#2196F3</color>
-    <color name="d_accent">#009688</color>
-
-    <color name="d_info">#C0C0C0</color>
-    <color name="d_warning">#F9A825</color>
-    <color name="d_important">#FF5555</color>
-
-    <!-- LEGACY -->
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorFont">#202020</color>
 
@@ -49,9 +39,9 @@
     <color name="tempTargetConfirmation">#77dd77</color>
 
 
-    <!-- color name="colorPrimary">#212121</color>
+    <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#40bbaa</color -->
+    <color name="colorAccent">#40bbaa</color>
     <color name="mdtp_accent_color">#40bbaa</color>
     <color name="colorInitializingBorder">#00695c</color>
 
