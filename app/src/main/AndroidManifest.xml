@@ -49,6 +49,13 @@
             android:name=".diabeatit.ui.setup.SetupInsight"
             android:label="@string/title_activity_setup_insight"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".diabeatit.ui.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" />
         <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" />
         <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" />
@@ -314,8 +321,6 @@
             android:label="@string/title_activity_rileylink_settings"
             android:theme="@style/Theme.AppCompat.NoTitle" />
         <activity android:name=".plugins.pump.medtronic.dialog.MedtronicHistoryActivity" />
-        <activity android:name=".diabeatit.ui.HomeActivity" />
-
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>
