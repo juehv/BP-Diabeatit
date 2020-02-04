@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="info.nightscout.androidaps.ui.home.HomeFragment"
+        android:name="info.nightscout.androidaps.diabeatit.ui.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/d_fragment_home" />
 
     <fragment
         android:id="@+id/nav_settings"
