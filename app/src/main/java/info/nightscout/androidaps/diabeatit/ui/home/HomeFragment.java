@@ -2,6 +2,7 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -174,9 +175,9 @@ public class HomeFragment extends Fragment {
             calendar.add(Calendar.HOUR, 1);
 
             int hoursToFetch;
-            final long toTime;
-            final long fromTime;
-            final long endTime;
+            long toTime;
+            long fromTime;
+            long endTime;
 
             APSResult apsResult = null;
 
@@ -210,7 +211,9 @@ public class HomeFragment extends Fragment {
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
             data.clearSeries();
             data.addBgReadings(fromTime, endTime, lowLine, highLine, ChartDataParser.getDummyPredictions());
+            data.formatAxis(fromTime, endTime);
             data.addNowLine();
+            Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
 /*
             // **** In range Area ****
             graphData.addInRangeArea(fromTime, endTime, lowLine, highLine);

@@ -5,6 +5,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
@@ -21,8 +22,10 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.PointsWithLabelGraphSeries;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 import info.nightscout.androidaps.utils.Round;
+import kotlin.random.Random;
 
 public class ChartDataParser {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
@@ -35,7 +38,8 @@ public class ChartDataParser {
     private String units;
     private List<Series> series = new ArrayList<>();
 
-    private Series bgSeries;
+    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> bgSeries;
+    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> predSeries;
 
     private IobCobCalculatorPlugin iobCobCalculatorPlugin;
 
@@ -44,17 +48,18 @@ public class ChartDataParser {
         this.iobCobCalculatorPlugin = IobCobCalculatorPlugin.getPlugin();
     }
 
-    public static List<BgReading> getDummyData() {
+    public static List<BgReading> getDummyData(long start, long end) {
         final long SECOND = 1000;
         final long MINUTE = 60 * SECOND;
         final long HOUR = 60 * MINUTE;
 
         ArrayList<BgReading> readings = new ArrayList<>();
-        readings.add(new BgReading().date(DateTime.now().getMillis() - 5 * HOUR).value(110));
-        readings.add(new BgReading().date(DateTime.now().getMillis() - 4 * HOUR).value(120));
-        readings.add(new BgReading().date(DateTime.now().getMillis() - 3 * HOUR).value(130));
-        readings.add(new BgReading().date(DateTime.now().getMillis() - 2 * HOUR).value(140));
-        readings.add(new BgReading().date(System.currentTimeMillis() - HOUR).value(130));
+
+        for (long current = start; current < System.currentTimeMillis(); current += 5*60*1000) {
+            double value = 120 + Random.Default.nextDouble(-10, 20);
+            readings.add(new BgReading().date(current).value(value));
+        }
+
         return readings;
     }
 
@@ -63,9 +68,17 @@ public class ChartDataParser {
     }
 
     public static List<BgReading> getDummyPredictions() {
+        final long SECOND = 1000;
+        final long MINUTE = 60 * SECOND;
+
         ArrayList<BgReading> preds = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            preds.add(new BgReading().date(System.currentTimeMillis() + 5*60*1000*i).value(110.0d));
+
+        long start = System.currentTimeMillis();
+        long end = start + 30 * MINUTE;
+
+        for (long current = start; current < end; current += 5*MINUTE) {
+            double value = 120 +0; // Random.Default.nextDouble(-5, 5);
+            preds.add(new BgReading().date(current).value(value));
         }
 
         return preds;
@@ -76,13 +89,14 @@ public class ChartDataParser {
         //bgReadingsArray = MainApp.getDbHelper().getBgreadingsDataFromTime(fromTime, true);
         bgReadingsArray = iobCobCalculatorPlugin.getBgReadings();
         List<DataPointWithLabelInterface> bgListArray = new ArrayList<>();
+        List<DataPointWithLabelInterface> predsListArray = new ArrayList<>();
 
         if (bgReadingsArray == null || bgReadingsArray.size() == 0) {
             if (L.isEnabled(L.OVERVIEW))
                 log.debug("No BG data.");
             maxY = 10;
             minY = 0;
-            bgReadingsArray = getDummyData();
+            bgReadingsArray = getDummyData(fromTime, toTime);
             // return;
         }
 
@@ -95,7 +109,7 @@ public class ChartDataParser {
             Collections.sort(predictions, (o1, o2) -> Double.compare(o1.getX(), o2.getX()));
             for (BgReading prediction : predictions) {
                 if (prediction.value >= 40)
-                    bgListArray.add(prediction);
+                    predsListArray.add(prediction);
             }
         }
 
@@ -107,6 +121,8 @@ public class ChartDataParser {
 
         DataPointWithLabelInterface[] bg = new DataPointWithLabelInterface[bgListArray.size()];
         bg = bgListArray.toArray(bg);
+        DataPointWithLabelInterface[] pred = new DataPointWithLabelInterface[predsListArray.size()];
+        pred = predsListArray.toArray(pred);
 
 
         maxY = maxBgValue;
@@ -114,9 +130,48 @@ public class ChartDataParser {
         // set manual y bounds to have nice steps
         graph.getGridLabelRenderer().setNumVerticalLabels(numOfVertLines);
 
-
         bgSeries = new PointsWithLabelGraphSeries(bg);
-        series.add(new PointsWithLabelGraphSeries<>(bg));
+        bgSeries.setColor(Color.GREEN);
+
+        predSeries = new PointsWithLabelGraphSeries(pred);
+        predSeries.setColor(Color.DKGRAY);
+
+        series.add(bgSeries);
+        series.add(predSeries);
+    }
+
+    public void addNowLine() {
+        long now = System.currentTimeMillis();
+        LineGraphSeries<DataPoint> seriesNow;
+        DataPoint[] nowPoints = new DataPoint[]{
+                new DataPoint(now, 0),
+                new DataPoint(now, maxY)
+        };
+
+        seriesNow = new LineGraphSeries<>(nowPoints);
+        seriesNow.setDrawDataPoints(false);
+        // custom paint to make a dotted line
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        paint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+        paint.setColor(Color.BLACK);
+        seriesNow.setCustomPaint(paint);
+
+        this.series.add(seriesNow);
+    }
+
+    public void formatAxis(long startTime, long endTime) {
+        graph.getViewport().setMaxX(endTime);
+        graph.getViewport().setMinX(startTime);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getGridLabelRenderer().setLabelFormatter(new TimeAsXAxisLabelFormatter("HH"));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
+        graph.getGridLabelRenderer().setNumVerticalLabels(7);
+        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
     }
 
     public void forceUpdate() {
@@ -139,26 +194,5 @@ public class ChartDataParser {
 
         // draw it
         graph.onDataChanged(false, false);
-    }
-
-    public void addNowLine() {
-        long now = System.currentTimeMillis();
-        LineGraphSeries<DataPoint> seriesNow;
-        DataPoint[] nowPoints = new DataPoint[]{
-                new DataPoint(now, 0),
-                new DataPoint(now, maxY)
-        };
-
-        seriesNow = new LineGraphSeries<>(nowPoints);
-        seriesNow.setDrawDataPoints(false);
-        // custom paint to make a dotted line
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-        paint.setColor(Color.BLACK);
-        seriesNow.setCustomPaint(paint);
-
-        this.series.add(seriesNow);
     }
 }
