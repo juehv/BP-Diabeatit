@@ -48,8 +48,10 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.PointsWithLabelGraphSeries;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 import info.nightscout.androidaps.utils.Round;
+import kotlin.random.Random;
 
 public class ChartDataParser {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
@@ -62,7 +64,8 @@ public class ChartDataParser {
     private String units;
     private List<Series> series = new ArrayList<>();
 
-    private Series bgSeries;
+    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> bgSeries;
+    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> predSeries;
 
     private IobCobCalculatorPlugin iobCobCalculatorPlugin;
 
@@ -240,22 +243,11 @@ public class ChartDataParser {
         // clear old data
         graph.getSeries().clear();
 
-        // add precalculate series
-        for (Series s : this.series) {
-            if (!s.isEmpty()) {
-                s.onGraphViewAttached(graph);
-                graph.getSeries().add(s);
-            }
-        }
+        predSeries = new PointsWithLabelGraphSeries(pred);
+        predSeries.setColor(Color.DKGRAY);
 
-        double step = 1d;
-        if (maxY < 1) step = 0.1d;
-        graph.getViewport().setMaxY(Round.ceilTo(maxY, step));
-        graph.getViewport().setMinY(Round.floorTo(minY, step));
-        graph.getViewport().setYAxisBoundsManual(true);
-
-        // draw it
-        graph.onDataChanged(false, false);
+        series.add(bgSeries);
+        series.add(predSeries);
     }
 
     public void addNowLine() {
@@ -277,5 +269,40 @@ public class ChartDataParser {
         seriesNow.setCustomPaint(paint);
 
         this.series.add(seriesNow);
+    }
+
+    public void formatAxis(long startTime, long endTime) {
+        graph.getViewport().setMaxX(endTime);
+        graph.getViewport().setMinX(startTime);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getGridLabelRenderer().setLabelFormatter(new TimeAsXAxisLabelFormatter("HH"));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
+        graph.getGridLabelRenderer().setNumVerticalLabels(7);
+        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+    }
+
+    public void forceUpdate() {
+        // clear old data
+        graph.getSeries().clear();
+
+        // add precalculate series
+        for (Series s : this.series) {
+            if (!s.isEmpty()) {
+                s.onGraphViewAttached(graph);
+                graph.getSeries().add(s);
+            }
+        }
+
+        double step = 1d;
+        if (maxY < 1) step = 0.1d;
+        graph.getViewport().setMaxY(Round.ceilTo(maxY, step));
+        graph.getViewport().setMinY(Round.floorTo(minY, step));
+        graph.getViewport().setYAxisBoundsManual(true);
+
+        // draw it
+        graph.onDataChanged(false, false);
     }
 }
