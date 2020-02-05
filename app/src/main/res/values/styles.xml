@@ -1,4 +1,16 @@
 <resources>
+    <style name="diabeatit" parent="Theme.AppCompat">
+        <!-- item name="android:colorPrimary">@color/d_primary</item>
+        <item name="colorPrimary">@color/d_primary</item>
+        <item name="android:colorPrimaryDark">@color/d_primaryDark</item>
+        <item name="colorPrimaryDark">@color/d_primaryDark</item>
+        <item name="android:colorAccent">@color/d_accent</item>
+        <item name="colorAccent">@color/d_accent</item>
+        <item name="android:windowBackground">@android:color/background_light</item>
+        <item name="colorBackgroundFloating">@android:color/background_light</item>
+        <item name="android:colorForeground">@android:color/primary_text_light</item -->
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="NavigationDevice" parent="AppTheme">
@@ -12,7 +24,7 @@
 
     <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
     <style name="AppTheme.Launcher"  parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- item name="android:windowBackground">@drawable/launch_screen</item-->
         <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>

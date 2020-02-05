@@ -6,9 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="4dp"
     card:cardCornerRadius="8dp"
-    card:contentPadding="8dp" >
+    card:contentPadding="8dp"
+    android:theme="@style/diabeatit">
 
     <RelativeLayout
+        style="@style/diabeatit"
         android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

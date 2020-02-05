@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.nightscout.androidaps.diabeatit.ui.HomeActivity">
+    tools:context="info.nightscout.androidaps.diabeatit.ui.HomeActivity"
+    android:theme="@style/diabeatit">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/assistant_scrollview"
@@ -39,7 +41,6 @@
                     android:textAllCaps="false"
                     android:textStyle="normal"
                     android:textSize="20dp"
-                    android:textColor="#666666"
                     android:text="Current Alerts"
                     android:drawableStart="@drawable/ic_notification"
                     android:drawablePadding="8dp"
