@@ -34,6 +34,7 @@ import info.nightscout.androidaps.Config;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.IobTotal;
+import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.interfaces.Constraint;
@@ -207,10 +208,20 @@ public class HomeFragment extends Fragment {
             if (L.isEnabled(L.OVERVIEW))
                 Profiler.log(log, from + " - 1st graph - START", updateGUIStart);
 
+            Profile profile;
+            if (!ProfileFunctions.getInstance().isProfileValid("HOME")) {
+                // TODO
+                Log.e("GRAPH", "No valid profile set");
+                return;
+            } else {
+                profile = ProfileFunctions.getInstance().getProfile();
+            }
+
             // final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
             data.clearSeries();
             data.addBgReadings(fromTime, endTime, lowLine, highLine, ChartDataParser.getDummyPredictions());
+            data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
             data.formatAxis(fromTime, endTime);
             data.addNowLine();
             Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));

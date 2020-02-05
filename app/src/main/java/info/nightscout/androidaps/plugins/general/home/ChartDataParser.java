@@ -1,13 +1,16 @@
 package info.nightscout.androidaps.plugins.general.home;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
 import org.joda.time.DateTime;
@@ -18,12 +21,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.db.TempTarget;
 import info.nightscout.androidaps.logging.L;
+import info.nightscout.androidaps.plugins.aps.loop.APSResult;
+import info.nightscout.androidaps.plugins.aps.loop.LoopPlugin;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.AreaGraphSeries;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DoubleDataPoint;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.PointsWithLabelGraphSeries;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.Scale;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
+import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.Round;
 import kotlin.random.Random;
 
@@ -37,9 +50,6 @@ public class ChartDataParser {
     private List<BgReading> bgReadingsArray;
     private String units;
     private List<Series> series = new ArrayList<>();
-
-    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> bgSeries;
-    private PointsWithLabelGraphSeries<DataPointWithLabelInterface> predSeries;
 
     private IobCobCalculatorPlugin iobCobCalculatorPlugin;
 
@@ -55,8 +65,17 @@ public class ChartDataParser {
 
         ArrayList<BgReading> readings = new ArrayList<>();
 
-        for (long current = start; current < System.currentTimeMillis(); current += 5*60*1000) {
-            double value = 120 + Random.Default.nextDouble(-10, 20);
+        double lastDelta = 0;
+        double lastValue = 120;
+
+        for (long current = start; current < System.currentTimeMillis(); current += 10*60*1000) {
+            double delta = Random.Default.nextDouble(-5, 5);
+            double value = lastValue
+                    + (120 - lastValue) * 0.1
+                    + lastDelta/2
+                    + Random.Default.nextDouble(-10, 10);
+            lastDelta = delta;
+            lastValue = value;
             readings.add(new BgReading().date(current).value(value));
         }
 
@@ -130,14 +149,35 @@ public class ChartDataParser {
         // set manual y bounds to have nice steps
         graph.getGridLabelRenderer().setNumVerticalLabels(numOfVertLines);
 
-        bgSeries = new PointsWithLabelGraphSeries(bg);
-        bgSeries.setColor(Color.GREEN);
+        LineGraphSeries<DataPointWithLabelInterface> bgSeries = new LineGraphSeries<>(bg);
+        bgSeries.setColor(graph.getContext().getColor(R.color.graphBgReadingsColor));
+        bgSeries.setDrawDataPoints(true);
+        bgSeries.setDataPointsRadius(10);
+//        bgSeries.setShape(PointsGraphSeries.Shape.POINT);
+//        bgSeries.setSize(10);
 
-        predSeries = new PointsWithLabelGraphSeries(pred);
-        predSeries.setColor(Color.DKGRAY);
+        PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
+        predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
+        predSeries.setShape(PointsGraphSeries.Shape.POINT);
+        predSeries.setSize(10);
 
         series.add(bgSeries);
         series.add(predSeries);
+    }
+
+    public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {
+        AreaGraphSeries<DoubleDataPoint> inRangeAreaSeries;
+
+        DoubleDataPoint[] inRangeAreaDataPoints = new DoubleDataPoint[]{
+                new DoubleDataPoint(fromTime, lowLine, highLine),
+                new DoubleDataPoint(toTime, lowLine, highLine)
+        };
+        inRangeAreaSeries = new AreaGraphSeries<>(inRangeAreaDataPoints);
+        inRangeAreaSeries.setColor(0);
+        inRangeAreaSeries.setDrawBackground(true);
+        inRangeAreaSeries.setBackgroundColor(MainApp.gc(R.color.graphTargetBgColor));
+
+        series.add(inRangeAreaSeries);
     }
 
     public void addNowLine() {
@@ -162,16 +202,25 @@ public class ChartDataParser {
     }
 
     public void formatAxis(long startTime, long endTime) {
+        // TODO: Externalize these
+        Context ctx = graph.getContext();
         graph.getViewport().setMaxX(endTime);
         graph.getViewport().setMinX(startTime);
         graph.getViewport().setXAxisBoundsManual(true);
-        graph.getGridLabelRenderer().setLabelFormatter(new TimeAsXAxisLabelFormatter("HH"));
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+        graph.getGridLabelRenderer().setLabelFormatter(
+                new TimeAsXAxisLabelFormatter(ctx.getString(R.string.graphLabelFormat)));
         graph.getGridLabelRenderer().setNumHorizontalLabels(7);
         graph.getGridLabelRenderer().setNumVerticalLabels(7);
-        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
+        graph.getGridLabelRenderer().setGridColor(
+                ctx.getColor(R.color.graphGridColor));
+        graph.getGridLabelRenderer().setVerticalLabelsColor(
+                ctx.getColor(R.color.graphVerticalLabelColor));
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(
+                ctx.getColor(R.color.graphHorizontalLabelColor));
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+        graph.getGridLabelRenderer().reloadStyles();
     }
 
     public void forceUpdate() {

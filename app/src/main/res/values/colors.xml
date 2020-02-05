@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Graph in HomeActivity -->
+    <color name="graphGridColor">@android:color/black</color>
+    <color name="graphVerticalLabelColor">@android:color/black</color>
+    <color name="graphHorizontalLabelColor">@android:color/black</color>
+    <color name="graphBgReadingsColor">@android:color/holo_orange_dark</color>
+    <color name="graphBgPredictionColor">@android:color/holo_blue_light</color>
+    <color name="graphTargetBgColor">#4000FF00</color>
+
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#009688</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorFont">#202020</color>
 
