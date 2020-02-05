@@ -50,9 +50,9 @@
     <color name="tempTargetConfirmation">#77dd77</color>
 
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#40bbaa</color>
+<!--    <color name="colorPrimary">#212121</color>-->
+<!--    <color name="colorPrimaryDark">#000000</color>-->
+<!--    <color name="colorAccent">#40bbaa</color>-->
     <color name="mdtp_accent_color">#40bbaa</color>
     <color name="colorInitializingBorder">#00695c</color>
 
