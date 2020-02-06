@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin.prediction;
+package info.nightscout.androidaps.diabeatit.predictions;
 
 import java.util.ArrayList;
 import java.util.List;

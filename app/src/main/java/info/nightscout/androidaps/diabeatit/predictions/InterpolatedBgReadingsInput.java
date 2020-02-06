@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin.prediction;
+package info.nightscout.androidaps.diabeatit.predictions;
 
 import android.content.Context;
 
@@ -51,14 +51,14 @@ public class InterpolatedBgReadingsInput implements PredictionInputs {
     }
 
     @Override
-    public double[] getInputs() {
+    public float[] getInputs() {
         setupInterpolation();
 
-        double[] inputs = new double[(int) DATAPOINT_COUNT];
+        float[] inputs = new float[(int) DATAPOINT_COUNT];
 
         for (int i = 0; i < DATAPOINT_COUNT; i++) {
             long ts = currentTimestamp - ((DATAPOINT_COUNT - i) * DATAPOINT_INTERVAL);
-            inputs[i] = interpolation.getValueAt((double) ts);
+            inputs[i] = (float) (double)interpolation.getValueAt((double) ts);
         }
 
         return inputs;

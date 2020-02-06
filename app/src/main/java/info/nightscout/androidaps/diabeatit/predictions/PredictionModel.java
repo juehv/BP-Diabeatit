@@ -1,6 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin.prediction;
-
-import android.util.Pair;
+package info.nightscout.androidaps.diabeatit.predictions;
 
 public interface PredictionModel {
     /**
@@ -9,5 +7,5 @@ public interface PredictionModel {
      * @param inputs The inputs to predict from.
      * @return An array of predicted values in 5min intervals. The first one being the current value
      */
-    double[] predict(PredictionInputs inputs);
+    float[] predict(PredictionInputs inputs);
 }

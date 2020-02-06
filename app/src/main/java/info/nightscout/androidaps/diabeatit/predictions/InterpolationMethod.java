@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin.prediction;
+package info.nightscout.androidaps.diabeatit.predictions;
 
 public interface InterpolationMethod<TX, TY> {
     void addDatapoint(TX x, TY y);

@@ -1,6 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin;
-
-import android.content.Context;
+package info.nightscout.androidaps.diabeatit.bolus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +8,9 @@ import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.logging.L;
-import info.nightscout.androidaps.plugins.insulin.prediction.PredictionInputs;
-import info.nightscout.androidaps.plugins.insulin.prediction.PredictionModel;
-import info.nightscout.androidaps.plugins.insulin.prediction.SlopeBGPredictionModel;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionInputs;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionModel;
+import info.nightscout.androidaps.diabeatit.predictions.SlopeBGPredictionModel;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.GlucoseStatus;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.T;

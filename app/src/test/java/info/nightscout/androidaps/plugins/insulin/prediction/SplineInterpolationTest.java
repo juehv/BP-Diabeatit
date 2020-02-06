@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import info.nightscout.androidaps.diabeatit.predictions.SplineInterpolation;
+
 public class SplineInterpolationTest {
     /*
      * You can visualize this curve, e.g. under https://www.desmos.com/calculator/th2kg7mb1b

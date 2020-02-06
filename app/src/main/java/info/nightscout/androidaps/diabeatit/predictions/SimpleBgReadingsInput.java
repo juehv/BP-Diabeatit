@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.plugins.insulin.prediction;
+package info.nightscout.androidaps.diabeatit.predictions;
 
 /**
  * Simple readings input, just gives back the data you put in. Mainly meant for debugging
@@ -6,13 +6,13 @@ package info.nightscout.androidaps.plugins.insulin.prediction;
 public class SimpleBgReadingsInput implements PredictionInputs {
     private final static int REQUIRED_INPUTS = 30;
 
-    private double[] inputs;
+    private float[] inputs;
 
     /**
      * Create a new instance with the given inputs
      * @param inputs The inputs
      */
-    public SimpleBgReadingsInput(double[] inputs) {
+    public SimpleBgReadingsInput(float[] inputs) {
         if (inputs.length != REQUIRED_INPUTS)
             throw new UnsupportedOperationException(
                     String.format("Invalid amount of inputs, got %d, expected %d",
@@ -23,7 +23,7 @@ public class SimpleBgReadingsInput implements PredictionInputs {
     }
 
     @Override
-    public double[] getInputs() {
+    public float[] getInputs() {
         return inputs;
     }
 }

@@ -1,8 +1,8 @@
-package info.nightscout.androidaps.plugins.insulin;
+package info.nightscout.androidaps.diabeatit.bolus;
 
 import info.nightscout.androidaps.data.Profile;
-import info.nightscout.androidaps.plugins.insulin.prediction.PredictionInputs;
-import info.nightscout.androidaps.plugins.insulin.prediction.PredictionModel;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionInputs;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionModel;
 
 public class BolusCalculatorBuilder {
     // TODO: Better defaults!
