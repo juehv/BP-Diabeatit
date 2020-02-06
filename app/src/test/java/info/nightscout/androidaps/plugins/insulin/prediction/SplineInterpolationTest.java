@@ -16,7 +16,7 @@ public class SplineInterpolationTest {
     private final static double[] YVALUES = { 0d, 1d, -1d, 2d, 1d, 1d, 0d};
 
     private SplineInterpolation interpolation;
-    
+
     @Before
     public void setupInterpolation() {
         interpolation = new SplineInterpolation();
