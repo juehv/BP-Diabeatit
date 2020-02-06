@@ -9,14 +9,15 @@
     tools:context=".diabeatit.ui.home.BolusCalculatorFragment">
 
     <EditText
-        android:textColor="@color/colorFont"
         android:id="@+id/editText_carbs"
+        style="@style/diabeatit.EditText"
         android:layout_width="251dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/colorFont"
         app:layout_constraintEnd_toStartOf="@+id/button_more_values"
         app:layout_constraintHorizontal_bias="0.268"
         app:layout_constraintStart_toEndOf="@+id/textView_carbs"

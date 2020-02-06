@@ -62,10 +62,10 @@
             android:name=".diabeatit.ui.setup.SetupInsight"
             android:label="@string/title_activity_setup_insight"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" />
-        <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" />
-        <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" />
-        <activity android:name=".diabeatit.ui.setup.SetupActivity" />
+        <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" android:theme="@style/diabeatit"/>
+        <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" android:theme="@style/diabeatit" />
+        <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" android:theme="@style/diabeatit" />
+        <activity android:name=".diabeatit.ui.setup.SetupActivity" android:theme="@style/diabeatit" />
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />

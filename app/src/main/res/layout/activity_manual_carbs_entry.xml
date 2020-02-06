@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/diabeatit.Container">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -18,8 +19,10 @@
                 android:textAlignment="textEnd"
                 android:text="@string/carbs"
                 android:labelFor="@id/edit_text_carbs"/>
+
             <EditText
                 android:id="@+id/edit_text_carbs"
+                style="@style/diabeatit.EditText"
                 android:layout_margin="2dp"
                 android:inputType="numberDecimal" />
             <TextView
@@ -39,12 +42,13 @@
                 android:textAlignment="textEnd"
                 android:text="@string/notes"
                 android:labelFor="@id/edit_text_notes" />
+
             <EditText
                 android:id="@+id/edit_text_notes"
-                android:inputType="text"
+                style="@style/diabeatit.EditText"
                 android:layout_margin="2dp"
                 android:layout_span="2"
-                />
+                android:inputType="text" />
         </TableRow>
         <TableRow>
             <Button
@@ -52,7 +56,8 @@
                 android:layout_span="3"
                 android:layout_height="72dp"
                 android:layout_width="match_parent"
-                android:text="DATE/TIME" />
+                android:text="DATE/TIME"
+                style="@style/diabeatit.Button"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -73,7 +78,8 @@
                 android:id="@+id/btn_take_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select..." />
+                android:text="Select..."
+                style="@style/diabeatit.Button"/>
         </TableRow>
         <TableRow android:layout_weight="1.0" />
         <TableRow>
@@ -85,6 +91,7 @@
                 android:text="Enter"
                 android:textColor="@color/cardview_light_background"
                 android:background="@color/colorPrimary"
+                style="@style/diabeatit.Button"
                 />
         </TableRow>
     </TableLayout>

@@ -3,29 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
+    style="@style/diabeatit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/colorBackground"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    style="@style/diabeatit">
+    android:theme="@style/diabeatit"
+    tools:openDrawer="start">
 
     <include
+        style="@style/diabeatit"
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <include
+        style="@style/diabeatit"
         layout="@layout/assistant_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
+        style="@style/diabeatit"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/d_activity_home_drawer" />
-
+        app:itemTextColor="@color/colorFont"
+        app:menu="@menu/d_activity_home_drawer">
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

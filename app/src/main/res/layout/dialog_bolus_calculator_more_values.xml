@@ -21,13 +21,14 @@
             android:textSize="14sp" />
 
         <EditText
-            android:textColor="@color/colorFont"
             android:id="@+id/editText_blood_sugar"
+            style="@style/diabeatit.EditText"
             android:layout_width="295dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="@color/colorFont" />
     </TableRow>
 
     <TableRow
@@ -44,13 +45,14 @@
             android:textSize="14sp" />
 
         <EditText
-            android:textColor="@color/colorFont"
             android:id="@+id/editText_carbs_time"
+            style="@style/diabeatit.EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="@color/colorFont" />
     </TableRow>
 
     <TableRow
@@ -68,6 +70,7 @@
 
         <EditText
             android:id="@+id/editText_korr"
+            style="@style/diabeatit.EditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -91,6 +94,7 @@
 
         <Button
             android:id="@+id/button_ok"
+            style="@style/diabeatit.ButtonPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -103,6 +107,7 @@
 
         <Button
             android:id="@+id/button_cancel"
+            style="@style/diabeatit.ButtonCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

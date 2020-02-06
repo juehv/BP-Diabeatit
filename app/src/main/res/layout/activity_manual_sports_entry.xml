@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/diabeatit">
+    style="@style/diabeatit.Container" >
 
     <TableLayout
         android:layout_width="match_parent"
@@ -21,19 +21,22 @@
                 android:text="Intesity:" />
             <TableLayout android:layout_span="2" android:layout_margin="2dp">
                 <TableRow>
+
                     <ToggleButton
                         android:id="@+id/button_light"
-                        android:textOn="Light"
-                        android:textOff="Light" />
+                        android:textOff="Light"
+                        android:textOn="Light" />
 
                     <ToggleButton
                         android:id="@+id/button_medium"
-                        android:textOn="Medium"
-                        android:textOff="Medium" />
+                        android:checked="true"
+                        android:textOff="Medium"
+                        android:textOn="Medium" />
+
                     <ToggleButton
                         android:id="@+id/button_heavy"
-                        android:textOn="Heavy"
-                        android:textOff="Heavy" />
+                        android:textOff="Heavy"
+                        android:textOn="Heavy" />
                 </TableRow>
             </TableLayout>
         </TableRow>
@@ -43,36 +46,44 @@
                 android:textAlignment="textEnd"
                 android:layout_margin="2dp"
                 android:text="@string/notes" />
+
             <EditText
                 android:id="@+id/edit_text_notes"
+                style="@style/diabeatit.EditText"
                 android:layout_margin="2dp"
                 android:layout_span="2"
-                android:inputType="text"/>
+                android:inputType="text" />
         </TableRow>
         <TableRow>
+
             <Button
                 android:id="@+id/btn_timestamp_start"
-                android:layout_span="3"
+                style="@style/diabeatit.Button"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
+                android:layout_span="3"
                 android:text="TIMESTAMP/START" />
         </TableRow>
         <TableRow>
+
             <Button
                 android:id="@+id/btn_timestamp_end"
-                android:layout_span="3"
+                style="@style/diabeatit.Button"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
+                android:layout_span="3"
                 android:text="TIMESTAMP/END" />
         </TableRow>
     </TableLayout>
+
     <Button
         android:id="@+id/button_enter"
+        style="@style/diabeatit.Button"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/cardview_light_background"
         android:background="@color/colorPrimary"
-        android:text="Enter" />
+        android:text="Enter"
+        android:textColor="@color/cardview_light_background" />
 </RelativeLayout>
