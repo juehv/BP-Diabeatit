@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".diabeatit.ui.setup.SetupInsight">
+
+    <TextView
+        android:id="@+id/insight_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="32dp"
+        android:text="aktueller Setup"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:id="@+id/show_profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profil:" />
+
+    <TextView
+        android:id="@+id/show_insulin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insulintyp:" />
+
+    <TextView
+        android:id="@+id/show_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BZ-Quelle:" />
+
+    <TextView
+        android:id="@+id/show_pump"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pumpe:" />
+
+    <Button
+        android:id="@+id/return_to_setup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF9800"
+        android:text="Zurück" />
+</LinearLayout>

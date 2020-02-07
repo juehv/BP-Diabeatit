@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
+    tools:context=".diabeatit.ui.home.BolusCalculatorMoreValuesDialog">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="@color/colorFont"
+            android:id="@+id/textView_blood_sugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Blutzucker"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/editText_blood_sugar"
+            style="@style/diabeatit.EditText"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="@color/colorFont" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="@color/colorFont"
+            android:id="@+id/textView_carbs_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="KH-Zeit"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/editText_carbs_time"
+            style="@style/diabeatit.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="@color/colorFont" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="@color/colorFont"
+            android:id="@+id/textView_korr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Korr"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/editText_korr"
+            style="@style/diabeatit.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:inputType="number"
+            android:singleLine="false"
+            android:textColor="@color/colorFont" />
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:textColor="@color/colorFont"
+            android:id="@+id/textView_filler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:id="@+id/button_ok"
+            style="@style/diabeatit.ButtonPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.5"
+            android:background="@android:color/transparent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="ÜBERNEHMEN"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            style="@style/diabeatit.ButtonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.5"
+            android:background="@android:color/transparent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="ABBRECHEN"
+            android:textColor="@color/colorPrimary" />
+    </LinearLayout>
+</TableLayout>

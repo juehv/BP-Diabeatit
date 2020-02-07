@@ -39,7 +39,7 @@ public class ViewSelectorActivity extends Activity {
         int design = Integer.parseInt(sharedPrefs.getString("input_design", "1"));
 
         if (design == 4){
-            //@LadyViktoria: Here the label can be set differently, if you like.
+            //@LadyViktoria: Here the label_red can be set differently, if you like.
             final TextView textView = (TextView) view.findViewById(R.id.label);
             textView.setText(labelText);
         } else {

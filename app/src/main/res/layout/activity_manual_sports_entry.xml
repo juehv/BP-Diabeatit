@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/diabeatit.Container" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:stretchColumns="1">
+
+        <TableRow>
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textAlignment="textEnd"
+                android:layout_margin="2dp"
+                android:text="Intesity:" />
+            <TableLayout android:layout_span="2" android:layout_margin="2dp">
+                <TableRow>
+
+                    <ToggleButton
+                        android:id="@+id/button_light"
+                        android:textOff="Light"
+                        android:textOn="Light" />
+
+                    <ToggleButton
+                        android:id="@+id/button_medium"
+                        android:checked="true"
+                        android:textOff="Medium"
+                        android:textOn="Medium" />
+
+                    <ToggleButton
+                        android:id="@+id/button_heavy"
+                        android:textOff="Heavy"
+                        android:textOn="Heavy" />
+                </TableRow>
+            </TableLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textAlignment="textEnd"
+                android:layout_margin="2dp"
+                android:text="@string/notes" />
+
+            <EditText
+                android:id="@+id/edit_text_notes"
+                style="@style/diabeatit.EditText"
+                android:layout_margin="2dp"
+                android:layout_span="2"
+                android:inputType="text" />
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_timestamp_start"
+                style="@style/diabeatit.Button"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_span="3"
+                android:text="TIMESTAMP/START" />
+        </TableRow>
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_timestamp_end"
+                style="@style/diabeatit.Button"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_span="3"
+                android:text="TIMESTAMP/END" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/button_enter"
+        style="@style/diabeatit.Button"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="Enter"
+        android:textColor="@color/cardview_light_background" />
+</RelativeLayout>

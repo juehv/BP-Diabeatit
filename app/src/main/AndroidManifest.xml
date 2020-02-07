@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="info.nightscout.androidaps">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -37,17 +38,44 @@
         android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
-        android:fullBackupContent="true">
+        android:fullBackupContent="true"
+        tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".diabeatit.ui.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".diabeatit.ui.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
+        <activity android:name=".diabeatit.ui.setup.ActualSetup" />
+        <activity
+            android:name=".diabeatit.ui.setup.SetupInsight"
+            android:label="@string/title_activity_setup_insight"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" android:theme="@style/diabeatit"/>
+        <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" android:theme="@style/diabeatit" />
+        <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" android:theme="@style/diabeatit" />
+        <activity android:name=".diabeatit.ui.setup.SetupActivity" android:theme="@style/diabeatit" />
+        <activity
+            android:name=".diabeatit.ui.AlertHistoryActivity"
+            android:label="@string/title_activity_alert_history" />
+
+        <activity android:name=".MainActivity">
+            <!-- intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter -->
         </activity>
         <activity android:name=".activities.PreferencesActivity" />
         <activity
@@ -296,7 +324,6 @@
             android:label="@string/title_activity_rileylink_settings"
             android:theme="@style/Theme.AppCompat.NoTitle" />
         <activity android:name=".plugins.pump.medtronic.dialog.MedtronicHistoryActivity" />
-
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     </application>

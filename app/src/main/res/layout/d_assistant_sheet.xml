@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/assistant_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="?attr/actionBarSize"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/assistant_peek_alt"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:textAllCaps="false"
+                    android:textStyle="normal"
+                    android:textSize="20dp"
+                    android:textColor="#666666"
+                    android:text="Current Alerts"
+                    android:drawableStart="@drawable/ic_notification"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#888888"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/assistant_peek"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#FF0000" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_slideup"
+                    android:padding="4dp"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/assistant_status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_alert"
+                    android:padding="4dp"
+                    android:background="@android:color/transparent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:paddingEnd="4dp"
+                    android:layout_toLeftOf="@+id/assistant_status_icon"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/assistant_peek_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="bold"
+                        android:text="Urgent Alert" />
+
+                    <TextView
+                        android:id="@+id/assistant_peek_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="and 3 more..."
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <include layout="@layout/assistant_cards" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
