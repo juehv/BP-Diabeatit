@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Diabeatit -->
+
+    <!-- Prediction models and their human readable part. Used in preferences -->
+
+    <string-array name="d_model_types_array">
+        <item>ki</item>
+        <item>avgdelta</item>
+    </string-array>
+
+    <string-array name="d_model_types_readable_array">
+        <item>KI Predictions</item>
+        <item>Linear interpolation</item>
+    </string-array>
 
     <string-array name="aps_modeArray">
         <item>@string/closedloop</item>

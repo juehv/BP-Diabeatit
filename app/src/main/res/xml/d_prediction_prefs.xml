@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:summary="Which kind of model to use for BG Predictions"
+        android:key="d_selected_model_type"
+        android:title="Model type"
+        android:entries="@array/d_model_types_readable_array"
+        android:entryValues="@array/d_model_types_array"
+        />
+    <PreferenceCategory
+        android:summary="Settings for the AI Predictions"
+        android:title="AI Predictions">
+        <EditTextPreference
+            android:key="d_ki_model_name"
+            android:summary="Path to the model (.tflite)"
+            android:title="Path to model" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -99,4 +99,11 @@ public class SettingsActivity extends AppCompatActivity implements
             setPreferencesFromResource(R.xml.d_sync_preferences, rootKey);
         }
     }
+
+    public static class PredictionsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.d_prediction_prefs, rootKey);
+        }
+    }
 }
