@@ -1,6 +1,6 @@
 package info.nightscout.androidaps.interfaces;
 
-public enum PluginType {
+public enum  PluginType {
     GENERAL,
     TREATMENT,
     SENSITIVITY,

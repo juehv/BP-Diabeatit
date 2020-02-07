@@ -29,6 +29,7 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.TempTarget;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.aps.loop.APSResult;
 import info.nightscout.androidaps.plugins.aps.loop.LoopPlugin;
@@ -124,7 +125,6 @@ public class ChartDataParser {
         //bgReadingsArray = MainApp.getDbHelper().getBgreadingsDataFromTime(fromTime, true);
         bgReadingsArray = iobCobCalculatorPlugin.getBgReadings();
         List<DataPointWithLabelInterface> bgListArray = new ArrayList<>();
-        List<DataPointWithLabelInterface> predsListArray = new ArrayList<>();
 
         if (bgReadingsArray == null || bgReadingsArray.size() == 0) {
             if (L.isEnabled(L.OVERVIEW))
@@ -132,20 +132,12 @@ public class ChartDataParser {
             maxY = 10;
             minY = 0;
             bgReadingsArray = getDummyData(fromTime, toTime);
-            // return;
         }
 
         for (BgReading bg : bgReadingsArray) {
             if (bg.date < fromTime || bg.date > toTime) continue;
             if (bg.value > maxBgValue) maxBgValue = bg.value;
             bgListArray.add(bg);
-        }
-        if (predictions != null) {
-            Collections.sort(predictions, (o1, o2) -> Double.compare(o1.getX(), o2.getX()));
-            for (BgReading prediction : predictions) {
-                if (prediction.value >= 40)
-                    predsListArray.add(prediction);
-            }
         }
 
         // maxBgValue = Profile.fromMgdlToUnits(maxBgValue, units);
@@ -156,9 +148,6 @@ public class ChartDataParser {
 
         DataPointWithLabelInterface[] bg = new DataPointWithLabelInterface[bgListArray.size()];
         bg = bgListArray.toArray(bg);
-        DataPointWithLabelInterface[] pred = new DataPointWithLabelInterface[predsListArray.size()];
-        pred = predsListArray.toArray(pred);
-
 
         maxY = maxBgValue;
         minY = 0;
@@ -172,13 +161,27 @@ public class ChartDataParser {
 //        bgSeries.setShape(PointsGraphSeries.Shape.POINT);
 //        bgSeries.setSize(10);
 
+        series.add(bgSeries);
+        series.add(predSeries);
+    }
+
+    public void addPredictions() {
+        List<BgReading> readings = iobCobCalculatorPlugin.getBgReadings();
+        List<BgReading> preds;
+
+        if (readings == null || readings.size() == 0) {
+            preds = getDummyPredictions();
+        } else {
+            preds = PredictionsPlugin.getPlugin().getPredictionReadings();
+        }
+
+        DataPointWithLabelInterface[] pred = new DataPointWithLabelInterface[preds.size()];
+        pred = preds.toArray(pred);
+
         PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
         predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
         predSeries.setShape(PointsGraphSeries.Shape.POINT);
         predSeries.setSize(10);
-
-        series.add(bgSeries);
-        series.add(predSeries);
     }
 
     public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {

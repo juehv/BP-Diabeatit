@@ -34,7 +34,9 @@ import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.interfaces.Constraint;
+import info.nightscout.androidaps.interfaces.PluginBase;
 import info.nightscout.androidaps.interfaces.PumpInterface;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.aps.loop.APSResult;
@@ -215,7 +217,7 @@ public class HomeFragment extends Fragment {
             // final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
             data.clearSeries();
-            data.addBgReadings(fromTime, endTime, lowLine, highLine, ChartDataParser.getDummyPredictions());
+            data.addBgReadings(fromTime, endTime, lowLine, highLine, PredictionsPlugin.getPlugin().getPredictionReadings());
             data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
             data.formatAxis(fromTime, endTime);
             data.addNowLine();
