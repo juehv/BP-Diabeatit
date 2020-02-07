@@ -19,9 +19,6 @@ public class BolusCalculatorBuilder {
     private boolean useSuperBolus = false;
     private boolean useTrend = true;
 
-    private PredictionModel predictionModel;
-    private PredictionInputs inputs;
-
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
@@ -66,12 +63,6 @@ public class BolusCalculatorBuilder {
         useTrend = flag;
     }
 
-    public void setPredictionModel(PredictionModel model) {
-        this.predictionModel = model;
-    }
-
-    public void setPredictionInputs(PredictionInputs inputs) { this.inputs = inputs; }
-
     public BolusCalculator build() {
         if (profile == null) return null;
         BolusCalculator calc = new BolusCalculator(profile, carbs, cob, bg, correction);
@@ -81,8 +72,6 @@ public class BolusCalculatorBuilder {
         calc.setIncludeBasalIOB(includeBasalIOB);
         calc.setUseSuperBolus(useSuperBolus);
         calc.setUseTrend(useTrend);
-        calc.setPredictionModel(predictionModel);
-        calc.setPredictionInputs(inputs);
         return calc;
     }
 }

@@ -4,8 +4,8 @@
         android:summary="Which kind of model to use for BG Predictions"
         android:key="d_selected_model_type"
         android:title="Model type"
-        android:entries="@array/d_model_types_array"
-        android:entryValues="@array/d_model_types_readable_array"
+        android:entries="@array/d_model_types_readable_array"
+        android:entryValues="@array/d_model_types_array"
         />
     <PreferenceCategory
         android:summary="Settings for the AI Predictions"
