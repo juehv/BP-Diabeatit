@@ -239,50 +239,6 @@ public class ChartDataParser {
         graph.getGridLabelRenderer().reloadStyles();
     }
 
-    public void forceUpdate() {
-        // clear old data
-        graph.getSeries().clear();
-
-        predSeries = new PointsWithLabelGraphSeries(pred);
-        predSeries.setColor(Color.DKGRAY);
-
-        series.add(bgSeries);
-        series.add(predSeries);
-    }
-
-    public void addNowLine() {
-        long now = System.currentTimeMillis();
-        LineGraphSeries<DataPoint> seriesNow;
-        DataPoint[] nowPoints = new DataPoint[]{
-                new DataPoint(now, 0),
-                new DataPoint(now, maxY)
-        };
-
-        seriesNow = new LineGraphSeries<>(nowPoints);
-        seriesNow.setDrawDataPoints(false);
-        // custom paint to make a dotted line
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
-        paint.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-        paint.setColor(Color.BLACK);
-        seriesNow.setCustomPaint(paint);
-
-        this.series.add(seriesNow);
-    }
-
-    public void formatAxis(long startTime, long endTime) {
-        graph.getViewport().setMaxX(endTime);
-        graph.getViewport().setMinX(startTime);
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getGridLabelRenderer().setLabelFormatter(new TimeAsXAxisLabelFormatter("HH"));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
-        graph.getGridLabelRenderer().setNumVerticalLabels(7);
-        graph.getGridLabelRenderer().setGridColor(Color.BLACK);
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.BLACK);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
-    }
 
     public void forceUpdate() {
         // clear old data
