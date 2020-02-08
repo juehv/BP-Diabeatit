@@ -32,12 +32,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
+import info.nightscout.androidaps.plugins.general.home.ChartDataParser;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -188,10 +191,20 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this, SetupActivity.class));
             else if (menuItem.getItemId() == R.id.nav_home)
                 drawer.closeDrawers();
+            else if (menuItem.getItemId() == R.id.add_dummy_data)
+                addDummyData();
             return true;
 
         });
 
+    }
+
+    private void addDummyData() {
+        final long timespan = 60 * 60 * 1000;
+        List<BgReading> data = ChartDataParser.getDummyData(System.currentTimeMillis() - timespan, System.currentTimeMillis());
+        for (BgReading r : data) {
+            MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
+        }
     }
 
     /*

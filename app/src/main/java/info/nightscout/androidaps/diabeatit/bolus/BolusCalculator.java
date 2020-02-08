@@ -1,11 +1,15 @@
 package info.nightscout.androidaps.diabeatit.bolus;
 
+import android.util.Log;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
+import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.logging.L;
@@ -129,10 +133,16 @@ public class BolusCalculator {
     private void calculateInsulinFromTrend() {
         insulinFromTrend = 0.0;
         if (useTrend) {
+            BgReading lastBg = DatabaseHelper.lastBg();
+            if (lastBg == null) {
+                Log.e("BOLUS", "Cannot use trend without readings data.");
+                return;
+            }
+            // TODO Maybe use interpolation to get the 15min trend from the current timestamp instead of the last reading? #
             // For the Bolus we general use 15min predictions.
             // Index 0 is the current time, then 5 minute intevals, so we want the 4th (index 3)
-            float[] predictions = PredictionsPlugin.getPlugin().getPredictions();
-            insulinFromTrend = predictions[3];
+            float[] predictions = PredictionsPlugin.getPlugin().getPredictions(lastBg.date);
+            insulinFromTrend = predictions[3] + lastBg.value;
         }
     }
 

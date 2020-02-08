@@ -5,8 +5,10 @@ import android.content.Context;
 import java.util.Calendar;
 import java.util.List;
 
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
+import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 
 public class InterpolatedBgReadingsInput implements PredictionInputs {
     /* for time calculations */
@@ -18,18 +20,12 @@ public class InterpolatedBgReadingsInput implements PredictionInputs {
     private final static long DATAPOINT_COUNT = 30;
 
     private InterpolationMethod<Double, Double> interpolation;
-    private Context ctx;
+    // private Context ctx;
     private boolean isSetup;
     private long currentTimestamp;
 
-    public InterpolatedBgReadingsInput(InterpolationMethod<Double, Double> method, Context ctx) {
-        this(method, Calendar.getInstance().getTime().getTime(), ctx);
-
-    }
-
-    public InterpolatedBgReadingsInput(InterpolationMethod<Double, Double> method, long startTimestamp, Context ctx) {
+    public InterpolatedBgReadingsInput(InterpolationMethod<Double, Double> method, long startTimestamp) {
         interpolation = method;
-        this.ctx = ctx;
         isSetup = false;
         currentTimestamp = startTimestamp;
     }
@@ -37,12 +33,13 @@ public class InterpolatedBgReadingsInput implements PredictionInputs {
     private void setupInterpolation() {
         if (isSetup) return;
 
-        DatabaseHelper dbh = new DatabaseHelper(ctx);
+        DatabaseHelper dbh = MainApp.getDbHelper();
 
         long startTimestamp = currentTimestamp - ((DATAPOINT_COUNT + 1) * DATAPOINT_INTERVAL);
 
-        List<BgReading> readings = dbh.getBgreadingsDataFromTime(startTimestamp, true);
-
+        List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
+        List<BgReading> dbReadings = MainApp.getDbHelper().getAllBgreadingsDataFromTime(startTimestamp, true);
+        readings.sort((r1, r2) -> Long.compare(r1.date, r2.date));
         for (BgReading r : readings) {
             interpolation.addDatapoint(r.getX(), r.getY());
         }

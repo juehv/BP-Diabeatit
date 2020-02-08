@@ -216,12 +216,18 @@ public class HomeFragment extends Fragment {
 
             // final ChartDataParser chartDataParser = new ChartDataParser(chart, IobCobCalculatorPlugin.getPlugin());
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
-            data.clearSeries();
-            data.addBgReadings(fromTime, endTime, lowLine, highLine, PredictionsPlugin.getPlugin().getPredictionReadings());
-            data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
-            data.formatAxis(fromTime, endTime);
-            data.addNowLine();
-            Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
+            try {
+                data.clearSeries();
+                data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
+                data.addBgReadings(fromTime, endTime, lowLine, highLine);
+                data.addPredictions(fromTime, endTime);
+                data.addNowLine();
+                data.formatAxis(fromTime, endTime);
+                Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
+            } catch (Exception ex) {
+                log.error("Failed to display graph", ex);
+                throw ex;
+            }
 /*
             // **** In range Area ****
             graphData.addInRangeArea(fromTime, endTime, lowLine, highLine);

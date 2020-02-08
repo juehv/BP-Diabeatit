@@ -73,10 +73,9 @@ public class PredictionsPlugin {
         predictionModel = new SlopeBGPredictionModel();
     }
 
-    public float[] getPredictions() {
-        Context appCtx = MainApp.instance().getApplicationContext();
+    public float[] getPredictions(long startTime) {
         InterpolationMethod<Double, Double> interpolMethod = new SplineInterpolation();
-        PredictionInputs predInputs = new InterpolatedBgReadingsInput(interpolMethod, appCtx);
+        PredictionInputs predInputs = new InterpolatedBgReadingsInput(interpolMethod, startTime);
         return predictionModel.predict(predInputs);
     }
 
@@ -88,7 +87,7 @@ public class PredictionsPlugin {
         long timestamp_base = lastBg != null ? lastBg.date : System.currentTimeMillis();
 
         final long DELTA_5MIN = 5 * 60 * 1000;
-        float[] values = getPredictions();
+        float[] values = getPredictions(timestamp_base);
         ArrayList<BgReading> readings = new ArrayList<>();
 
         for (int i = 0; i < values.length; i++) {

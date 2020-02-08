@@ -28,6 +28,7 @@ import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.db.TempTarget;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.logging.L;
@@ -68,11 +69,8 @@ public class ChartDataParser {
     private PointsWithLabelGraphSeries<DataPointWithLabelInterface> bgSeries;
     private PointsWithLabelGraphSeries<DataPointWithLabelInterface> predSeries;
 
-    private IobCobCalculatorPlugin iobCobCalculatorPlugin;
-
     public ChartDataParser(GraphView graph) {
         this.graph = graph;
-        this.iobCobCalculatorPlugin = IobCobCalculatorPlugin.getPlugin();
     }
 
     public static List<BgReading> getDummyData(long start, long end) {
@@ -120,10 +118,9 @@ public class ChartDataParser {
         return preds;
     }
 
-    public void addBgReadings(long fromTime, long toTime, double lowLine, double highLine, List<BgReading> predictions) {
+    public void addBgReadings(long fromTime, long toTime, double lowLine, double highLine) {
         double maxBgValue = Double.MIN_VALUE;
-        //bgReadingsArray = MainApp.getDbHelper().getBgreadingsDataFromTime(fromTime, true);
-        bgReadingsArray = iobCobCalculatorPlugin.getBgReadings();
+        bgReadingsArray = IobCobCalculatorPlugin.getPlugin().getBgReadings();
         List<DataPointWithLabelInterface> bgListArray = new ArrayList<>();
 
         if (bgReadingsArray == null || bgReadingsArray.size() == 0) {
@@ -162,11 +159,11 @@ public class ChartDataParser {
 //        bgSeries.setSize(10);
 
         series.add(bgSeries);
-        series.add(predSeries);
     }
 
-    public void addPredictions() {
-        List<BgReading> readings = iobCobCalculatorPlugin.getBgReadings();
+    public void addPredictions(long fromTime, long endTime) {
+        List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
+        BgReading lastBg = DatabaseHelper.lastBg();
         List<BgReading> preds;
 
         if (readings == null || readings.size() == 0) {
@@ -175,13 +172,20 @@ public class ChartDataParser {
             preds = PredictionsPlugin.getPlugin().getPredictionReadings();
         }
 
+        for (BgReading r : preds) {
+            r.value += lastBg.value;
+        }
+
         DataPointWithLabelInterface[] pred = new DataPointWithLabelInterface[preds.size()];
         pred = preds.toArray(pred);
+        // Predictions are offsets!
 
         PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
         predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
         predSeries.setShape(PointsGraphSeries.Shape.POINT);
         predSeries.setSize(10);
+
+        series.add(predSeries);
     }
 
     public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {
