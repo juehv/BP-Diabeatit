@@ -1,10 +1,7 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -40,7 +37,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
-import info.nightscout.androidaps.plugins.general.home.ChartDataParser;
+import info.nightscout.androidaps.diabeatit.ui.home.ChartDataParser;
 
 public class HomeActivity extends AppCompatActivity {
 

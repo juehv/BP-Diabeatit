@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.plugins.general.home;
+package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.content.Context;
 import android.graphics.Color;
