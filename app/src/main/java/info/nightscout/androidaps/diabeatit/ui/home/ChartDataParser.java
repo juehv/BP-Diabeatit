@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
@@ -23,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
@@ -41,6 +44,7 @@ import info.nightscout.androidaps.plugins.general.overview.graphExtensions.Point
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.Scale;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
+import info.nightscout.androidaps.plugins.treatments.Treatment;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.Round;
 import kotlin.random.Random;
@@ -186,6 +190,30 @@ public class ChartDataParser {
         predSeries.setSize(10);
 
         series.add(predSeries);
+    }
+
+    public void addBolusEvents(long fromTime, long toTime) {
+        List<Treatment> treatments = TreatmentsPlugin.getPlugin().getService().getTreatmentDataFromTime(fromTime, true);
+
+        treatments.sort((t1, t2) -> Long.compare(t1.date, t2.date));
+        List<DataPoint> points = treatments.stream()
+                .filter(t -> t.isValid)
+                .map(t -> new DataPoint(t.date, t.insulin))
+                .collect(Collectors.toList());
+        DataPoint[] pointsArray = new DataPoint[points.size()];
+        pointsArray = points.toArray(pointsArray);
+
+        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(pointsArray);
+
+        // styling (Kind of TODO. I'm not satisified here)
+        series.setColor(MainApp.gc(R.color.graphBolusColor));
+        series.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        series.setSize(30);
+
+        this.series.add(series);
+    }
+
+    public void addIob(long fromTime, long toTime) {
     }
 
     public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {

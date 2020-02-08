@@ -218,6 +218,7 @@ public class HomeFragment extends Fragment {
                 data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
                 data.addBgReadings(fromTime, endTime, lowLine, highLine);
                 data.addPredictions(fromTime, endTime);
+                data.addBolusEvents(fromTime, endTime);
                 data.addNowLine();
                 data.formatAxis(fromTime, endTime);
                 Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
