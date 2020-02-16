@@ -25,20 +25,18 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.dexcom.cgm.EXTERNAL_PERMISSION" />
 
-    <uses-permission-sdk-23 android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-
-    <!-- To receive data from xdrip. -->
+    <uses-permission-sdk-23 android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> <!-- To receive data from xdrip. -->
     <uses-permission android:name="com.eveningoutpost.dexdrip.permissions.RECEIVE_BG_ESTIMATE" />
 
     <application
         android:name=".MainApp"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="${appIcon}"
         android:label="DIABEATIT"
         android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
-        android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
@@ -61,6 +59,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".diabeatit.ui.DownloadModelActivity"
+            android:label="@string/title_activity_download_model"
+            android:theme="@style/AppTheme.Launcher.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="diabeatit" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".diabeatit.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/diabeatit" />
@@ -70,13 +79,22 @@
             android:name=".diabeatit.ui.setup.SetupInsight"
             android:label="@string/title_activity_setup_insight"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".diabeatit.ui.ManualSportsEntryActivity" android:theme="@style/diabeatit"/>
-        <activity android:name=".diabeatit.ui.ManualCarbsEntryActivity" android:theme="@style/diabeatit" />
-        <activity android:name=".diabeatit.ui.ManualInsulinEntryActivity" android:theme="@style/diabeatit" />
-        <activity android:name=".diabeatit.ui.setup.SetupActivity" android:theme="@style/diabeatit" />
+        <activity
+            android:name=".diabeatit.ui.ManualSportsEntryActivity"
+            android:theme="@style/diabeatit" />
+        <activity
+            android:name=".diabeatit.ui.ManualCarbsEntryActivity"
+            android:theme="@style/diabeatit" />
+        <activity
+            android:name=".diabeatit.ui.ManualInsulinEntryActivity"
+            android:theme="@style/diabeatit" />
+        <activity
+            android:name=".diabeatit.ui.setup.SetupActivity"
+            android:theme="@style/diabeatit" />
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />
+
 
         <activity android:name=".MainActivity">
             <!--intent-filter>
@@ -111,44 +129,37 @@
             </intent-filter>
         </activity>
         <activity android:name=".plugins.pump.danaRS.activities.PairingHelperActivity" />
-        <activity android:name=".activities.HistoryBrowseActivity" />
-
-        <!-- Receive new BG readings from other local apps -->
+        <activity android:name=".activities.HistoryBrowseActivity" /> <!-- Receive new BG readings from other local apps -->
         <receiver
-                android:name=".receivers.DataReceiver"
-                android:enabled="true"
-                android:exported="true">
+            android:name=".receivers.DataReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
+
                 <!-- Receiver from xDrip -->
-                <action android:name="com.eveningoutpost.dexdrip.BgEstimate"/>
+                <action android:name="com.eveningoutpost.dexdrip.BgEstimate" />
                 <!-- Receiver from 640g uploader -->
-                <action android:name="com.eveningoutpost.dexdrip.NS_EMULATOR"/>
+                <action android:name="com.eveningoutpost.dexdrip.NS_EMULATOR" />
                 <!-- Receiver from glimp -->
-                <action android:name="it.ct.glicemia.ACTION_GLUCOSE_MEASURED"/>
+                <action android:name="it.ct.glicemia.ACTION_GLUCOSE_MEASURED" />
                 <!-- Receiver from Dexcom -->
-                <action android:name="com.dexcom.cgm.EXTERNAL_BROADCAST"/>
+                <action android:name="com.dexcom.cgm.EXTERNAL_BROADCAST" />
                 <!-- Receiver from Poctech -->
-                <action android:name="com.china.poctech.data"/>
+                <action android:name="com.china.poctech.data" />
                 <!-- Receiver from Tomato -->
-                <action android:name="com.fanqies.tomatofn.BgEstimate"/>
+                <action android:name="com.fanqies.tomatofn.BgEstimate" />
             </intent-filter>
-        </receiver>
-
-        <!-- Receive new SMS messages -->
+        </receiver> <!-- Receive new SMS messages -->
         <receiver
-                android:name=".receivers.SmsReceiver"
-                android:enabled="true"
-                android:exported="true"
-                android:permission="android.permission.BROADCAST_SMS">
+            android:name=".receivers.SmsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
-        </receiver>
-
-        <!-- Receiver keepalive, scheduled every 30 min -->
-        <receiver android:name=".receivers.KeepAliveReceiver" />
-
-        <!-- Auto start -->
+        </receiver> <!-- Receiver keepalive, scheduled every 30 min -->
+        <receiver android:name=".receivers.KeepAliveReceiver" /> <!-- Auto start -->
         <receiver
             android:name=".plugins.general.nsclient.receivers.AutoStartReceiver"
             android:enabled="true"
@@ -156,19 +167,15 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-
-        <!-- NSClient -->
-         <receiver
+        </receiver> <!-- NSClient -->
+        <receiver
             android:name=".plugins.general.nsclient.receivers.DBAccessReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="info.nightscout.client.DBACCESS" />
             </intent-filter>
-        </receiver>
-
-        <!-- Network change local receiver -->
+        </receiver> <!-- Network change local receiver -->
         <receiver android:name=".receivers.NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -184,9 +191,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
-
-        <!-- Service processing incomming data -->
+        </provider> <!-- Service processing incomming data -->
         <service
             android:name=".services.DataService"
             android:exported="false" />
@@ -213,6 +218,7 @@
             android:name=".plugins.general.wear.wearintegration.WatchUpdaterService"
             android:exported="true">
             <intent-filter>
+
                 <!-- <action android:name="com.google.android.gms.wearable.BIND_LISTENER" /> -->
                 <!-- listeners receive events that match the action and data filters -->
                 <action android:name="com.google.android.gms.wearable.CAPABILITY_CHANGED" />
@@ -283,7 +289,6 @@
         <service
             android:name=".plugins.general.overview.notifications.DismissNotificationService"
             android:exported="false" />
-
         <service android:name=".plugins.general.persistentNotification.DummyService" />
         <service android:name=".plugins.pump.insight.connection_service.InsightConnectionService" />
         <service android:name=".plugins.pump.insight.InsightAlertService" />
@@ -319,16 +324,16 @@
             android:name=".plugins.pump.insight.activities.InsightPairingInformationActivity"
             android:label="@string/pairing_information"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.RequestDexcomPermissionActivity" />
-
-        <!-- Medtronic service and activities -->
+        <activity android:name=".activities.RequestDexcomPermissionActivity" /> <!-- Medtronic service and activities -->
         <service
             android:name=".plugins.pump.medtronic.service.RileyLinkMedtronicService"
             android:enabled="true"
             android:exported="true" />
+
         <activity android:name=".plugins.pump.common.dialog.RileyLinkBLEScanActivity">
             <intent-filter>
                 <action android:name="info.nightscout.androidaps.plugins.PumpCommon.dialog.RileyLinkBLEScanActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -337,8 +342,10 @@
             android:label="@string/title_activity_rileylink_settings"
             android:theme="@style/Theme.AppCompat.NoTitle" />
         <activity android:name=".plugins.pump.medtronic.dialog.MedtronicHistoryActivity" />
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

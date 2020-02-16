@@ -382,4 +382,3 @@ printf('--------------\n')
 if (isMaster() && !allCommited()) {
     throw new GradleException('There are uncommitted changes or git system is not available. Clone sources again as described in wiki and do not allow gradle update')
 }
-
