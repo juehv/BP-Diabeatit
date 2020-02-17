@@ -4,58 +4,45 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
-import org.joda.time.DateTime;
-import com.jjoe64.graphview.series.Series;
-
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
-import info.nightscout.androidaps.db.TempTarget;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.logging.L;
-import info.nightscout.androidaps.plugins.aps.loop.APSResult;
-import info.nightscout.androidaps.plugins.aps.loop.LoopPlugin;
+import info.nightscout.androidaps.plugins.aps.openAPSSMB.SMBDefaults;
+import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.AreaGraphSeries;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DoubleDataPoint;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.FixedLineGraphSeries;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.PointsWithLabelGraphSeries;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.Scale;
+import info.nightscout.androidaps.plugins.general.overview.graphExtensions.ScaledDataPoint;
 import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
+import info.nightscout.androidaps.plugins.iob.iobCobCalculator.AutosensData;
+import info.nightscout.androidaps.plugins.iob.iobCobCalculator.AutosensResult;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 import info.nightscout.androidaps.plugins.treatments.Treatment;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
-import info.nightscout.androidaps.utils.Round;
-import kotlin.random.Random;
-import info.nightscout.androidaps.Constants;
-import info.nightscout.androidaps.data.Profile;
-import info.nightscout.androidaps.db.BgReading;
-import info.nightscout.androidaps.logging.L;
-import info.nightscout.androidaps.plugins.general.overview.graphExtensions.DataPointWithLabelInterface;
-import info.nightscout.androidaps.plugins.general.overview.graphExtensions.PointsWithLabelGraphSeries;
-import info.nightscout.androidaps.plugins.general.overview.graphExtensions.TimeAsXAxisLabelFormatter;
-import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
+import info.nightscout.androidaps.utils.DecimalFormatter;
 import info.nightscout.androidaps.utils.Round;
 import kotlin.random.Random;
 
@@ -186,7 +173,7 @@ public class ChartDataParser {
 
         PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
         predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
-        predSeries.setShape(PointsGraphSeries.Shape.POINT);
+        predSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
         predSeries.setSize(10);
 
         series.add(predSeries);
@@ -198,7 +185,7 @@ public class ChartDataParser {
         treatments.sort((t1, t2) -> Long.compare(t1.date, t2.date));
         List<DataPoint> points = treatments.stream()
                 .filter(t -> t.isValid)
-                .map(t -> new DataPoint(t.date, t.insulin))
+                .map(t -> new DataPoint(t.date, t.insulin * 10))
                 .collect(Collectors.toList());
         DataPoint[] pointsArray = new DataPoint[points.size()];
         pointsArray = points.toArray(pointsArray);
@@ -208,12 +195,84 @@ public class ChartDataParser {
         // styling (Kind of TODO. I'm not satisified here)
         series.setColor(MainApp.gc(R.color.graphBolusColor));
         series.setShape(PointsGraphSeries.Shape.TRIANGLE);
-        series.setSize(30);
+        series.setSize(20);
 
         this.series.add(series);
     }
 
-    public void addIob(long fromTime, long toTime) {
+    public void addIob(long fromTime, long toTime, boolean useForScale, double scale, boolean showPrediction) {
+        FixedLineGraphSeries<ScaledDataPoint> iobSeries;
+        List<ScaledDataPoint> iobArray = new ArrayList<>();
+        Double maxIobValueFound = Double.MIN_VALUE;
+        double lastIob = 0;
+        Scale iobScale = new Scale();
+
+        for (long time = fromTime; time <= toTime; time += 5 * 60 * 1000L) {
+            Profile profile = ProfileFunctions.getInstance().getProfile(time);
+            double iob = 0d;
+            if (profile != null)
+                iob = IobCobCalculatorPlugin.getPlugin().calculateFromTreatmentsAndTempsSynchronized(time, profile).iob;
+            if (Math.abs(lastIob - iob) > 0.02) {
+                if (Math.abs(lastIob - iob) > 0.2)
+                    iobArray.add(new ScaledDataPoint(time, lastIob, iobScale));
+                iobArray.add(new ScaledDataPoint(time, iob, iobScale));
+                maxIobValueFound = Math.max(maxIobValueFound, Math.abs(iob));
+                lastIob = iob;
+            }
+        }
+
+        ScaledDataPoint[] iobData = new ScaledDataPoint[iobArray.size()];
+        iobData = iobArray.toArray(iobData);
+        iobSeries = new FixedLineGraphSeries<>(iobData);
+        iobSeries.setDrawBackground(true);
+        iobSeries.setBackgroundColor(0x80FFFFFF & MainApp.gc(R.color.graphIobColor)); //50%
+        iobSeries.setColor(MainApp.gc(R.color.graphIobColor));
+        iobSeries.setThickness(3);
+
+        if (showPrediction) {
+            AutosensResult lastAutosensResult;
+            AutosensData autosensData = IobCobCalculatorPlugin.getPlugin().getLastAutosensDataSynchronized("GraphData");
+            if (autosensData == null)
+                lastAutosensResult = new AutosensResult();
+            else
+                lastAutosensResult = autosensData.autosensResult;
+            boolean isTempTarget = TreatmentsPlugin.getPlugin().getTempTargetFromHistory(System.currentTimeMillis()) != null;
+
+            List<DataPointWithLabelInterface> iobPred = new ArrayList<>();
+            IobTotal[] iobPredArray = IobCobCalculatorPlugin.getPlugin().calculateIobArrayForSMB(lastAutosensResult, SMBDefaults.exercise_mode, SMBDefaults.half_basal_exercise_target, isTempTarget);
+            for (IobTotal i : iobPredArray) {
+                iobPred.add(i.setColor(MainApp.gc(R.color.iobPredAS)));
+                maxIobValueFound = Math.max(maxIobValueFound, Math.abs(i.iob));
+            }
+            DataPointWithLabelInterface[] iobp = new DataPointWithLabelInterface[iobPred.size()];
+            iobp = iobPred.toArray(iobp);
+            this.series.add(new PointsWithLabelGraphSeries<>(iobp));
+
+
+            List<DataPointWithLabelInterface> iobPred2 = new ArrayList<>();
+            IobTotal[] iobPredArray2 = IobCobCalculatorPlugin.getPlugin().calculateIobArrayForSMB(new AutosensResult(), SMBDefaults.exercise_mode, SMBDefaults.half_basal_exercise_target, isTempTarget);
+            for (IobTotal i : iobPredArray2) {
+                iobPred2.add(i.setColor(MainApp.gc(R.color.iobPred)));
+                maxIobValueFound = Math.max(maxIobValueFound, Math.abs(i.iob));
+            }
+            DataPointWithLabelInterface[] iobp2 = new DataPointWithLabelInterface[iobPred2.size()];
+            iobp2 = iobPred2.toArray(iobp2);
+            this.series.add(new PointsWithLabelGraphSeries<>(iobp2));
+
+            if (L.isEnabled(L.AUTOSENS)) {
+                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(lastAutosensResult.ratio) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray));
+                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(1) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray2));
+            }
+        }
+
+        if (useForScale) {
+            maxY = maxIobValueFound;
+            minY = -maxIobValueFound;
+        }
+
+        iobScale.setMultiplier(maxY * scale / maxIobValueFound);
+
+        this.series.add(iobSeries);
     }
 
     public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {
