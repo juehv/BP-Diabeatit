@@ -56,6 +56,10 @@
         <item name="android:textAppearance">@style/diabeatit</item>
     </style>
 
+    <style name="diabeatit.NavView" parent="diabeatit">
+        <item name="android:textColorSecondary">@color/d_primaryDark</item>
+    </style>
+
     <style name="diabeatit.Container">
         <item name="android:background">@android:color/background_light</item>
     </style>

@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/colorBackground"
     android:fitsSystemWindows="true"
-    android:theme="@style/diabeatit"
     tools:openDrawer="start">
 
     <include
@@ -25,7 +24,8 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        style="@style/diabeatit"
+        style="@style/diabeatit.NavView"
+        android:theme="@style/diabeatit.NavView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
