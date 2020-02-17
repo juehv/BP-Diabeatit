@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -85,6 +86,10 @@ public class PredictionsPlugin {
             log.warn("Could not find last bg reading");
         }
         long timestamp_base = lastBg != null ? lastBg.date : System.currentTimeMillis();
+        for (BgReading reading : MainApp.getDbHelper().getBgreadingsDataFromTime(Instant.now().toEpochMilli() - 1000 * 60 * 60 * 24, true)) {
+            if (reading.date > timestamp_base)
+                timestamp_base = reading.date;
+        }
 
         final long DELTA_5MIN = 5 * 60 * 1000;
         float[] values = getPredictions(timestamp_base);

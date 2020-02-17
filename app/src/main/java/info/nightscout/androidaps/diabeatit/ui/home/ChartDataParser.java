@@ -15,6 +15,7 @@ import com.jjoe64.graphview.series.Series;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -291,7 +292,7 @@ public class ChartDataParser {
     }
 
     public void addNowLine() {
-        long now = System.currentTimeMillis();
+        long now = Instant.now().toEpochMilli();
         LineGraphSeries<DataPoint> seriesNow;
         DataPoint[] nowPoints = new DataPoint[]{
                 new DataPoint(now, 0),
