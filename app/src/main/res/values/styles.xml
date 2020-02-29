@@ -10,9 +10,49 @@
         <item name="android:foregroundTint">@android:color/black</item>
         <item name="android:drawableTint">@android:color/black</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@color/colorFont</item>
+        <item name="android:textColorSecondary">@color/mdtp_dark_gray</item>
 
         <item name="android:listDivider">@android:color/darker_gray</item>
         <item name="android:titleTextColor">@android:color/black</item>
+
+        <item name="preferenceTheme">@style/diabeatit.PreferenceTheme</item>
+        <item name="popupWindowStyle">@style/diabeatit</item>
+    </style>
+
+    <style name="diabeatit.PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="android:windowBackground">@android:color/background_light</item>
+        <item name="backgroundTint">@android:color/background_light</item>
+        <item name="background">@android:color/background_light</item>
+        <item name="android:foregroundTint">@color/colorFont</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+        <item name="android:colorForeground">@color/colorFont</item>
+        <item name="android:textColorPrimary">@color/colorFont</item>
+        <item name="android:textColorSecondary">@color/colorFont</item>
+
+        <item name="alertDialogTheme">@style/diabeatit</item>
+
+        <!--
+        <item name="preferenceScreenStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceFragmentCompatStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceFragmentStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceCategoryStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceInformationStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="checkBoxPreferenceStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="switchPreferenceCompatStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="switchPreferenceStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="dialogPreferenceStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="editTextPreferenceStyle">@style/diabeatit.PreferenceTheme</item>
+        <item name="preferenceFragmentListStyle">@style/diabeatit.PreferenceTheme</item>
+        -->
+
+    </style>
+
+    <style name="diabeatit.PreferenceTheme.InformationStyle">
+        <item name="android:textColor">@color/colorFont</item>
+        <item name="android:foregroundTint">@color/colorFont</item>
+        <item name="android:textAppearance">@style/diabeatit</item>
     </style>
 
     <style name="diabeatit.Container">

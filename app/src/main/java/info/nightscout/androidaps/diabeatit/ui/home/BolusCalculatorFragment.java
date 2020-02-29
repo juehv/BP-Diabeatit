@@ -1,10 +1,12 @@
 package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +15,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.data.Profile;
+import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.db.DatabaseHelper;
+import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
+import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
+import info.nightscout.androidaps.plugins.insulin.BolusCalculatorBuilder;
 
 public class BolusCalculatorFragment extends Fragment implements View.OnClickListener{
     BolusCalculatorViewModel viewModel;
+    BolusCalculator calc;
+
+    TextView bolusText;
+    EditText carbs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +41,50 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
         final Button buttonExplanation = root.findViewById(R.id.button_bolus_explanation);
         buttonExplanation.setOnClickListener(this);
 
+        bolusText = root.findViewById(R.id.textView_bolus);
+        carbs = root.findViewById(R.id.editText_carbs);
+
+        carbs.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                onCarbsChanged();
+
+                return false;
+            }
+        });
+
+        setupCalculator();
+
+        updateText(calc);
+
         return root;
+    }
+
+    private void onCarbsChanged() {
+        try {
+            Double d = Double.parseDouble(carbs.getText().toString());
+            calc.setCarbs(d.intValue());
+        } catch (Exception e) {
+            // ...
+        }
+    }
+
+    private void setupCalculator() {
+        Profile p = ProfileFunctions.getInstance().getProfile();
+        BgReading lastBg = DatabaseHelper.lastBg();
+
+        BolusCalculatorBuilder b = new BolusCalculatorBuilder();
+        b.setCarbs(0);
+        b.setBG(lastBg.value);
+        b.setCorrection(0);
+        b.setProfile(p);
+
+        calc = b.build();
+        calc.setOnCalculatedListener(this::updateText);
+    }
+
+    private void updateText(BolusCalculator src) {
+        bolusText.setText(String.format("%f", src.getCalculatedTotalInsulin()));
     }
 
     @Override
