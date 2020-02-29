@@ -5,9 +5,12 @@ import android.content.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
+
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.insulin.prediction.PredictionInputs;
@@ -21,8 +24,6 @@ public class BolusCalculator {
     private Logger log = LoggerFactory.getLogger(L.CORE);
 
     // inputs
-    private PredictionModel predictionModel;
-    private PredictionInputs predictionInputs;
     private Profile profile;
     private int carbs;
     private double cob;
@@ -71,7 +72,6 @@ public class BolusCalculator {
         this.cob = cob;
         this.bg = bg;
         this.correction = correction;
-        this.predictionModel = new SlopeBGPredictionModel(); // this is the current default.
 
         calculate();
     }
@@ -133,6 +133,9 @@ public class BolusCalculator {
     private void calculateInsulinFromTrend() {
         insulinFromTrend = 0.0;
         if (useTrend) {
+            float[] preds = PredictionsPlugin.getPlugin().getPredictions(Instant.now().toEpochMilli());
+            float trend15min = preds[3];
+            insulinFromTrend = trend / isf;
             /* TODO
             trend = predictionModel.get15minDelta(profile);
             insulinFromTrend = Profile.fromMgdlToUnits(trend, profile.getUnits()) / isf;
@@ -230,23 +233,6 @@ public class BolusCalculator {
 
     public Double getCorrection() {
         return correction;
-    }
-
-    public void setPredictionInputs(PredictionInputs inputs) {
-        this.predictionInputs = inputs;
-    }
-
-    public PredictionInputs getPredictionInputs() {
-        return predictionInputs;
-    }
-
-    public void setPredictionModel(PredictionModel model) {
-        predictionModel = model;
-        calculate();
-    }
-
-    public PredictionModel getPredictionModel() {
-        return this.predictionModel;
     }
 
     // flags
