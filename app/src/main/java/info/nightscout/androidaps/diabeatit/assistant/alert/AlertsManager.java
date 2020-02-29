@@ -37,7 +37,7 @@ public class AlertsManager {
 	recycler.setLayoutManager(layoutManager);
 	recycler.setAdapter(alertAdapter);
 	recycler.setItemAnimator(new SlideInLeftAnimator());
-	new ItemTouchHelper(new SwipeToDismissCallback(alertAdapter, alertView)).attachToRecyclerView(recycler);
+	new ItemTouchHelper(new SwipeToDismissCallback(context, alertAdapter, alertView)).attachToRecyclerView(recycler);
 
 	AlertStore.attachListener(new AlertStoreListener() {
 
@@ -100,14 +100,18 @@ public class AlertsManager {
 
 class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
+	private Context context;
+
   private AlertAdapter adapter;
   private View alertView;
 
   private Alert lastRemoved;
 
-  SwipeToDismissCallback(AlertAdapter adapter, View alertView) {
+  SwipeToDismissCallback(Context context, AlertAdapter adapter, View alertView) {
 
 	super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
+	this.context = context;
 
 	this.adapter = adapter;
 	this.alertView = alertView;
@@ -133,6 +137,7 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
   private void showUndoDialog() {
 
 	Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
+	((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(context.getColor(android.R.color.white));
 	snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
 	snackbar.show();
 
