@@ -38,6 +38,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
 import info.nightscout.androidaps.diabeatit.ui.home.ChartDataParser;
+import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -185,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
             if (menuItem.getItemId() == R.id.nav_settings)
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
             else if (menuItem.getItemId() == R.id.nav_setup)
-                startActivity(new Intent(HomeActivity.this, SetupActivity.class));
+                startActivity(new Intent(HomeActivity.this, SetupWizardActivity.class));
             else if (menuItem.getItemId() == R.id.nav_home)
                 drawer.closeDrawers();
             else if (menuItem.getItemId() == R.id.add_dummy_data)

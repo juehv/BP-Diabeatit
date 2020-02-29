@@ -48,10 +48,10 @@
             android:name=".diabeatit.ui.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
+            <!--intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter-->
         </activity>
         <activity
             android:name=".diabeatit.ui.SettingsActivity"
@@ -72,11 +72,11 @@
             android:label="@string/title_activity_alert_history" />
 
         <activity android:name=".MainActivity">
-            <!-- intent-filter>
+            <!--intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter -->
+            </intent-filter-->
         </activity>
         <activity android:name=".activities.PreferencesActivity" />
         <activity
@@ -289,7 +289,12 @@
             android:name=".setupwizard.SetupWizardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_setup_wizard"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activities.SingleFragmentActivity"
