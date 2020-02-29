@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
+import info.nightscout.androidaps.diabeatit.assistant.alert.DismissedAlertsManager;
 
 public class AlertHistoryActivity extends AppCompatActivity {
 
@@ -12,9 +14,11 @@ public class AlertHistoryActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_alert_history);
+		setContentView(R.layout.activity_alert_history);
 
-	// Global.dismissedAlerts.init(getApplicationContext(), findViewById(R.id.alert_history_layout));
+		setTheme(R.style.diabeatit);
+
+		AlertStore.dismissedAlerts = new DismissedAlertsManager(getApplicationContext(), findViewById(R.id.alert_history_layout));
 
   }
 

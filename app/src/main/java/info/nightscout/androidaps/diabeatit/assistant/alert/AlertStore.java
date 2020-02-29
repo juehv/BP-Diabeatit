@@ -40,8 +40,7 @@ public class AlertStore {
 
   /**
    * Sets the list of active and dismissed alerts to the given array.
-   * This will overwrite all currently stored alerts. It will notify the listeners via
-   * {@link AlertStoreListener#onDataSetInit()}.
+   * This will overwrite all currently stored alerts.
    * Distinction of active/dismissed is made on basis of {@link Alert#active}
    * @param alertBundle The new data set
    */

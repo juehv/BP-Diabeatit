@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
         assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(@NotNull View bottomSheet, int newState) {
+            public void onStateChanged(View bottomSheet, int newState) {
 
                 entryMenu.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
                 entryMenu.collapseImmediately();
@@ -95,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSlide(@NotNull View view, float v) {}
+            public void onSlide(View view, float v) {}
         });
 
         assistantPeek.setOnClickListener(view -> assistant.setState(BottomSheetBehavior.STATE_EXPANDED));

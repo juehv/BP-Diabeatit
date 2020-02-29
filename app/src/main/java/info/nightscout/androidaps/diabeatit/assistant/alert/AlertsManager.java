@@ -107,7 +107,7 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   SwipeToDismissCallback(AlertAdapter adapter, View alertView) {
 
-	super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+	super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
 	this.adapter = adapter;
 	this.alertView = alertView;
