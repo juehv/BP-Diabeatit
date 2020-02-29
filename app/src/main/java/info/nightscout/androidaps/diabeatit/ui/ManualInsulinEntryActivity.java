@@ -7,6 +7,7 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +15,10 @@ import java.text.DateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.db.Source;
 
 public class ManualInsulinEntryActivity extends AppCompatActivity {
 
@@ -101,5 +105,6 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
     private void enterButtonClick() {
         /* TODO */
+
     }
 }

@@ -7,29 +7,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_home"
+
+    <com.jjoe64.graphview.GraphView
+        style="@android:style/Theme.Light"
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="test"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="250dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/bolus_calculator_fragment_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <FrameLayout
         android:id="@+id/bolus_calculator_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="270dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home">
+        app:layout_constraintTop_toBottomOf="@+id/chart">
 
     </FrameLayout>
 

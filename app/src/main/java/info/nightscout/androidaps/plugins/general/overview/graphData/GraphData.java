@@ -713,12 +713,6 @@ public class GraphData {
             }
         }
 
-        double step = 1d;
-        if (maxY < 1) step = 0.1d;
-        graph.getViewport().setMaxY(Round.ceilTo(maxY, step));
-        graph.getViewport().setMinY(Round.floorTo(minY, step));
-        graph.getViewport().setYAxisBoundsManual(true);
-
         // draw it
         graph.onDataChanged(false, false);
     }

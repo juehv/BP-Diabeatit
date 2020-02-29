@@ -21,7 +21,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this).get(BolusCalculatorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bolus_calculator, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+        //final TextView textView = root.findViewById(R.id.text_home);
 
         final Button buttonMoreValues = root.findViewById(R.id.button_more_values);
         buttonMoreValues.setOnClickListener(this);

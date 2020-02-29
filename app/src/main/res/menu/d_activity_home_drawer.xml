@@ -19,6 +19,9 @@
                     android:id="@+id/nav_setup"
                     android:icon="@drawable/d_ic_settings"
                     android:title="Setup" />
+                <item android:id="@+id/add_dummy_data"
+                    android:icon="@drawable/ic_warning"
+                    android:title="Add Dummy Data" />
             </menu>
         </item>
     </group>
@@ -34,6 +37,7 @@
             <item
                 android:id="@+id/nav_device_sensor"
                 android:icon="@drawable/ic_device"
+                android:iconTint="@color/d_primary"
                 android:title="Sensor" />
             <item
                 android:id="@+id/nav_device_pump"

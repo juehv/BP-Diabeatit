@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Graph in HomeActivity -->
+    <color name="graphGridColor">@android:color/black</color>
+    <color name="graphVerticalLabelColor">@android:color/black</color>
+    <color name="graphHorizontalLabelColor">@android:color/black</color>
+    <color name="graphBgReadingsColor">@android:color/holo_orange_dark</color>
+    <color name="graphBgPredictionColor">@android:color/holo_blue_light</color>
+    <color name="graphTargetBgColor">#4000FF00</color>
+    <color name="graphBolusColor">#803050FF</color>
+    <color name="graphIobColor">#FF2020FF</color>
+
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#009688</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorFont">#202020</color>
 
@@ -39,9 +52,9 @@
     <color name="tempTargetConfirmation">#77dd77</color>
 
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#40bbaa</color>
+<!--    <color name="colorPrimary">#212121</color>-->
+<!--    <color name="colorPrimaryDark">#000000</color>-->
+<!--    <color name="colorAccent">#40bbaa</color>-->
     <color name="mdtp_accent_color">#40bbaa</color>
     <color name="colorInitializingBorder">#00695c</color>
 

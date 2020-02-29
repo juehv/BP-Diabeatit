@@ -77,8 +77,8 @@ public class LocalProfilePlugin extends PluginBase implements ProfileInterface {
         SP.putString(LOCAL_PROFILE + "ic", ic.toString());
         SP.putString(LOCAL_PROFILE + "isf", isf.toString());
         SP.putString(LOCAL_PROFILE + "basal", basal.toString());
-        SP.putString(LOCAL_PROFILE + "targetlow", targetLow.toString());
-        SP.putString(LOCAL_PROFILE + "targethigh", targetHigh.toString());
+        SP.putString(LOCAL_PROFILE + "target_low", targetLow.toString());
+        SP.putString(LOCAL_PROFILE + "target_high", targetHigh.toString());
 
         createAndStoreConvertedProfile();
         edited = false;
@@ -119,7 +119,7 @@ public class LocalProfilePlugin extends PluginBase implements ProfileInterface {
             }
         }
         try {
-            targetLow = new JSONArray(SP.getString(LOCAL_PROFILE + "targetlow", DEFAULTARRAY));
+            targetLow = new JSONArray(SP.getString(LOCAL_PROFILE + "target_low", DEFAULTARRAY));
         } catch (JSONException e1) {
             try {
                 targetLow = new JSONArray(DEFAULTARRAY);
@@ -127,7 +127,7 @@ public class LocalProfilePlugin extends PluginBase implements ProfileInterface {
             }
         }
         try {
-            targetHigh = new JSONArray(SP.getString(LOCAL_PROFILE + "targethigh", DEFAULTARRAY));
+            targetHigh = new JSONArray(SP.getString(LOCAL_PROFILE + "target_high", DEFAULTARRAY));
         } catch (JSONException e1) {
             try {
                 targetHigh = new JSONArray(DEFAULTARRAY);
@@ -200,10 +200,10 @@ public class LocalProfilePlugin extends PluginBase implements ProfileInterface {
             profile.put("target_low", targetLow);
             profile.put("target_high", targetHigh);
             profile.put("units", mgdl ? Constants.MGDL : Constants.MMOL);
-            store.put(LOCAL_PROFILE, profile);
         } catch (JSONException e) {
             log.error("Unhandled exception", e);
         }
+
         return new ProfileStore(json);
     }
 
