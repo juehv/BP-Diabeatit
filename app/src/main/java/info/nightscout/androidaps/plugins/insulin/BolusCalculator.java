@@ -134,7 +134,7 @@ public class BolusCalculator {
         insulinFromTrend = 0.0;
         if (useTrend) {
             float[] preds = PredictionsPlugin.getPlugin().getPredictions(Instant.now().toEpochMilli());
-            float trend15min = preds[3];
+            float trend15min = preds[Math.min(3, preds.length - 1)];
             insulinFromTrend = trend / isf;
             /* TODO
             trend = predictionModel.get15minDelta(profile);
