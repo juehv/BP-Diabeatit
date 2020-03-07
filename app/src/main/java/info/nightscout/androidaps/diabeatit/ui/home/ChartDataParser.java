@@ -52,6 +52,8 @@ public class ChartDataParser {
 
     private GraphView graph;
 
+    private long tsNow = 0;
+
     public double maxY = Double.MIN_VALUE;
     public double minY = Double.MAX_VALUE;
     private List<BgReading> bgReadingsArray;
@@ -154,6 +156,8 @@ public class ChartDataParser {
     }
 
     public void addPredictions(long fromTime, long endTime) {
+        if (DatabaseHelper.lastBg() == null)
+            return;
         List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
         BgReading lastBg = DatabaseHelper.lastBg();
         List<BgReading> preds;
@@ -163,6 +167,8 @@ public class ChartDataParser {
         } else {
             preds = PredictionsPlugin.getPlugin().getPredictionReadings();
         }
+
+        preds = preds.stream().filter(p -> p.getX() >= tsNow).collect(Collectors.toList());
 
         for (BgReading r : preds) {
             r.value += lastBg.value;
@@ -310,6 +316,7 @@ public class ChartDataParser {
         seriesNow.setCustomPaint(paint);
 
         this.series.add(seriesNow);
+        tsNow = now;
     }
 
     public void formatAxis(long startTime, long endTime) {

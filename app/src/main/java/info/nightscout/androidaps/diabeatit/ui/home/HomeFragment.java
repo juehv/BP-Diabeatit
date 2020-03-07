@@ -217,10 +217,10 @@ public class HomeFragment extends Fragment {
                 data.clearSeries();
                 data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
                 data.addBgReadings(fromTime, endTime, lowLine, highLine);
+                data.addNowLine();
                 data.addPredictions(fromTime, endTime);
                 data.addBolusEvents(fromTime, endTime);
                 data.addIob(fromTime, now, false, 0.5d, false);
-                data.addNowLine();
                 data.formatAxis(fromTime, endTime);
                 Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
             } catch (Exception ex) {
