@@ -72,11 +72,11 @@ class ErrorDialog : DialogFragment() {
         if (sound != 0) {
             val alarm = Intent(MainApp.instance().applicationContext, AlarmSoundService::class.java)
             alarm.putExtra("soundid", sound)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 MainApp.instance().startForegroundService(alarm)
             } else {
                 MainApp.instance().startService(alarm)
-            }
+            }*/
         }
     }
 

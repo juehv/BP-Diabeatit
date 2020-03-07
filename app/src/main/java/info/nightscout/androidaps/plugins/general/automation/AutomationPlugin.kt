@@ -59,10 +59,10 @@ object AutomationPlugin : PluginBase(PluginDescription()
 
     override fun onStart() {
         val context = MainApp.instance().applicationContext
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            context.startForegroundService(Intent(context, LocationService::class.java))
-        else
-            context.startService(Intent(context, LocationService::class.java))
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        //    context.startForegroundService(Intent(context, LocationService::class.java))
+        //else
+        //    context.startService(Intent(context, LocationService::class.java))
 
         super.onStart()
         loadFromSP()
@@ -74,10 +74,10 @@ object AutomationPlugin : PluginBase(PluginDescription()
                 .subscribe({ e ->
                     if (e.isChanged(R.string.key_location)) {
                         context.stopService(Intent(context, LocationService::class.java))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                             context.startForegroundService(Intent(context, LocationService::class.java))
                         else
-                            context.startService(Intent(context, LocationService::class.java))
+                            context.startService(Intent(context, LocationService::class.java))*/
                     }
                 }, {
                     FabricPrivacy.logException(it)

@@ -85,14 +85,16 @@ public class LocationService extends Service {
         super.onStartCommand(intent, flags, startId);
         if (L.isEnabled(L.LOCATION))
             log.debug("onStartCommand");
-        startForeground(PersistentNotificationPlugin.ONGOING_NOTIFICATION_ID, PersistentNotificationPlugin.getPlugin().getLastNotification());
+        // TODO killed
+        //startForeground(PersistentNotificationPlugin.ONGOING_NOTIFICATION_ID, PersistentNotificationPlugin.getPlugin().getLastNotification());
         return START_STICKY;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground(PersistentNotificationPlugin.ONGOING_NOTIFICATION_ID, PersistentNotificationPlugin.getPlugin().getLastNotification());
+        // TODO killed
+        //startForeground(PersistentNotificationPlugin.ONGOING_NOTIFICATION_ID, PersistentNotificationPlugin.getPlugin().getLastNotification());
 
         if (L.isEnabled(L.LOCATION))
             log.debug("onCreate");

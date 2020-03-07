@@ -13,9 +13,10 @@ public class AutoStartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             context.startForegroundService(new Intent(context, DummyService.class));
         else
-            context.startService(new Intent(context, DummyService.class));
+            context.startService(new Intent(context, DummyService.class));*/
     }
 }

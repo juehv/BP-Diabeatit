@@ -573,7 +573,8 @@ public class ListenerService extends WearableListenerService implements GoogleAp
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(CHANGE_NOTIF_ID, builder.build());
+        // TODO killed
+        //mNotificationManager.notify(CHANGE_NOTIF_ID, builder.build());
     }
 
     private void cancelNotificationRequest(String actionstring) {
