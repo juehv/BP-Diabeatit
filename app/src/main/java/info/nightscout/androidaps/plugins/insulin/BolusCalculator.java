@@ -10,6 +10,7 @@ import java.time.Instant;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
+import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.logging.L;
@@ -133,6 +134,7 @@ public class BolusCalculator {
     private void calculateInsulinFromTrend() {
         insulinFromTrend = 0.0;
         if (useTrend) {
+            if (DatabaseHelper.lastBg() == null) return;
             float[] preds = PredictionsPlugin.getPlugin().getPredictions(Instant.now().toEpochMilli());
             float trend15min = preds[Math.min(3, preds.length - 1)];
             insulinFromTrend = trend / isf;
