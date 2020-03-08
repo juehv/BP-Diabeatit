@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -53,7 +55,6 @@ public class HomeActivity extends AppCompatActivity {
 
 	private AppBarConfiguration mAppBarConfiguration;
 	private FloatingActionsMenu entryMenu;
-	private HomeFragment homeFrag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +280,10 @@ public class HomeActivity extends AppCompatActivity {
 		for (BgReading r : data) {
 			MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
 		}
-
+		HomeFragment frag = HomeFragment.getInstance();
+		if (frag != null) {
+			frag.scheduleUpdateGUI("Dummy data added");
+		}
 	}
 
 	@Override
