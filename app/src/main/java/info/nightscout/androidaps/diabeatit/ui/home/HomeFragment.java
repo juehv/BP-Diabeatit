@@ -2,7 +2,9 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.jjoe64.graphview.GraphView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,6 +37,7 @@ import info.nightscout.androidaps.data.IobTotal;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.interfaces.PumpInterface;
 import info.nightscout.androidaps.logging.L;
@@ -51,6 +55,7 @@ import info.nightscout.androidaps.utils.T;
 
 public class HomeFragment extends Fragment {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
+    private static WeakReference<HomeFragment> instance;
 
     private HomeViewModel homeViewModel;
     private int rangeToDisplay = 6; // for graph
@@ -74,6 +79,8 @@ public class HomeFragment extends Fragment {
     private static final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture<?> scheduledUpdate = null;
 
+    SharedPreferences.OnSharedPreferenceChangeListener listener;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -89,9 +96,39 @@ public class HomeFragment extends Fragment {
         graph = root.findViewById(R.id.chart);
         data = new ChartDataParser(graph);
         scheduleUpdateGUI("");
+
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                prefsChanged(sharedPreferences, key);
+            }
+        };
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainApp.instance().getApplicationContext());
+        prefs.registerOnSharedPreferenceChangeListener(listener);
+
+        instance = new WeakReference<>(this);
         return root;
     }
 
+    @Nullable
+    public static HomeFragment getInstance() {
+        return instance.get();
+    }
+
+    private void prefsChanged(SharedPreferences prefs, String key) {
+        Log.d("PREF", String.format("Updated prefs w/ key %s", key));
+        switch (key) {
+            case PredictionsPlugin.PREF_KEY_KI_MODEL_PATH:
+            case PredictionsPlugin.PREF_KEY_MODEL_TYPE:
+                PredictionsPlugin.updateFromSettings();
+                scheduleUpdateGUI("Preferences updated");
+                Log.i("PREF", "SharedPreferences updated.");
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,12 +46,14 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
 import info.nightscout.androidaps.diabeatit.ui.home.ChartDataParser;
+import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
 	private AppBarConfiguration mAppBarConfiguration;
 	private FloatingActionsMenu entryMenu;
+	private HomeFragment homeFrag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +69,6 @@ public class HomeActivity extends AppCompatActivity {
 		setupManualEntry();
 		setupAssistant();
 		setupDrawer();
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.registerOnSharedPreferenceChangeListener(this::onSharedPreferencesChanged);
 
 		Intent serviceIntent = new Intent(this, ForegroundService.class);
 		startForegroundService(serviceIntent);
@@ -280,6 +280,7 @@ public class HomeActivity extends AppCompatActivity {
 		for (BgReading r : data) {
 			MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
 		}
+
 	}
 
 	@Override
@@ -326,18 +327,5 @@ public class HomeActivity extends AppCompatActivity {
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 		return NavigationUI.navigateUp(navController, mAppBarConfiguration)
 						|| super.onSupportNavigateUp();
-	}
-
-	private void onSharedPreferencesChanged(SharedPreferences prefs, String key) {
-		switch (key) {
-			case PredictionsPlugin.PREF_KEY_KI_MODEL_PATH:
-				//TODO break?
-			case PredictionsPlugin.PREF_KEY_MODEL_TYPE:
-				PredictionsPlugin.updateFromSettings();
-				// TODO Schedule Update for Graph
-				break;
-			default:
-				break;
-		}
 	}
 }
