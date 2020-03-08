@@ -165,7 +165,7 @@ public class NotificationStore {
             @SuppressLint("WrongConstant") NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_ID,
                     NotificationManager.IMPORTANCE_HIGH);
-            mNotificationManager.createNotificationChannel(channel);
+            //mNotificationManager.createNotificationChannel(channel);
         }
     }
 

@@ -7,7 +7,7 @@ import android.os.IBinder;
 
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
-import info.nightscout.androidaps.diabeatit.assistant.alert.NotificationStore;
+import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 
 public class ForegroundService extends Service {
 
@@ -21,7 +21,7 @@ public class ForegroundService extends Service {
 
 		Alert alert = new Alert(Alert.Urgency.INFO, R.drawable.ic_cake, "Diabeatit running", "The diabeatit service is online.");
 
-		NotificationStore.createChannel("service", "Keep-Alive", "Foreground Service Notification", NotificationManager.IMPORTANCE_LOW);
+		NotificationStore.createChannel("service", "Keep-Alive", "Foreground Service Notification", NotificationManager.IMPORTANCE_MIN);
 		startForeground(1, NotificationStore.createNotification("service", alert, false));
 
 		return START_NOT_STICKY;

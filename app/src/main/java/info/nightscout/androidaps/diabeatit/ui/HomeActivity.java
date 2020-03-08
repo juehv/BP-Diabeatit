@@ -1,12 +1,9 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +16,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,14 +39,12 @@ import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
-import info.nightscout.androidaps.diabeatit.assistant.alert.NotificationStore;
 import info.nightscout.androidaps.diabeatit.service.ForegroundService;
-import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
@@ -65,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
 	private AppBarConfiguration mAppBarConfiguration;
 	private FloatingActionsMenu entryMenu;
 	private NavigationView navView;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +90,10 @@ public class HomeActivity extends AppCompatActivity {
 	}
 
 	private void setupManualEntry() {
+		entryMenu = findViewById(R.id.manual_entry_fab_menu);
+		FloatingActionButton manualInsulinButton = entryMenu.findViewById(R.id.fab_manual_insulin);
+		FloatingActionButton manualCarbsButton = entryMenu.findViewById(R.id.fab_manual_carbs);
+		FloatingActionButton manualSportsButton = entryMenu.findViewById(R.id.fab_manual_sports);
 
         manualInsulinButton.setOnClickListener((v) ->
         {
@@ -170,43 +171,70 @@ public class HomeActivity extends AppCompatActivity {
 		TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
 
 		alertClearB.setOnClickListener(view -> AlertStore.clearAlerts());
+        Runnable peekUpdater = () -> {
+
+            TextView titleV = assistantPeek.findViewById(R.id.assistant_peek_title);
+            TextView descV = assistantPeek.findViewById(R.id.assistant_peek_description);
+            ImageView iconV = assistantPeek.findViewById(R.id.assistant_status_icon);
+
+            Alert.Urgency urgency = Arrays.stream(AlertStore.getActiveAlerts()).map(a -> a.URGENCY).reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b).orElse(Alert.Urgency.INFO);
+            int amount = (int) Arrays.stream(AlertStore.getActiveAlerts()).filter(a -> a.URGENCY.equals(urgency)).count();
+
+            int color = amount == 0 ? getColor(android.R.color.holo_green_light) : getColor(urgency.getRawColor());
+            String title = amount == 0 ? getString(R.string.assistant_peek_title_none) : getString(urgency.getPeekTitle());
+            String desc = AlertStore.getActiveAlerts().length + " " + getString(R.string.assistant_peek_description);
+            Drawable icon = amount == 0 ? getDrawable(R.drawable.ic_check) : getDrawable(R.drawable.ic_alert);
+
+            assistantPeek.setBackgroundColor(color);
+            titleV.setText(title);
+            descV.setText(desc);
+            iconV.setImageDrawable(icon);
+
+        };
 
 		AlertStore.attachListener(new AlertStoreListener() {
-
 			@Override
-			public void onNewAlert(Alert alert) {
+			public void onNewAlert (Alert alert){
 
 				alertClearB.setVisibility(View.VISIBLE);
 				alertEmptyT.setVisibility(View.GONE);
 
+				peekUpdater.run();
+
 			}
 
 			@Override
-			public void onAlertDismissed(Alert alert) {}
+			public void onAlertDismissed (Alert alert){
+
+				peekUpdater.run();
+
+			}
 
 			@Override
-			public void onAlertRestored(Alert alert) {
+			public void onAlertRestored (Alert alert){
 
 				onNewAlert(alert);
 
 			}
 
 			@Override
-			public void onAlertsCleared() {
+			public void onAlertsCleared () {
 
 				alertClearB.setVisibility(View.GONE);
 				alertEmptyT.setVisibility(View.VISIBLE);
-
+				peekUpdater.run();
 			}
 
 			@Override
-			public void onDataSetInit() {
+			public void onDataSetInit () {
 
 				int len = AlertStore.getActiveAlerts().length;
 				alertClearB.setVisibility(len == 0 ? View.GONE : View.VISIBLE);
 				alertEmptyT.setVisibility(len == 0 ? View.VISIBLE : View.GONE);
+				peekUpdater.run();
 
 			}
+		});
 
         CardView alertHistoryC = findViewById(R.id.alert_history);
         alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
@@ -227,12 +255,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         );
-
-		// TODO Testing - Remove
-		findViewById(R.id.alert_settings).setOnClickListener(
-						view -> AlertStore.newAlert(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_face_sad), "BG Alert", "Blood glucose level critical!"))
-		);
-
 	}
 
 	private void setupDrawer() {
@@ -241,9 +263,9 @@ public class HomeActivity extends AppCompatActivity {
 		final NavigationView navView = findViewById(R.id.nav_view);
 
 		mAppBarConfiguration = new AppBarConfiguration.Builder(
-						R.id.nav_home, R.id.nav_settings, R.id.nav_device_sensor, R.id.nav_device_pump, R.id.nav_device_tracker)
-						.setDrawerLayout(drawer)
-						.build();
+				R.id.nav_home, R.id.nav_settings, R.id.nav_device_sensor, R.id.nav_device_pump, R.id.nav_device_tracker)
+				.setDrawerLayout(drawer)
+				.build();
 
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 		NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -260,6 +282,7 @@ public class HomeActivity extends AppCompatActivity {
 			return true;
 
 		});
+	}
 
     private void addDummyData() {
         final long timespan = 60 * 60 * 1000;
@@ -269,11 +292,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /*
-        Closes entry menu when user clicks somewhere else
-     */
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public void onBackPressed() {
+
+        View nestedScrollView = findViewById(R.id.assistant_scrollview);
+        final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
+
+        if (assistant.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            assistant.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        else
+            super.onBackPressed();
+
+    }
 
 	/*
 			Closes entry menu when user clicks somewhere else
@@ -307,7 +337,6 @@ public class HomeActivity extends AppCompatActivity {
 		return NavigationUI.navigateUp(navController, mAppBarConfiguration)
 						|| super.onSupportNavigateUp();
 	}
-}
 
 	private void onSharedPreferencesChanged(SharedPreferences prefs, String key) {
 		switch (key) {

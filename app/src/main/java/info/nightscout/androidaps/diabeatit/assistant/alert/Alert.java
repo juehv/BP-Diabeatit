@@ -7,6 +7,7 @@ import java.util.Date;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 
 public class Alert {
 
@@ -17,20 +18,21 @@ public class Alert {
 	 */
 	public enum Urgency {
 
-		INFO(1, R.string.alert_label_info, R.drawable.label_gray, R.color.d_info, "info", "General Alerts", NotificationManager.IMPORTANCE_DEFAULT),
-		WARNING(2, R.string.alert_label_warning, R.drawable.label_amber, R.color.d_warning, "warning", "Warnings", NotificationManager.IMPORTANCE_HIGH),
-		URGENT(3, R.string.alert_label_urgent, R.drawable.label_red, R.color.d_important, "important", "Important Alerts", NotificationManager.IMPORTANCE_HIGH);
+		INFO(1, R.string.alert_label_info, R.drawable.label_gray, R.color.d_info, "info", "General Alerts", NotificationManager.IMPORTANCE_DEFAULT, R.string.assistant_peek_title_info),
+		WARNING(2, R.string.alert_label_warning, R.drawable.label_amber, R.color.d_warning, "warning", "Warnings", NotificationManager.IMPORTANCE_HIGH, R.string.assistant_peek_title_warning),
+		URGENT(3, R.string.alert_label_urgent, R.drawable.label_red, R.color.d_important, "important", "Important Alerts", NotificationManager.IMPORTANCE_HIGH, R.string.assistant_peek_title_urgent);
 
-		private int priority, stringId, background, rawColor;
+		private int priority, stringId, background, rawColor, peekTitle;
 		private String channel;
 
-		Urgency(int p, int s, int b, int r, String nId, String nTitle, int nImp) {
+		Urgency(int p, int s, int b, int r, String nId, String nTitle, int nImp, int t) {
 
 			priority = p;
 			stringId = s;
 			background = b;
 			rawColor = r;
 			channel = nId;
+			peekTitle = t;
 
 			NotificationStore.createChannel(nId, nTitle, nTitle, nImp);
 
@@ -55,6 +57,8 @@ public class Alert {
 		public String getChannel() {
 			return channel;
 		}
+
+		public int getPeekTitle() { return peekTitle; }
 
 	}
 
