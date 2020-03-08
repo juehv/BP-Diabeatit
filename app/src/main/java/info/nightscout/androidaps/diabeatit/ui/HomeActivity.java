@@ -86,18 +86,17 @@ public class HomeActivity extends AppCompatActivity {
 		FloatingActionButton manualCarbsButton = findViewById(R.id.fab_manual_carbs);
 		FloatingActionButton manualSportsButton = findViewById(R.id.fab_manual_sports);
 
-		manualInsulinButton.setOnClickListener((v) ->
-		{
+		manualInsulinButton.setOnClickListener(v -> {
 			startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class));
 			entryMenu.collapseImmediately();
 		});
-		manualCarbsButton.setOnClickListener((v) ->
-		{
+
+		manualCarbsButton.setOnClickListener(v -> {
 			startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class));
 			entryMenu.collapseImmediately();
 		});
-		manualSportsButton.setOnClickListener((v) ->
-		{
+
+		manualSportsButton.setOnClickListener(v -> {
 			startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class));
 			entryMenu.collapseImmediately();
 		});
