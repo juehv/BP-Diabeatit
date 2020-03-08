@@ -126,18 +126,6 @@ public class HomeActivity extends AppCompatActivity {
         assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
         assistantPeek.setVisibility(View.GONE);
         assistantPeekAlt.setVisibility(View.VISIBLE);
-		entryMenu = findViewById(R.id.manual_entry_fab_menu);
-		FloatingActionButton manualInsulinButton = findViewById(R.id.fab_manual_insulin);
-		FloatingActionButton manualCarbsButton = findViewById(R.id.fab_manual_carbs);
-		FloatingActionButton manualSportsButton = findViewById(R.id.fab_manual_sports);
-
-		manualInsulinButton.setOnClickListener((v) ->
-						startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class)));
-		manualCarbsButton.setOnClickListener((v) ->
-						startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class)));
-		manualSportsButton.setOnClickListener((v) ->
-						startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class)));
-
 	}
 
 	private void setupAssistant() {
