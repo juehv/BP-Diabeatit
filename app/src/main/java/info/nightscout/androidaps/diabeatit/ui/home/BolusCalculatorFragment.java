@@ -106,9 +106,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
                     startActivity(new Intent(getContext(), MainActivity.class));
 
-                }
+                } else onCarbsChanged();
 
-                onCarbsChanged();
                 return false;
 
             }
@@ -124,11 +123,12 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     private void onCarbsChanged() {
 
         try {
+
             Double d = carbs.getText().length() == 0 ? 0 : Double.parseDouble(carbs.getText().toString());
             calc.setCarbs(d.intValue());
-        } catch (Exception e) {
-            // ...
-        }
+
+        } catch (Exception e) {}
+
     }
 
     private void setupCalculator() {
