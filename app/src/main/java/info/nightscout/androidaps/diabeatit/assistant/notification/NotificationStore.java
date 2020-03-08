@@ -84,6 +84,12 @@ public class NotificationStore {
 
 	}
 
+	public static void reset() {
+
+		activeNotifications.clear();
+
+	}
+
 	private static int nextId() {
 
 		return activeNotifications.keySet().stream().reduce((a, b) -> a > b ? a : b).orElse(1) + 1;

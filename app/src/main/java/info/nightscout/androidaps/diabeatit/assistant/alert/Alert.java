@@ -92,8 +92,9 @@ public class Alert {
 
 	public void send() {
 
-		if (!notify || NOTIFICATION_ID >= 0) return;
+		if (!notify) return;
 
+		destroy();
 		NOTIFICATION_ID = NotificationStore.sendNotification(URGENCY.getChannel(), this);
 
 	}
@@ -106,7 +107,5 @@ public class Alert {
 		NOTIFICATION_ID = -1;
 
 	}
-
-	public boolean sent() { return NOTIFICATION_ID >= 0; }
 
 }
