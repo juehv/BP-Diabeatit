@@ -18,11 +18,11 @@ import info.nightscout.androidaps.utils.SP;
 
 public class PredictionsPlugin {
     // Settings keys we use. See also xml/d_predictions_prefs.xml
-    private final static String PREF_KEY_MODEL_TYPE = "d_selected_model_type";
-    private final static String PREF_KEY_KI_MODEL_PATH = "d_ki_model_name";
+    public final static String PREF_KEY_MODEL_TYPE = "d_selected_model_type";
+    public final static String PREF_KEY_KI_MODEL_PATH = "d_ki_model_name";
 
-    private final static String MODEL_TYPE_KI = "ki";
-    private final static String MODEL_TYPE_AVGDELTA = "avgdelta";
+    public final static String MODEL_TYPE_KI = "ki";
+    public final static String MODEL_TYPE_AVGDELTA = "avgdelta";
 
     private static Logger log = LoggerFactory.getLogger("PREDICTIONS");
     private static PredictionsPlugin instance;
@@ -37,6 +37,10 @@ public class PredictionsPlugin {
 
     protected PredictionsPlugin() {
         loadSettings();
+    }
+
+    public static void updateFromSettings() {
+        instance = new PredictionsPlugin();
     }
 
     /** Load models as defined in the preferences */
