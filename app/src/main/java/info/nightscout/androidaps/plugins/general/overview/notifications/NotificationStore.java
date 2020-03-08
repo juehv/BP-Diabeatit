@@ -70,20 +70,20 @@ public class NotificationStore {
             if (usesChannels && n.soundId != null && n.soundId != 0) {
                 Intent alarm = new Intent(MainApp.instance().getApplicationContext(), AlarmSoundService.class);
                 alarm.putExtra("soundid", n.soundId);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     MainApp.instance().startForegroundService(alarm);
                 else
-                    MainApp.instance().startService(alarm);
+                    MainApp.instance().startService(alarm);*/
             }
 
         } else {
             if (n.soundId != null && n.soundId != 0) {
                 Intent alarm = new Intent(MainApp.instance().getApplicationContext(), AlarmSoundService.class);
                 alarm.putExtra("soundid", n.soundId);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     MainApp.instance().startForegroundService(alarm);
                 else
-                    MainApp.instance().startService(alarm);
+                    MainApp.instance().startService(alarm);*/
             }
         }
 
@@ -153,7 +153,8 @@ public class NotificationStore {
                     .setContentTitle(MainApp.gs(R.string.info))
             ;
         }
-        mgr.notify(n.id, notificationBuilder.build());
+        // TODO killed
+        //mgr.notify(n.id, notificationBuilder.build());
     }
 
     private void createNotificationChannel() {

@@ -437,7 +437,8 @@ public class LoopPlugin extends PluginBase {
                     NotificationManager mNotificationManager =
                             (NotificationManager) MainApp.instance().getSystemService(Context.NOTIFICATION_SERVICE);
                     // mId allows you to update the notification later on.
-                    mNotificationManager.notify(Constants.notificationID, builder.build());
+                    // TODO killed
+                    //mNotificationManager.notify(Constants.notificationID, builder.build());
                     RxBus.INSTANCE.send(new EventNewOpenLoopNotification());
 
                     // Send to Wear

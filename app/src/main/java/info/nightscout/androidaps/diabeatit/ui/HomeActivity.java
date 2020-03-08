@@ -1,8 +1,15 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +20,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,9 +36,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.diabeatit.assistant.alert.NotificationStore;
+import info.nightscout.androidaps.diabeatit.service.ForegroundService;
 import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
@@ -54,9 +65,19 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSystemService(NotificationManager.class).cancelAll();
+
         setupManualEntry();
         setupAssistant();
         setupDrawer();
+
+        // TODO Create foreground service
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        startForegroundService(serviceIntent);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.getAction() != null && intent.getAction() == "info.nightscout.androidaps.OPEN_ASSISTANT")
+            expandAssistant();
 
     }
 
@@ -68,11 +89,36 @@ public class HomeActivity extends AppCompatActivity {
         FloatingActionButton manualSportsButton = findViewById(R.id.fab_manual_sports);
 
         manualInsulinButton.setOnClickListener((v) ->
-                startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class)));
+        {
+            startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class));
+            entryMenu.collapseImmediately();
+        });
         manualCarbsButton.setOnClickListener((v) ->
-                startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class)));
+        {
+            startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class));
+            entryMenu.collapseImmediately();
+        });
         manualSportsButton.setOnClickListener((v) ->
-                startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class)));
+        {
+            startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class));
+            entryMenu.collapseImmediately();
+        });
+
+    }
+
+    private void expandAssistant() {
+
+        View nestedScrollView = findViewById(R.id.assistant_scrollview);
+        final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
+        final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
+        final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
+
+        entryMenu.setVisibility(View.GONE);
+        entryMenu.collapseImmediately();
+
+        assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
+        assistantPeek.setVisibility(View.GONE);
+        assistantPeekAlt.setVisibility(View.VISIBLE);
 
     }
 
@@ -147,22 +193,24 @@ public class HomeActivity extends AppCompatActivity {
 
         });
 
-        CardView alertSettingsC = findViewById(R.id.alert_settings);
-        // TODO Open relevant settings page
-
         CardView alertHistoryC = findViewById(R.id.alert_history);
         alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
 
         // TODO Example alerts - Remove
         List<Alert> as = new ArrayList<>();
-        as.add(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_battery_alert), "Battery low", "The battery is low."));
-        as.add(new Alert(Alert.Urgency.INFO, getDrawable(R.drawable.ic_timeline), "Lorem Ipsum", "Lorem Ipsum!"));
-        as.add(new Alert(Alert.Urgency.WARNING, getDrawable(R.drawable.ic_bluetooth_disabled), "Multiline", "Line<br>Break"));
-        AlertStore.initAlerts(as.toArray(new Alert[0]));
+        as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
+        as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
+        as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
+        if (AlertStore.getActiveAlerts().length == 0)
+            AlertStore.initAlerts(as.toArray(new Alert[0]));
 
-        // TODO Testing - Remove
         findViewById(R.id.alert_settings).setOnClickListener(
-                view -> AlertStore.newAlert(new Alert(Alert.Urgency.URGENT, getDrawable(R.drawable.ic_face_sad), "BG Alert", "Blood glucose level critical!"))
+            view -> {
+                Intent intent = new Intent();
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+                startActivity(intent);
+            }
         );
 
     }

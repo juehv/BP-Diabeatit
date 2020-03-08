@@ -165,10 +165,10 @@ public class PersistentNotificationPlugin extends PluginBase {
 
     private void triggerNotificationUpdate(boolean boot) {
         updateNotification(boot);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             MainApp.instance().startForegroundService(new Intent(MainApp.instance(), DummyService.class));
         else
-            MainApp.instance().startService(new Intent(MainApp.instance(), DummyService.class));
+            MainApp.instance().startService(new Intent(MainApp.instance(), DummyService.class));*/
     }
 
     private void updateNotification(boolean boot) {
@@ -302,7 +302,8 @@ public class PersistentNotificationPlugin extends PluginBase {
                 (NotificationManager) MainApp.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 
         android.app.Notification notification = builder.build();
-        mNotificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
+        // TODO killed
+        //mNotificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
         this.notification = notification;
     }
 

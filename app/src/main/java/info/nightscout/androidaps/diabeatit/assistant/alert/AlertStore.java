@@ -49,6 +49,9 @@ public class AlertStore {
     alerts = new ArrayList<>();
     alerts.addAll(Arrays.asList(alertBundle));
 
+    for (Alert alert : alerts)
+      alert.send();
+
     for (AlertStoreListener l : listeners)
       l.onDataSetInit();
 
@@ -65,6 +68,7 @@ public class AlertStore {
     alert.active = true;
 
     alerts.add(alert);
+    alert.send();
 
     for (AlertStoreListener l : listeners)
       l.onNewAlert(alert);
@@ -86,6 +90,7 @@ public class AlertStore {
 
     int index = alerts.indexOf(alert);
     alerts.get(index).active = false;
+    alert.destroy();
 
     for (AlertStoreListener l : listeners)
       l.onAlertDismissed(alert);
@@ -115,6 +120,7 @@ public class AlertStore {
 
     int index = alerts.indexOf(alert);
     alerts.get(index).active = true;
+    alert.send();
 
     for (AlertStoreListener l : listeners)
       l.onAlertRestored(alert);

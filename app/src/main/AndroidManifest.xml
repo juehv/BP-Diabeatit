@@ -34,22 +34,29 @@
         android:name=".MainApp"
         android:allowBackup="true"
         android:icon="${appIcon}"
-        android:label="@string/app_name"
+        android:label="DIABEATIT"
         android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
         android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
+
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
+        <service
+            android:name=".diabeatit.service.ForegroundService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".diabeatit.ui.HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="DIABEATIT"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="info.nightscout.androidaps.OPEN_ASSISTANT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
