@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,14 +40,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -63,6 +57,8 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
 import info.nightscout.androidaps.diabeatit.ui.home.ChartDataParser;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 import info.nightscout.androidaps.diabeatit.util.FileDownloader;
+import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
+import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -83,6 +79,9 @@ public class HomeActivity extends AppCompatActivity {
         setupManualEntry();
         setupAssistant();
         setupDrawer();
+		// Update stuff when Preferences are being changed
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this::onSharedPreferencesChanged);
 
         // TODO Create foreground service
         Intent serviceIntent = new Intent(this, ForegroundService.class);
@@ -307,5 +306,19 @@ public class HomeActivity extends AppCompatActivity {
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 		return NavigationUI.navigateUp(navController, mAppBarConfiguration)
 						|| super.onSupportNavigateUp();
+	}
+}
+
+	private void onSharedPreferencesChanged(SharedPreferences prefs, String key) {
+		switch (key) {
+			case PredictionsPlugin.PREF_KEY_KI_MODEL_PATH:
+			case PredictionsPlugin.PREF_KEY_MODEL_TYPE:
+				PredictionsPlugin.updateFromSettings();
+				// TODO Schedule Update for Graph
+				break;
+
+			default:
+				break;
+		}
 	}
 }
