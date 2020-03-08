@@ -51,6 +51,13 @@
     <string name="alert_undo_action">Undo</string>
     <string name="title_activity_alert_history">History</string>
 
+    <!-- Assistant -->
+    <string name="assistant_peek_title_none">All done!</string>
+    <string name="assistant_peek_title_info">Info available</string>
+    <string name="assistant_peek_title_warning">Warning</string>
+    <string name="assistant_peek_title_urgent">Urgent Alert</string>
+    <string name="assistant_peek_description">notification(s) available</string>
+
     <string name="title_activity_setup_insight">SetupInsight</string>
 
 

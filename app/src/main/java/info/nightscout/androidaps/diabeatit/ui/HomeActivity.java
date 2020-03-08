@@ -1,26 +1,21 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,17 +27,13 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
-import info.nightscout.androidaps.diabeatit.assistant.alert.NotificationStore;
 import info.nightscout.androidaps.diabeatit.service.ForegroundService;
-import info.nightscout.androidaps.diabeatit.ui.setup.SetupActivity;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
@@ -154,6 +145,27 @@ public class HomeActivity extends AppCompatActivity {
 
         alertClearB.setOnClickListener(view -> AlertStore.clearAlerts());
 
+        Runnable peekUpdater = () -> {
+
+            TextView titleV = assistantPeek.findViewById(R.id.assistant_peek_title);
+            TextView descV = assistantPeek.findViewById(R.id.assistant_peek_description);
+            ImageView iconV = assistantPeek.findViewById(R.id.assistant_status_icon);
+
+            Alert.Urgency urgency = Arrays.stream(AlertStore.getActiveAlerts()).map(a -> a.URGENCY).reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b).orElse(Alert.Urgency.INFO);
+            int amount = (int) Arrays.stream(AlertStore.getActiveAlerts()).filter(a -> a.URGENCY.equals(urgency)).count();
+
+            int color = amount == 0 ? getColor(android.R.color.holo_green_light) : getColor(urgency.getRawColor());
+            String title = amount == 0 ? getString(R.string.assistant_peek_title_none) : getString(urgency.getPeekTitle());
+            String desc = AlertStore.getActiveAlerts().length + " " + getString(R.string.assistant_peek_description);
+            Drawable icon = amount == 0 ? getDrawable(R.drawable.ic_check) : getDrawable(R.drawable.ic_alert);
+
+            assistantPeek.setBackgroundColor(color);
+            titleV.setText(title);
+            descV.setText(desc);
+            iconV.setImageDrawable(icon);
+
+        };
+
         AlertStore.attachListener(new AlertStoreListener() {
 
             @Override
@@ -162,10 +174,16 @@ public class HomeActivity extends AppCompatActivity {
                 alertClearB.setVisibility(View.VISIBLE);
                 alertEmptyT.setVisibility(View.GONE);
 
+                peekUpdater.run();
+
             }
 
             @Override
-            public void onAlertDismissed(Alert alert) {}
+            public void onAlertDismissed(Alert alert) {
+
+                peekUpdater.run();
+
+            }
 
             @Override
             public void onAlertRestored(Alert alert) {
@@ -180,6 +198,8 @@ public class HomeActivity extends AppCompatActivity {
                 alertClearB.setVisibility(View.GONE);
                 alertEmptyT.setVisibility(View.VISIBLE);
 
+                peekUpdater.run();
+
             }
 
             @Override
@@ -188,6 +208,8 @@ public class HomeActivity extends AppCompatActivity {
                 int len = AlertStore.getActiveAlerts().length;
                 alertClearB.setVisibility(len == 0 ? View.GONE : View.VISIBLE);
                 alertEmptyT.setVisibility(len == 0 ? View.VISIBLE : View.GONE);
+
+                peekUpdater.run();
 
             }
 
@@ -251,6 +273,19 @@ public class HomeActivity extends AppCompatActivity {
         for (BgReading r : data) {
             MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        View nestedScrollView = findViewById(R.id.assistant_scrollview);
+        final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
+
+        if (assistant.getState() == BottomSheetBehavior.STATE_EXPANDED)
+            assistant.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        else
+            super.onBackPressed();
+
     }
 
     /*

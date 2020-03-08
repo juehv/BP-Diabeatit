@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.diabeatit.assistant.alert;
+package info.nightscout.androidaps.diabeatit.assistant.notification;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -15,6 +15,7 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
 public class NotificationStore {
