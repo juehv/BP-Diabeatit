@@ -24,6 +24,7 @@
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <LinearLayout
+            android:id="@+id/assistant_peek_master"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
@@ -50,6 +51,7 @@
 
             </RelativeLayout>
 
+            <!-- when closed -->
             <RelativeLayout
                 android:id="@+id/assistant_peek"
                 android:layout_width="match_parent"

@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private int rangeToDisplay = 6; // for graph
-    private GraphView graph;
+    public GraphView graph;
     private ChartDataParser data;
 
 
