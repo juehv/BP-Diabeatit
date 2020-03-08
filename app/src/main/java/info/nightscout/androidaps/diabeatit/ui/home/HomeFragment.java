@@ -38,19 +38,26 @@ import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
+import info.nightscout.androidaps.events.EventNewBG;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.interfaces.PumpInterface;
 import info.nightscout.androidaps.logging.L;
 import info.nightscout.androidaps.plugins.aps.loop.APSResult;
 import info.nightscout.androidaps.plugins.aps.loop.LoopPlugin;
+import info.nightscout.androidaps.plugins.bus.RxBus;
 import info.nightscout.androidaps.plugins.configBuilder.ConfigBuilderPlugin;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.general.nsclient.data.NSDeviceStatus;
 import info.nightscout.androidaps.plugins.general.overview.OverviewPlugin;
+import info.nightscout.androidaps.plugins.iob.iobCobCalculator.events.EventIobCalculationProgress;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
+import info.nightscout.androidaps.utils.FabricPrivacy;
 import info.nightscout.androidaps.utils.Profiler;
 import info.nightscout.androidaps.utils.SP;
 import info.nightscout.androidaps.utils.T;
+import io.fabric.sdk.android.Fabric;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
 
 public class HomeFragment extends Fragment {
@@ -61,6 +68,8 @@ public class HomeFragment extends Fragment {
     private int rangeToDisplay = 6; // for graph
     public GraphView graph;
     private ChartDataParser data;
+
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     private int numberOfLines = 1;
@@ -136,9 +145,17 @@ public class HomeFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.bolus_calculator_fragment_container, childFragment).commit();
         scheduleUpdateGUI("onViewCreated");
+
+        // Update GUI whenever we receive a new BG reading
+        disposable.add(RxBus.INSTANCE
+            .toObservable(EventNewBG.class)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(event -> {
+                scheduleUpdateGUI("New BG Event", 100);
+            }, FabricPrivacy::logException));
     }
 
-    public void scheduleUpdateGUI(final String from) {
+    public void scheduleUpdateGUI(final String from, final long delay) {
         class UpdateRunnable implements Runnable {
             public void run() {
                 Activity activity = getActivity();
@@ -154,8 +171,11 @@ public class HomeFragment extends Fragment {
         if (scheduledUpdate != null)
             scheduledUpdate.cancel(false);
         Runnable task = new UpdateRunnable();
-        final int msec = 500;
-        scheduledUpdate = worker.schedule(task, msec, TimeUnit.MILLISECONDS);
+        scheduledUpdate = worker.schedule(task, delay, TimeUnit.MILLISECONDS);
+    }
+
+    public void scheduleUpdateGUI(final String from) {
+        scheduleUpdateGUI(from, 500);
     }
 
     @SuppressLint("SetTextI18n")

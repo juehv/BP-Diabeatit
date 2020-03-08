@@ -21,6 +21,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
+import info.nightscout.androidaps.plugins.treatments.CarbsGenerator;
 
 public class ManualCarbsEntryActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -127,6 +129,29 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
     }
 
     private void enterButtonOnClick() {
-        /* TODO */
+        int carbs;
+        String notes;
+        long timestamp;
+
+        try {
+            Double c = Double.parseDouble(carbsText.getText().toString());
+            carbs = c.intValue();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return;
+            // TODO: Handle this properly!
+        }
+        notes = this.notes.getText().toString();
+        timestamp = this.timestamp.toInstant().toEpochMilli();
+
+        CarbsGenerator.createCarb(carbs, timestamp, "ManualCarbsActivity", notes);
+
+        // Update GUI
+        HomeFragment fragment = HomeFragment.getInstance();
+        if (fragment != null) {
+            fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
+        }
+
+        finish();
     }
 }

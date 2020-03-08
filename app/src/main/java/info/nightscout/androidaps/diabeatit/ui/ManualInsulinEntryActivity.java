@@ -17,8 +17,11 @@ import java.util.Calendar;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.data.DetailedBolusInfo;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.Source;
+import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
+import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 
 public class ManualInsulinEntryActivity extends AppCompatActivity {
 
@@ -104,7 +107,33 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
     }
 
     private void enterButtonClick() {
-        /* TODO */
+        double amount;
+        String notes;
+        long timestamp;
+        try {
+            amount = Double.parseDouble(amountEditText.getText().toString());
+            // TODO: Constraints!
+        } catch (NumberFormatException e) {
+            // TODO: Properly handle! Maybe set hint text.
+            e.printStackTrace();
+            return;
+        }
+        notes = notesText.getText().toString();
+        timestamp = this.timestamp.toInstant().toEpochMilli();
 
+        DetailedBolusInfo bolus = new DetailedBolusInfo();
+        bolus.insulin = amount;
+        bolus.carbs = 0; // XXX
+        bolus.date = timestamp;
+        bolus.context = this;
+        bolus.source = Source.USER;
+
+        TreatmentsPlugin.getPlugin().addToHistoryTreatment(bolus, true);
+
+        HomeFragment homeFragment = HomeFragment.getInstance();
+        if (homeFragment != null)
+            homeFragment.scheduleUpdateGUI("ManualBolusEntry", 1000);
+
+        finish();
     }
 }
