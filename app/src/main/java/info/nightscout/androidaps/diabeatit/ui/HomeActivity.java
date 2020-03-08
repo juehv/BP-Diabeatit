@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +42,6 @@ import java.util.List;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
-import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.diabeatit.service.ForegroundService;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
@@ -52,6 +53,10 @@ import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class HomeActivity extends AppCompatActivity {
+
+	private static WeakReference<HomeActivity> instance;
+
+	public LinearLayout assistantPeekEnveloped;
 
 	private AppBarConfiguration mAppBarConfiguration;
 	private FloatingActionsMenu entryMenu;
@@ -67,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
 		getSystemService(NotificationManager.class).cancelAll();
 		NotificationStore.reset();
 
+		assistantPeekEnveloped = findViewById(R.id.assistant_peek_master);
+
 		setupManualEntry();
 		setupAssistant();
 		setupDrawer();
@@ -77,6 +84,8 @@ public class HomeActivity extends AppCompatActivity {
 		Intent intent = getIntent();
 		if (intent != null && intent.getAction() != null && intent.getAction().equals("info.nightscout.androidaps.OPEN_ASSISTANT"))
 			expandAssistant();
+
+		instance = new WeakReference<>(this);
 
 	}
 
@@ -331,4 +340,11 @@ public class HomeActivity extends AppCompatActivity {
 		return NavigationUI.navigateUp(navController, mAppBarConfiguration)
 						|| super.onSupportNavigateUp();
 	}
+
+	public static HomeActivity getInstance() {
+
+		return instance.get();
+
+	}
+
 }

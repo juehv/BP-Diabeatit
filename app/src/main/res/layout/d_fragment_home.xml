@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
 
     <com.jjoe64.graphview.GraphView
@@ -13,23 +12,14 @@
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_gravity="bottom"
         android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/bolus_calculator_fragment_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center_horizontal" />
 
     <FrameLayout
         android:id="@+id/bolus_calculator_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="270dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chart">
+        android:layout_height="wrap_content">
 
     </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
