@@ -23,12 +23,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import info.nightscout.androidaps.MainActivity;
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
+import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
 import info.nightscout.androidaps.plugins.insulin.BolusCalculatorBuilder;
@@ -39,6 +41,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     BolusCalculator calc;
 
     TextView bolusText;
+    TextView notes;
     EditText carbs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,6 +56,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             startActivity(i);
             return root;
         }
+
+        notes = root.findViewById(R.id.textView_notes);
 
         final Button buttonMoreValues = root.findViewById(R.id.button_more_values);
         buttonMoreValues.setOnClickListener(this);
@@ -154,7 +159,21 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     }
 
     private void updateText(BolusCalculator src) {
-        bolusText.setText(String.format("%f", src.getCalculatedTotalInsulin()));
+        final double EPSILON = 0.01;
+
+        double unconstrainedValue = src.getCalculatedTotalInsulin();
+        double constrainedValue = MainApp.getConstraintChecker()
+                .applyBolusConstraints(new Constraint<>(unconstrainedValue))
+                .value();
+
+        if ((constrainedValue - unconstrainedValue) > EPSILON) {
+            // the value is constrained
+            notes.setVisibility(View.VISIBLE);
+        } else {
+            notes.setVisibility(View.GONE);
+        }
+
+        bolusText.setText(String.format("%f", constrainedValue));
     }
 
     @Override
