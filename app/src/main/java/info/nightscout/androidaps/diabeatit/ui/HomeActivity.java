@@ -89,43 +89,45 @@ public class HomeActivity extends AppCompatActivity {
             expandAssistant();
 	}
 
-	private void setupManualEntry() {
-		entryMenu = findViewById(R.id.manual_entry_fab_menu);
-		FloatingActionButton manualInsulinButton = entryMenu.findViewById(R.id.fab_manual_insulin);
-		FloatingActionButton manualCarbsButton = entryMenu.findViewById(R.id.fab_manual_carbs);
-		FloatingActionButton manualSportsButton = entryMenu.findViewById(R.id.fab_manual_sports);
+		private void setupManualEntry() {
 
-        manualInsulinButton.setOnClickListener((v) ->
-        {
-            startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class));
-            entryMenu.collapseImmediately();
-        });
-        manualCarbsButton.setOnClickListener((v) ->
-        {
-            startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class));
-            entryMenu.collapseImmediately();
-        });
-        manualSportsButton.setOnClickListener((v) ->
-        {
-            startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class));
-            entryMenu.collapseImmediately();
-        });
+			entryMenu = findViewById(R.id.manual_entry_fab_menu);
+			FloatingActionButton manualInsulinButton = entryMenu.findViewById(R.id.fab_manual_insulin);
+			FloatingActionButton manualCarbsButton = entryMenu.findViewById(R.id.fab_manual_carbs);
+			FloatingActionButton manualSportsButton = entryMenu.findViewById(R.id.fab_manual_sports);
+
+	    manualInsulinButton.setOnClickListener((v) ->
+	    {
+	        startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class));
+	        entryMenu.collapseImmediately();
+	    });
+	    manualCarbsButton.setOnClickListener((v) ->
+	    {
+	        startActivity(new Intent(HomeActivity.this, ManualCarbsEntryActivity.class));
+	        entryMenu.collapseImmediately();
+	    });
+	    manualSportsButton.setOnClickListener((v) ->
+	    {
+	        startActivity(new Intent(HomeActivity.this, ManualSportsEntryActivity.class));
+	        entryMenu.collapseImmediately();
+	    });
 
     }
 
     private void expandAssistant() {
 
-        View nestedScrollView = findViewById(R.id.assistant_scrollview);
-        final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
-        final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
-        final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
+      View nestedScrollView = findViewById(R.id.assistant_scrollview);
+      final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
+      final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
+      final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
 
-        entryMenu.setVisibility(View.GONE);
-        entryMenu.collapseImmediately();
+      entryMenu.setVisibility(View.GONE);
+      entryMenu.collapseImmediately();
 
-        assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
-        assistantPeek.setVisibility(View.GONE);
-        assistantPeekAlt.setVisibility(View.VISIBLE);
+      assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
+      assistantPeek.setVisibility(View.GONE);
+      assistantPeekAlt.setVisibility(View.VISIBLE);
+
 	}
 
 	private void setupAssistant() {
@@ -159,26 +161,27 @@ public class HomeActivity extends AppCompatActivity {
 		TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
 
 		alertClearB.setOnClickListener(view -> AlertStore.clearAlerts());
-        Runnable peekUpdater = () -> {
 
-            TextView titleV = assistantPeek.findViewById(R.id.assistant_peek_title);
-            TextView descV = assistantPeek.findViewById(R.id.assistant_peek_description);
-            ImageView iconV = assistantPeek.findViewById(R.id.assistant_status_icon);
+    Runnable peekUpdater = () -> {
 
-            Alert.Urgency urgency = Arrays.stream(AlertStore.getActiveAlerts()).map(a -> a.URGENCY).reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b).orElse(Alert.Urgency.INFO);
-            int amount = (int) Arrays.stream(AlertStore.getActiveAlerts()).filter(a -> a.URGENCY.equals(urgency)).count();
+      TextView titleV = assistantPeek.findViewById(R.id.assistant_peek_title);
+      TextView descV = assistantPeek.findViewById(R.id.assistant_peek_description);
+      ImageView iconV = assistantPeek.findViewById(R.id.assistant_status_icon);
 
-            int color = amount == 0 ? getColor(android.R.color.holo_green_light) : getColor(urgency.getRawColor());
-            String title = amount == 0 ? getString(R.string.assistant_peek_title_none) : getString(urgency.getPeekTitle());
-            String desc = AlertStore.getActiveAlerts().length + " " + getString(R.string.assistant_peek_description);
-            Drawable icon = amount == 0 ? getDrawable(R.drawable.ic_check) : getDrawable(R.drawable.ic_alert);
+      Alert.Urgency urgency = Arrays.stream(AlertStore.getActiveAlerts()).map(a -> a.URGENCY).reduce((a, b) -> a.getPriority() > b.getPriority() ? a : b).orElse(Alert.Urgency.INFO);
+      int amount = (int) Arrays.stream(AlertStore.getActiveAlerts()).filter(a -> a.URGENCY.equals(urgency)).count();
 
-            assistantPeek.setBackgroundColor(color);
-            titleV.setText(title);
-            descV.setText(desc);
-            iconV.setImageDrawable(icon);
+      int color = amount == 0 ? getColor(android.R.color.holo_green_light) : getColor(urgency.getRawColor());
+      String title = amount == 0 ? getString(R.string.assistant_peek_title_none) : getString(urgency.getPeekTitle());
+      String desc = AlertStore.getActiveAlerts().length + " " + getString(R.string.assistant_peek_description);
+      Drawable icon = amount == 0 ? getDrawable(R.drawable.ic_check) : getDrawable(R.drawable.ic_alert);
 
-        };
+      assistantPeek.setBackgroundColor(color);
+      titleV.setText(title);
+      descV.setText(desc);
+      iconV.setImageDrawable(icon);
+
+    };
 
 		AlertStore.attachListener(new AlertStoreListener() {
 			@Override
@@ -224,25 +227,23 @@ public class HomeActivity extends AppCompatActivity {
 			}
 		});
 
-        CardView alertHistoryC = findViewById(R.id.alert_history);
-        alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
+    CardView alertHistoryC = findViewById(R.id.alert_history);
+    alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
 
-        // TODO Example alerts - Remove
-        List<Alert> as = new ArrayList<>();
-        as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
-        as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
-        as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
-        if (AlertStore.getActiveAlerts().length == 0)
-            AlertStore.initAlerts(as.toArray(new Alert[0]));
+    // TODO Example alerts - Remove
+    List<Alert> as = new ArrayList<>();
+    as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
+    as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
+    as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
+    if (AlertStore.getActiveAlerts().length == 0)
+        AlertStore.initAlerts(as.toArray(new Alert[0]));
 
-        findViewById(R.id.alert_settings).setOnClickListener(
-            view -> {
-                Intent intent = new Intent();
-                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-                startActivity(intent);
-            }
-        );
+    findViewById(R.id.alert_settings).setOnClickListener(view -> {
+      Intent intent = new Intent();
+      intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+      intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+      startActivity(intent);
+    });
 	}
 
 	private void setupDrawer() {
