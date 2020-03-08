@@ -159,12 +159,13 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     }
 
     private void updateText(BolusCalculator src) {
+        final double EPSILON = 0.2;
         double unconstrainedValue = src.getCalculatedTotalInsulin();
         double constrainedValue = MainApp.getConstraintChecker()
                 .applyBolusConstraints(new Constraint<>(unconstrainedValue))
                 .value();
 
-        if (constrainedValue < unconstrainedValue) {
+        if (Math.abs(constrainedValue - unconstrainedValue) >= EPSILON) {
             notes.setVisibility(View.VISIBLE);
         } else {
             notes.setVisibility(View.GONE);
