@@ -161,6 +161,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
     }
 
     private void enterButtonOnClick() {
-        /* TODO */
+		// TODO: Actually save this information!
+		finish();
     }
 }
