@@ -103,6 +103,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
     private void selectTimestampButtonOnClick() {
         DatePickerDialog diag = new DatePickerDialog(this,
+				R.style.diabeatit,
                 (v, y, m, d) -> {
                     timestamp.set(Calendar.YEAR, y);
                     timestamp.set(Calendar.MONTH, m);
@@ -117,6 +118,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
     private void selectTime() {
         TimePickerDialog diag = new TimePickerDialog(this,
+				R.style.diabeatit,
                 (v, h, m) -> {
                     timestamp.set(Calendar.HOUR, h);
                     timestamp.set(Calendar.MINUTE, m);
