@@ -54,6 +54,7 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
     private void setDateTimeButtonClick() {
         DatePickerDialog diag = new DatePickerDialog(this,
+                R.style.diabeatit_PopupWindow,
                 ((v, y, m, d) -> {
                     setDate(y, m, d);
                     selectTime();
@@ -89,11 +90,13 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
     }
 
     private void selectTime() {
-          TimePickerDialog diag = new TimePickerDialog(this,
-                (v, h, m) -> setTime(h, m),
-                timestamp.get(Calendar.HOUR_OF_DAY),
-                timestamp.get(Calendar.MINUTE),
-                  true);
+        TimePickerDialog diag = new TimePickerDialog(this,
+            R.style.diabeatit_TimePicker,
+            (v, h, m) -> setTime(h, m),
+            timestamp.get(Calendar.HOUR_OF_DAY),
+            timestamp.get(Calendar.MINUTE),
+              true);
+
         diag.show();
     }
 
