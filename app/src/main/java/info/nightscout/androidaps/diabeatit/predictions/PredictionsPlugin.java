@@ -53,7 +53,7 @@ public class PredictionsPlugin {
                 loadKiModel();
                 return;
             } catch (IOException e) {
-                log.error("Failed to load KI model, falling back to {}", MODEL_TYPE_AVGDELTA, e);
+                log.error("Failed to load AI model, falling back to {}", MODEL_TYPE_AVGDELTA, e);
                 modelType = MODEL_TYPE_AVGDELTA;
             }
         }
@@ -67,7 +67,7 @@ public class PredictionsPlugin {
         // TODO: From files other than assets
         String path = SP.getString(PREF_KEY_KI_MODEL_PATH, "");
 
-        log.info("Loading KI Model from {}", path);
+        log.info("Loading AI Model from {}", path);
 
         Context appCtx = MainApp.instance().getApplicationContext();
         predictionModel = TensorflowPredictionModel.fromAsset(appCtx, path);

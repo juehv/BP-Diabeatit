@@ -2,6 +2,7 @@ package info.nightscout.androidaps.diabeatit.assistant.alert;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,7 +121,7 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   @Override
   public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-	return false;
+		  return false;
   }
 
   @Override

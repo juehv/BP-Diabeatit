@@ -58,7 +58,19 @@
     <string name="assistant_peek_title_urgent">Urgent Alert</string>
     <string name="assistant_peek_description">notification(s) available</string>
 
+    <!-- Calculator -->
+    <string name="bolus_limit_exceeded_label">Limit exceeded</string>
+    <string name="recommended_dosage_label">Recommended dosage</string>
+    <string name="tap_label">(Tap for more details)</string>
+    <string name="bolus_calculator_title">Bolus Calculator</string>
+    <string name="carbs_label">How many carbs did you take in?</string>
+    <string name="bg_label">BG level (optional)</string>
+    <string name="time_label">BG time (optional)</string>
+    <string name="correction_label">Correction (optional)</string>
+
+    <!-- Misc -->
     <string name="title_activity_setup_insight">SetupInsight</string>
+    <string name="title_activity_download_model">DownloadModelActivity</string>
 
 
     <string name="en_lang" translatable="false">English</string>
@@ -1676,6 +1688,5 @@
     <string name="format_carbs">%1$dg</string>
     <string name="common_on">On</string>
     <string name="common_off">Off</string>
-    <string name="title_activity_download_model">DownloadModelActivity</string>
 
 </resources>

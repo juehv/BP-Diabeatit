@@ -1,21 +1,22 @@
 package info.nightscout.androidaps.diabeatit.ui.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.method.BaseKeyListener;
+import android.text.method.DigitsKeyListener;
+import android.text.method.KeyListener;
+import android.text.method.NumberKeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -57,19 +58,22 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             return root;
         }
 
-        notes = root.findViewById(R.id.textView_notes);
+        notes = root.findViewById(R.id.bc_limit_exceeded);
 
-        final Button buttonMoreValues = root.findViewById(R.id.button_more_values);
+        /*
+        final Button buttonMoreValues = root.findViewById(R.id.bc_button_more_values);
         buttonMoreValues.setOnClickListener(this);
+        */
 
-        final Button buttonExplanation = root.findViewById(R.id.button_bolus_explanation);
+        final Button buttonExplanation = root.findViewById(R.id.bc_button_bolus_explanation);
         buttonExplanation.setOnClickListener(this);
 
-        bolusText = root.findViewById(R.id.textView_bolus);
-        carbs = root.findViewById(R.id.editText_carbs);
+        bolusText = root.findViewById(R.id.bc_bolus_result);
+        carbs = root.findViewById(R.id.bc_carbs_input);
 
         final HomeFragment homeFragment = HomeFragment.getInstance();
         final HomeActivity homeActivity = HomeActivity.getInstance();
+        final LinearLayout extraInput = root.findViewById(R.id.bc_extra_input_layout);
 
         root.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
@@ -85,6 +89,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
                     homeFragment.graph.setVisibility(View.GONE);
                     homeActivity.assistantPeekEnveloped.setVisibility(View.GONE);
+                    extraInput.setVisibility(View.VISIBLE);
 
                 }
 
@@ -92,30 +97,30 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
                 homeFragment.graph.setVisibility(View.VISIBLE);
                 homeActivity.assistantPeekEnveloped.setVisibility(View.VISIBLE);
+                extraInput.setVisibility(View.GONE);
+
+                carbs.clearFocus();
 
             }
 
         });
 
-        carbs.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+        carbs.setOnKeyListener((v, keyCode, event) -> {
 
-                if (carbs.getText().toString().equals(StaticData.DEVELOPER_PIN)) {
+            if (carbs.getText().toString().equals(StaticData.DEVELOPER_PIN)) {
 
-                    carbs.setText("Opening developer interface");
+                carbs.setText("Opening developer interface");
 
-                    Intent intent = new Intent(getContext(), HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                Intent intent = new Intent(getContext(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
 
-                    startActivity(new Intent(getContext(), MainActivity.class));
+                startActivity(new Intent(getContext(), MainActivity.class));
 
-                } else onCarbsChanged();
+            } else onCarbsChanged();
 
-                return false;
+            return false;
 
-            }
         });
 
         setupCalculator();
@@ -171,7 +176,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             notes.setVisibility(View.GONE);
         }
 
-        bolusText.setText(String.format("%f", constrainedValue));
+        bolusText.setText(String.format("%.2f IE", constrainedValue));
     }
 
     @Override
@@ -179,10 +184,10 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
         FragmentManager manager = getFragmentManager();
         switch(v.getId())
         {
-            case R.id.button_more_values:
+            /*case R.id.bc_button_more_values:
                 new BolusCalculatorMoreValuesDialog().show(manager, "BolusCalculatorMoreValuesDialog");
-                break;
-            case R.id.button_bolus_explanation:
+                break;*/
+            case R.id.bc_button_bolus_explanation:
                 new BolusCalculatorExplanationDialog().show(manager, "BolusCalculatorExplanationDialog");
                 break;
 
