@@ -22,6 +22,7 @@ import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.activities.NoSplashAppCompatActivity;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
+import info.nightscout.androidaps.diabeatit.util.AppRestarter;
 import info.nightscout.androidaps.events.EventProfileNeedsUpdate;
 import info.nightscout.androidaps.events.EventProfileStoreChanged;
 import info.nightscout.androidaps.events.EventPumpStatusChanged;
@@ -175,9 +176,10 @@ public class SetupWizardActivity extends NoSplashAppCompatActivity {
     // Go back to overview
     public void finishSetupWizard(View view) {
         SP.putBoolean(R.string.key_setupwizard_processed, true);
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        //Intent intent = new Intent(this, HomeActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //startActivity(intent);
+        AppRestarter.restartApp();
         finish();
     }
 

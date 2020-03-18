@@ -41,6 +41,7 @@ import java.util.List;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
+import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 import info.nightscout.androidaps.diabeatit.service.ForegroundService;
 import info.nightscout.androidaps.R;
@@ -82,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 		startForegroundService(serviceIntent);
 
 		Intent intent = getIntent();
-		if (intent != null && intent.getAction() != null && intent.getAction().equals("info.nightscout.androidaps.OPEN_ASSISTANT"))
+		if (intent != null && intent.getAction() != null && intent.getAction().equals(StaticData.ASSISTANT_INTENT_CODE))
 			expandAssistant();
 
 		instance = new WeakReference<>(this);
@@ -135,6 +136,7 @@ public class HomeActivity extends AppCompatActivity {
 		final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
 		final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
 		final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
+		final TextView assistantCloseHint = findViewById(R.id.assistant_close_hint);
 
 		assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
 			@Override
@@ -145,6 +147,7 @@ public class HomeActivity extends AppCompatActivity {
 
 				assistantPeek.setVisibility(newState == BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
 				assistantPeekAlt.setVisibility(newState != BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
+				assistantCloseHint.setVisibility(newState == BottomSheetBehavior.STATE_EXPANDED ? View.VISIBLE : View.GONE);
 
 			}
 

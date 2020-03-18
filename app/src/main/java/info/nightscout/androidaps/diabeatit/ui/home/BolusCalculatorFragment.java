@@ -109,7 +109,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
             if (carbs.getText().toString().equals(StaticData.DEVELOPER_PIN)) {
 
-                carbs.setText("Opening developer interface");
+                carbs.setText(R.string.developer_mode_opening);
 
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -182,15 +182,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         FragmentManager manager = getFragmentManager();
-        switch(v.getId())
-        {
-            /*case R.id.bc_button_more_values:
-                new BolusCalculatorMoreValuesDialog().show(manager, "BolusCalculatorMoreValuesDialog");
-                break;*/
-            case R.id.bc_button_bolus_explanation:
-                new BolusCalculatorExplanationDialog().show(manager, "BolusCalculatorExplanationDialog");
-                break;
-
-        }
+        if (v.getId() == R.id.bc_button_bolus_explanation)
+            new BolusCalculatorExplanationDialog(calc).show(manager, "BolusCalculatorExplanationDialog");
     }
 }

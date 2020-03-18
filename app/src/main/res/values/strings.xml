@@ -67,10 +67,15 @@
     <string name="bg_label">BG level (optional)</string>
     <string name="time_label">BG time (optional)</string>
     <string name="correction_label">Correction (optional)</string>
+    <string name="developer_mode_opening">Opening developer interface</string>
+    <string name="bolus_explanation_title">Bolus calculation details</string>
+    <string name="bolus_explanation_back_button">Done</string>
+    <string name="bolus_explanation"><![CDATA[<b>Trend</b>: %1$.3f<br/><b>Carbs I/C</b>: %2$.3f<br/><b>Blood Glucose</b>: %3$.3f]]></string>
 
     <!-- Misc -->
     <string name="title_activity_setup_insight">SetupInsight</string>
     <string name="title_activity_download_model">DownloadModelActivity</string>
+    <string name="restart_app">Restarting app</string>
 
 
     <string name="en_lang" translatable="false">English</string>

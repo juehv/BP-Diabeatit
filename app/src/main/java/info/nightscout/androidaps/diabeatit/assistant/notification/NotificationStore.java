@@ -15,6 +15,7 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
@@ -52,7 +53,7 @@ public class NotificationStore {
 
 		Intent intent = new Intent(MainApp.instance(), HomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		intent.setAction("info.nightscout.androidaps.OPEN_ASSISTANT");
+		intent.setAction(StaticData.ASSISTANT_INTENT_CODE);
 		PendingIntent pendingIntent = PendingIntent.getActivity(MainApp.instance(), 0, intent, 0);
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(MainApp.instance(), channel)
