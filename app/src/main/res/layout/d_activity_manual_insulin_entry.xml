@@ -1,75 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/diabeatit.Container" >
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/mi_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/colorFont"
+        android:text="@string/mi_title" />
 
-        <TableLayout
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1"
-            android:layout_margin="5dp">
+    <EditText
+        android:id="@+id/mi_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_title"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        style="@style/diabeatit.EditText"
+        android:inputType="numberDecimal"
+        android:textColor="@color/colorFont"
+        android:textColorHint="#777777"
+        android:hint="@string/mi_input_hint" />
 
-            <TableRow>
+    <EditText
+        android:id="@+id/mi_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_input"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        style="@style/diabeatit.EditText"
+        android:textColor="@color/colorFont"
+        android:textColorHint="#777777"
+        android:hint="@string/mi_notes_hint" />
 
-                <TextView
-                    android:layout_margin="2dp"
-                    android:labelFor="@id/edit_text_bolus"
-                    android:text="Bolus:"
-                    android:textAlignment="textEnd" />
+    <LinearLayout
+        android:id="@+id/mi_datetime_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/mi_notes"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="8dp" >
 
-                <EditText
-                    android:id="@+id/edit_text_bolus"
-                    style="@style/diabeatit.EditText"
-                    android:layout_margin="2dp"
-                    android:inputType="numberDecimal"
-                    android:text="0" />
-
-                <TextView
-                    android:layout_margin="2dp"
-                    android:text="U" />
-            </TableRow>
-            <TableRow>
-
-                <TextView
-                    android:layout_margin="2dp"
-                    android:labelFor="@id/edit_text_notes"
-                    android:text="@string/notes"
-                    android:textAlignment="textEnd" />
-
-                <EditText
-                    android:id="@+id/edit_text_notes"
-                    style="@style/diabeatit.EditText"
-                    android:layout_margin="2dp"
-                    android:layout_span="2"
-                    android:inputType="text" />
-            </TableRow>
-            <TableRow>
-                <Button
-                    android:id="@+id/btn_date_time"
-                    android:layout_span="3"
-                    android:layout_height="72dp"
-                    android:text="DATE/TIME"
-                    style="@style/diabeatit.Button"/>
-            </TableRow>
-        </TableLayout>
         <Button
-            android:id="@+id/button_enter"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:text="@string/enter"
-            style="@style/diabeatit.Button"/>
+            android:id="@+id/mi_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:padding="8dp"
+            android:background="#EFEFEF"
+            android:drawableStart="@drawable/ic_date"
+            android:drawableTint="#777777"
+            android:drawablePadding="8dp"
+            android:textColor="#777777"
+            android:textStyle="bold"
+            android:text="--.--.----" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/mi_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:padding="8dp"
+            android:background="#EFEFEF"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="#777777"
+            android:drawablePadding="8dp"
+            android:textColor="#777777"
+            android:textStyle="bold"
+            android:text="--:--" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/mi_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="#EFEFEF"
+        android:textColor="#777777"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="@string/mi_save" />
+
+</RelativeLayout>

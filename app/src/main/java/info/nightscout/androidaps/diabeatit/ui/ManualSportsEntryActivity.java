@@ -1,169 +1,122 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ToggleButton;
 
-import java.text.DateFormat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 
 public class ManualSportsEntryActivity extends AppCompatActivity {
-    EditText notes;
-    ToggleButton buttonLight;
-    ToggleButton buttonMedium;
-    ToggleButton buttonHeavy;
-    Button timestampStartButton;
-    Button timestampEndButton;
-    Button enterButton;
 
-    Calendar start;
-    Calendar end;
+    private EditText descriptionInput, notesInput;
+    private Button selDateB, selTimeB, selDurB;
+
+    Calendar timestamp;
+    int durationMinutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_manual_sports_entry);
 
-        resetStart();
-        resetEnd();
+        descriptionInput = findViewById(R.id.ms_description);
 
-        notes = findViewById(R.id.edit_text_notes);
-        buttonLight = findViewById(R.id.button_light);
-        buttonMedium = findViewById(R.id.button_medium);
-        buttonHeavy = findViewById(R.id.button_heavy);
-        enterButton = findViewById(R.id.button_enter);
-        timestampStartButton = findViewById(R.id.btn_timestamp_start);
-        timestampEndButton = findViewById(R.id.btn_timestamp_end);
+        selDateB = findViewById(R.id.ms_date);
+        selTimeB = findViewById(R.id.ms_time);
+        selDurB = findViewById(R.id.ms_duration);
 
-        buttonLight.setOnCheckedChangeListener((v, c) -> buttonLightOnCheckChanged(c));
-        buttonMedium.setOnCheckedChangeListener((v, c) -> buttonMediumOnCheckChanged(c));
-        buttonHeavy.setOnCheckedChangeListener((v, c) -> buttonHeavyOnCheckChanged(c));
-        enterButton.setOnClickListener(v -> enterButtonOnClick());
-        timestampStartButton.setOnClickListener(v -> selectTimestampStart());
-        timestampEndButton.setOnClickListener(v -> selectTimestampEnd());
+        selDateB.setOnClickListener(v -> selectDate());
+        selTimeB.setOnClickListener(v -> selectTime());
+        selDurB.setOnClickListener(v -> selectDuration());
+        findViewById(R.id.ms_save).setOnClickListener(v -> save());
 
-        buttonMedium.setChecked(true);
-
-        updateTexts();
-    }
-
-    private void resetStart() {
-        start = new Calendar.Builder()
+        timestamp = new Calendar.Builder()
                 .setInstant(Instant.now().toEpochMilli())
                 .setTimeZone(Calendar.getInstance().getTimeZone())
                 .build();
+
+        selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+        selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
+        selDurB.setText("30m");
+
     }
 
-    private void resetEnd() {
-        end = new Calendar.Builder()
-                .setInstant(Instant.now().toEpochMilli())
-                .setTimeZone(Calendar.getInstance().getTimeZone())
-                .build();
-    }
+    private void selectDate() {
 
-    private void updateTexts() {
-        String s = DateFormat.getDateTimeInstance().format(start.getTime());
-        String e = DateFormat.getDateTimeInstance().format(end.getTime());
-
-
-        String startButtonHtml = String.format("<b>Start of activity</b><br /><small>%s</small>", s);
-        String endButtonHtml = String.format("<b>End of activity</b><br /><small>%s</small>", e);
-
-        timestampStartButton.setText(Html.fromHtml(startButtonHtml));
-        timestampEndButton.setText(Html.fromHtml(endButtonHtml));
-    }
-
-    private void buttonLightOnCheckChanged(boolean isChecked) {
-        if (isChecked) {
-            // only let one button be checked
-            buttonMedium.setChecked(false);
-            buttonHeavy.setChecked(false);
-        } else {
-            if (!buttonMedium.isChecked() && !buttonHeavy.isChecked()) {
-                // at least one button needs to be checked
-                buttonLight.setChecked(true);
-            }
-        }
-    }
-
-    private void buttonMediumOnCheckChanged(boolean isChecked) {
-        if (isChecked) {
-            // only let one button at once be checked
-            buttonLight.setChecked(false);
-            buttonHeavy.setChecked(false);
-        } else {
-            // at least one button needs to be checked
-            if (!buttonLight.isChecked() && !buttonHeavy.isChecked()) {
-                buttonMedium.setChecked(true);
-            }
-        }
-    }
-
-    private void buttonHeavyOnCheckChanged(boolean isChecked) {
-        if (isChecked) {
-            // only one button can be checked
-            buttonLight.setChecked(false);
-            buttonMedium.setChecked(false);
-        } else {
-            // at least one button needs to be checked
-            if (!buttonLight.isChecked() && !buttonMedium.isChecked()) {
-                buttonHeavy.setChecked(true);
-            }
-        }
-    }
-
-    private void selectTimestampStart() {
-        selectDate(start, () -> selectTime(start, this::updateTexts));
-    }
-
-    private void selectTimestampEnd() {
-        selectDate(end, () -> selectTime(end, this::updateTexts));
-    }
-
-    private void selectDate(Calendar cal, Runnable finished) {
-        DatePickerDialog diag = new DatePickerDialog(this,
-                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+        new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, y, m, d) -> {
-                    cal.set(Calendar.YEAR, y);
-                    cal.set(Calendar.MONTH, m);
-                    cal.set(Calendar.DAY_OF_MONTH, d);
-                    if (finished != null) {
-                        finished.run();
-                    }
+                    timestamp.set(Calendar.YEAR, y);
+                    timestamp.set(Calendar.MONTH, m);
+                    timestamp.set(Calendar.DAY_OF_MONTH, d);
+                    selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
                 },
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH));
-        diag.show();
+                timestamp.get(Calendar.YEAR), timestamp.get(Calendar.MONTH), timestamp.get(Calendar.DAY_OF_MONTH)
+        ).show();
+
     }
 
-    private void selectTime(Calendar cal, Runnable finished) {
-        TimePickerDialog diag = new TimePickerDialog(this,
-                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+    private void selectTime() {
+
+        new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
-                    cal.set(Calendar.HOUR_OF_DAY, h);
-                    cal.set(Calendar.MINUTE, m);
-                    if (finished != null) {
-                        finished.run();
-                    }
+                    timestamp.set(Calendar.HOUR, h);
+                    timestamp.set(Calendar.MINUTE, m);
+                    selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
                 },
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
-                true);
-        diag.show();
+                timestamp.get(Calendar.HOUR), timestamp.get(Calendar.MINUTE), true
+        ).show();
+
     }
 
-    private void enterButtonOnClick() {
-		// TODO: Actually save this information!
-		finish();
+    private void selectDuration() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.ms_duration_title));
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setHintTextColor(Color.rgb(77, 77, 77));
+        input.setHint(getString(R.string.ms_duration_hint));
+        builder.setView(input);
+
+        builder.setPositiveButton(getString(R.string.ms_duration_ok), (dialog, which) -> {
+                if (!input.getText().toString().isEmpty() && input.getText().toString().length() < 6)
+                    selDurB.setText((durationMinutes = Integer.parseInt(input.getText().toString())) + "m");
+        });
+
+        builder.setNegativeButton(getString(R.string.ms_duration_cancel), (dialog, which) -> dialog.cancel());
+
+        builder.show();
+
     }
+
+    private void save() {
+
+        if (descriptionInput.getText().toString().isEmpty()) {
+
+            descriptionInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+            return;
+
+        }
+
+        // TODO Store data in database
+
+        finish();
+
+    }
+
 }

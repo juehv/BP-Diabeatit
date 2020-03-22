@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
@@ -60,6 +59,9 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 						.setInstant(Instant.now().toEpochMilli())
 						.setTimeZone(Calendar.getInstance().getTimeZone())
 						.build();
+
+		selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+		selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
 
 	}
 

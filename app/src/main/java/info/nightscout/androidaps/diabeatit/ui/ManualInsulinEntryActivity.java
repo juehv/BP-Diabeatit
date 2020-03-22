@@ -3,16 +3,16 @@ package info.nightscout.androidaps.diabeatit.ui;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.DetailedBolusInfo;
@@ -22,118 +22,97 @@ import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 
 public class ManualInsulinEntryActivity extends AppCompatActivity {
 
-    private Button enterButton;
-    private EditText amountEditText;
-    private EditText notesText;
-
-    Button timestampButton;
+    private EditText bolusInput, notesInput;
+    private Button selDateB, selTimeB;
 
     Calendar timestamp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_manual_insulin_entry);
 
-        // dateTimeText = findViewById(R.id.edit_text_date_time);
-        enterButton = findViewById(R.id.button_enter);
-        amountEditText = findViewById(R.id.edit_text_bolus);
-        notesText = findViewById(R.id.edit_text_notes);
-        timestampButton = findViewById(R.id.btn_date_time);
+        bolusInput = findViewById(R.id.mi_input);
+        notesInput = findViewById(R.id.mi_notes);
+        selDateB = findViewById(R.id.mi_date);
+        selTimeB = findViewById(R.id.mi_time);
 
-        timestampButton.setOnClickListener(v -> setDateTimeButtonClick());
-        enterButton.setOnClickListener(v -> enterButtonClick());
+        selDateB.setOnClickListener(v -> selectDate());
+        selTimeB.setOnClickListener(v -> selectTime());
+        findViewById(R.id.mi_save).setOnClickListener(v -> save());
 
-        resetToCurrentTime();
-        updateTexts();
-    }
-
-    private void setDateTimeButtonClick() {
-        DatePickerDialog diag = new DatePickerDialog(this,
-                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
-                ((v, y, m, d) -> {
-                    setDate(y, m, d);
-                    selectTime();
-                }),
-                timestamp.get(Calendar.YEAR),
-                timestamp.get(Calendar.MONTH),
-                timestamp.get(Calendar.DAY_OF_MONTH));
-        diag.show();
-    }
-
-    private void resetToCurrentTime() {
         timestamp = new Calendar.Builder()
                 .setInstant(Instant.now().toEpochMilli())
                 .setTimeZone(Calendar.getInstance().getTimeZone())
                 .build();
-    }
 
-    private void updateTexts() {
-        String s = DateFormat.getDateTimeInstance().format(timestamp.getTime());
-        String buttonHtml = String.format("<b>Date and Time</b><br /><small>%s</small>", s);
-        timestampButton.setText(Html.fromHtml(buttonHtml));
+        selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+        selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
 
     }
 
-    private void setDate(int year, int month, int dayOfMonth) {
-        Log.d("UI", String.format("Got Date: %04d-%02d-%02d", year, month, dayOfMonth));
+    private void selectDate() {
 
-        timestamp.set(Calendar.YEAR, year);
-        timestamp.set(Calendar.MONTH, month);
-        timestamp.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+                (v, y, m, d) -> {
+                    timestamp.set(Calendar.YEAR, y);
+                    timestamp.set(Calendar.MONTH, m);
+                    timestamp.set(Calendar.DAY_OF_MONTH, d);
+                    selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+                },
+                timestamp.get(Calendar.YEAR), timestamp.get(Calendar.MONTH), timestamp.get(Calendar.DAY_OF_MONTH)
+        ).show();
 
-        updateTexts();
     }
 
     private void selectTime() {
-        TimePickerDialog diag = new TimePickerDialog(this,
-            android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
-            (v, h, m) -> setTime(h, m),
-            timestamp.get(Calendar.HOUR_OF_DAY),
-            timestamp.get(Calendar.MINUTE),
-              true);
 
-        diag.show();
+        new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+                (v, h, m) -> {
+                    timestamp.set(Calendar.HOUR, h);
+                    timestamp.set(Calendar.MINUTE, m);
+                    selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
+                },
+                timestamp.get(Calendar.HOUR), timestamp.get(Calendar.MINUTE), true
+        ).show();
+
     }
 
-    private void setTime(int hour, int minute) {
-        Log.d("UI", String.format("Selected Time: %02d:%02d", hour, minute));
+    private void save() {
 
-        timestamp.set(Calendar.HOUR_OF_DAY, hour);
-        timestamp.set(Calendar.MINUTE, minute);
+        if (bolusInput.getText().toString().isEmpty()) {
 
-        updateTexts();
-    }
-
-    private void enterButtonClick() {
-        double amount;
-        String notes;
-        long timestamp;
-        try {
-            amount = Double.parseDouble(amountEditText.getText().toString());
-            // TODO: Constraints!
-        } catch (NumberFormatException e) {
-            // TODO: Properly handle! Maybe set hint text.
-            e.printStackTrace();
+            bolusInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
             return;
+
         }
-        notes = notesText.getText().toString();
-        timestamp = this.timestamp.toInstant().toEpochMilli();
 
-        DetailedBolusInfo bolus = new DetailedBolusInfo();
-        bolus.insulin = amount;
-        bolus.carbs = 0; // XXX
-        bolus.date = timestamp;
-        bolus.context = this;
-        bolus.source = Source.USER;
+        try {
 
-        TreatmentsPlugin.getPlugin().addToHistoryTreatment(bolus, true);
+            double insulin = Double.parseDouble(bolusInput.getText().toString());
+            long ts = timestamp.toInstant().toEpochMilli();
 
-        HomeFragment homeFragment = HomeFragment.getInstance();
-        if (homeFragment != null)
-            homeFragment.scheduleUpdateGUI("ManualBolusEntry", 1000);
+            DetailedBolusInfo bolus = new DetailedBolusInfo();
+            bolus.insulin = insulin;
+            bolus.carbs = 0;
+            bolus.date = ts;
+            bolus.context = this;
+            bolus.source = Source.USER;
+
+            TreatmentsPlugin.getPlugin().addToHistoryTreatment(bolus, true);
+
+        } catch (Exception ignored) { return; }
+
+        // Update GUI
+        HomeFragment fragment = HomeFragment.getInstance();
+        if (fragment != null)
+            fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
+
+        // TODO Store data in database
 
         finish();
+
     }
+
 }

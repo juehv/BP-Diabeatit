@@ -1,133 +1,142 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import java.text.DateFormat;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 
-import static info.nightscout.androidaps.diabeatit.ui.ManualCarbsEntryActivity.REQUEST_IMAGE_CAPTURE;
-
 public class ManualNoteActivity extends AppCompatActivity {
-    private EditText notes;
-    private ImageView picture;
-    private Button takePicture;
-    private Button selectTimestamp;
-    private Button enter;
 
-    private Calendar timestamp;
+    private EditText notesInput;
+    private ImageView previewV;
+    private Button selDateB, selTimeB;
+    private ImageButton delPicB;
+
+    Uri currentPicture;
+    Calendar timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_note);
+        setContentView(R.layout.d_activity_manual_note);
 
-        notes = findViewById(R.id.edit_text_notes);
-        picture = findViewById(R.id.iv_picture);
-        takePicture = findViewById(R.id.btn_take_picture);
-        selectTimestamp = findViewById(R.id.btn_timestamp);
-        enter = findViewById(R.id.button_enter);
+        notesInput = findViewById(R.id.mn_notes);
 
-        takePicture.setOnClickListener(this::onTakePictureClick);
-        selectTimestamp.setOnClickListener(this::onSelectTimestampClick);
-        enter.setOnClickListener(this::onEnterClick);
+        previewV = findViewById(R.id.mn_picture_preview);
 
-        resetTimestamp();
-        updateTexts();
-    }
+        delPicB = findViewById(R.id.mn_picture_delete);
+        selDateB = findViewById(R.id.mn_date);
+        selTimeB = findViewById(R.id.mn_time);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK) {
-                    assert data != null;
-                    Bundle extras = data.getExtras();
-                    Bitmap imgBitmap = (Bitmap) extras.get("data");
-                    picture.setImageBitmap(imgBitmap);
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
-        }
-    }
+        findViewById(R.id.mn_picture_set).setOnClickListener(v -> selectPicture());
+        delPicB.setOnClickListener(v -> deletePicture());
+        selDateB.setOnClickListener(v -> selectDate());
+        selTimeB.setOnClickListener(v -> selectTime());
+        findViewById(R.id.mn_save).setOnClickListener(v -> save());
 
-    private void resetTimestamp() {
         timestamp = new Calendar.Builder()
                 .setInstant(Instant.now().toEpochMilli())
                 .setTimeZone(Calendar.getInstance().getTimeZone())
                 .build();
+
+        selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+        selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
+
     }
 
-    private void updateTexts() {
-        String ts = DateFormat.getDateTimeInstance().format(timestamp.getTime());
+    private void selectPicture() {
 
-        String buttonHtml = String.format("<b>Timestamp</b><br /><small>%s</small>", ts);
-        selectTimestamp.setText(Html.fromHtml(buttonHtml));
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto , 1);
+
     }
 
-    private void onTakePictureClick(View sender) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        } else {
-            Log.w("UI", "Could not take picture");
-        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+
+            try {
+
+                currentPicture = data.getData();
+                previewV.setImageURI(currentPicture);
+
+                previewV.setVisibility(View.VISIBLE);
+                delPicB.setVisibility(View.VISIBLE);
+
+            } catch (Exception ignored) {}
+
+        } else super.onActivityResult(requestCode, resultCode, data);
+
     }
 
+    private void deletePicture() {
 
-    private void onSelectTimestampClick(View sender) {
-        promptDate();
+        currentPicture = null;
+
+        delPicB.setVisibility(View.GONE);
+        previewV.setVisibility(View.GONE);
+
     }
 
-    private void onEnterClick(View sender) {
-        // TODO: enter the data tho
-        finish();
-    }
+    private void selectDate() {
 
-    private void promptDate() {
-        DatePickerDialog diag = new DatePickerDialog(this,
-                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+        new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, y, m, d) -> {
                     timestamp.set(Calendar.YEAR, y);
                     timestamp.set(Calendar.MONTH, m);
                     timestamp.set(Calendar.DAY_OF_MONTH, d);
-                    promptTime();
+                    selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
                 },
-                timestamp.get(Calendar.YEAR),
-                timestamp.get(Calendar.MONTH),
-                timestamp.get(Calendar.DAY_OF_MONTH));
-        diag.show();
+                timestamp.get(Calendar.YEAR), timestamp.get(Calendar.MONTH), timestamp.get(Calendar.DAY_OF_MONTH)
+        ).show();
+
     }
 
-    private void promptTime() {
-        TimePickerDialog diag = new TimePickerDialog(this,
-                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+    private void selectTime() {
+
+        new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
-                    timestamp.set(Calendar.HOUR_OF_DAY, h);
+                    timestamp.set(Calendar.HOUR, h);
                     timestamp.set(Calendar.MINUTE, m);
-                    updateTexts();
+                    selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
                 },
-                timestamp.get(Calendar.HOUR_OF_DAY),
-                timestamp.get(Calendar.MINUTE),
-                true);
-        diag.show();
+                timestamp.get(Calendar.HOUR), timestamp.get(Calendar.MINUTE), true
+        ).show();
+
     }
+
+    private void save() {
+
+        if (notesInput.getText().toString().isEmpty()) {
+
+            notesInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+            return;
+
+        }
+
+        // TODO Store data (+ picture) in database
+
+        finish();
+
+    }
+
 }
