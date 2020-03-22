@@ -5,6 +5,8 @@ import android.content.res.AssetFileDescriptor;
 
 import org.tensorflow.lite.Interpreter;
 
+import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -47,6 +49,13 @@ public class TensorflowPredictionModel implements PredictionModel {
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         ByteBuffer buf =  fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+        return new TensorflowPredictionModel(buf);
+    }
+
+    public static TensorflowPredictionModel fromFile(Context ctx, String modelFilename) throws IOException {
+        File f = new File(modelFilename);
+        FileInputStream fis = new FileInputStream(f);
+        ByteBuffer buf  = fis.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, f.length());
         return new TensorflowPredictionModel(buf);
     }
 }

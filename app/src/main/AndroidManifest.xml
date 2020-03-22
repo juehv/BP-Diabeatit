@@ -37,8 +37,9 @@
         android:roundIcon="${appIconRound}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".diabeatit.ui.ManualNoteActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.car.application"
@@ -52,10 +53,11 @@
         <activity
             android:name=".diabeatit.ui.HomeActivity"
             android:label="DIABEATIT"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="info.nightscout.androidaps.OPEN_ASSISTANT" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -65,8 +67,10 @@
             android:theme="@style/AppTheme.Launcher.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="diabeatit" />
             </intent-filter>
         </activity>
@@ -74,7 +78,6 @@
             android:name=".diabeatit.ui.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/diabeatit" />
-
         <activity android:name=".diabeatit.ui.setup.ActualSetup" />
         <activity
             android:name=".diabeatit.ui.setup.SetupInsight"
@@ -95,14 +98,15 @@
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history" />
-
-
         <activity android:name=".MainActivity">
-            <!--intent-filter>
+
+            <!--
+            intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter-->
+            </intent-filter
+            -->
         </activity>
         <activity android:name=".activities.PreferencesActivity" />
         <activity
@@ -303,12 +307,14 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_setup_wizard"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
         <activity
             android:name=".activities.SingleFragmentActivity"
             android:theme="@style/AppTheme" />

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="diabeatit" parent="Theme.AppCompat">
+    <style name="diabeatit" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/d_primary</item>
         <item name="android:colorPrimary">@color/d_primary</item>
         <item name="colorPrimaryDark">@color/d_primary_dark</item>
@@ -18,7 +18,14 @@
         <item name="android:titleTextColor">@android:color/black</item>
 
         <item name="preferenceTheme">@style/diabeatit.PreferenceTheme</item>
-        <item name="popupWindowStyle">@style/diabeatit</item>
+        <item name="popupWindowStyle">@style/diabeatit.PopupWindow</item>
+<!--
+        <item name="dialogPreferenceStyle">@style/diabeatit.PopupWindow</item>
+-->
+        <item name="alertDialogTheme">@style/diabeatit.PopupWindow</item>
+<!--
+        <item name="alertDialogStyle">@style/diabeatit.PopupWindow</item>
+-->
     </style>
 
     <style name="diabeatit.PreferenceTheme" parent="PreferenceThemeOverlay">
@@ -31,7 +38,7 @@
         <item name="android:textColorPrimary">@color/colorFont</item>
         <item name="android:textColorSecondary">@color/colorFont</item>
 
-        <item name="alertDialogTheme">@style/diabeatit</item>
+        <item name="popupWindowStyle">@style/diabeatit.PopupWindow</item>
     </style>
 
     <style name="diabeatit.PreferenceTheme.InformationStyle">
@@ -78,6 +85,43 @@
         <item name="android:textColor">@color/colorFont</item>
         <item name="android:foregroundTint">@android:color/darker_gray</item>
         <item name="android:backgroundTint">@android:color/white</item>
+    </style>
+
+    <style name="diabeatit.PopupWindow" parent="diabeatit">
+        <item name="colorPrimary">@color/d_primary</item>
+        <item name="android:colorPrimary">@color/d_primary</item>
+        <item name="colorPrimaryDark">@color/d_primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/d_primary_dark</item>
+        <item name="colorAccent">@color/d_accent</item>
+        <item name="android:colorAccent">@color/d_accent</item>
+
+        <item name="panelBackground">@color/colorLightGray</item>
+        <item name="android:foregroundTint">@android:color/black</item>
+        <item name="android:drawableTint">@android:color/black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="itemTextColor">@android:color/black</item>
+        <item name="tabTextColor">@android:color/black</item>
+        <item name="titleTextColor">@android:color/black</item>
+        <item name="android:textColorSecondary">@android:color/background_dark</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="boxBackgroundColor">@android:color/background_light</item>
+
+        <item name="android:itemBackground">@android:color/background_light</item>
+        <item name="itemBackground">@android:color/background_light</item>
+        <item name="android:background">@android:color/background_light</item>
+        <item name="background">@android:color/background_light</item>
+        <item name="android:windowBackground">@android:color/background_light</item>
+        <item name="android:popupBackground">@android:color/background_light</item>
+        <item name="textColorAlertDialogListItem">@android:color/black</item>
+
+        <item name="colorControlActivated">@color/d_primary</item>
+        <item name="colorControlHighlight">@color/d_accent</item>
+        <item name="android:selectableItemBackgroundBorderless">@color/d_primary_dark</item>
+
+        <item name="android:windowIsFloating">true</item>
+        <item name="editTextStyle">@style/diabeatit.EditText</item>
+        <item name="android:listViewStyle">@style/diabeatit</item>
+        <item name="listMenuViewStyle">@style/diabeatit</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
