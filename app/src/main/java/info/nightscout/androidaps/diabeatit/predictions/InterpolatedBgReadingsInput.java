@@ -10,13 +10,18 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 
+/** 
+ * Input class consiting of an interpolated curve using the last readings
+ */
 public class InterpolatedBgReadingsInput implements PredictionInputs {
-    /* for time calculations */
+    // Constants for time calculations, the time in milliseconds the unit represents
     private final static long SECOND = 1000;
     private final static long MINUTE = 60 * SECOND;
     private final static long HOUR = 60 * MINUTE;
 
+	// Interval between datapoints
     private final static long DATAPOINT_INTERVAL = 5 * MINUTE;
+	// Amount of datapoints to use
     private final static long DATAPOINT_COUNT = 30;
 
     private InterpolationMethod<Double, Double> interpolation;
@@ -24,12 +29,17 @@ public class InterpolatedBgReadingsInput implements PredictionInputs {
     private boolean isSetup;
     private long currentTimestamp;
 
+	/** Create a new input for the given `startTimestamp` and {@link InterpolationMethod}*/
     public InterpolatedBgReadingsInput(InterpolationMethod<Double, Double> method, long startTimestamp) {
         interpolation = method;
         isSetup = false;
         currentTimestamp = startTimestamp;
     }
 
+	/** 
+	 * Set the interpolation up to be ready to use. Since this may be computationally intensive, it
+	 * is not done on construction of the object.
+	 */
     private void setupInterpolation() {
         if (isSetup) return;
 

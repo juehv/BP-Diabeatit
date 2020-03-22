@@ -16,6 +16,10 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.utils.SP;
 
+/**
+ * Plugin that manages predictions, including providing the values as well as loading the appropiate
+ * {@link PredictionModel} from the settings stored in the {@link SharedPreference}s
+ */
 public class PredictionsPlugin {
     // Settings keys we use. See also xml/d_predictions_prefs.xml
     public final static String PREF_KEY_MODEL_TYPE = "d_selected_model_type";
@@ -27,18 +31,26 @@ public class PredictionsPlugin {
     private static Logger log = LoggerFactory.getLogger("PREDICTIONS");
     private static PredictionsPlugin instance;
 
+	// The currently loaded and used PredictionModel
     private PredictionModel predictionModel;
 
+	/** 
+	 * Get the instance of this plugin. If there does not exist such an instance, it is created. 
+	 *
+	 * @return		The instance of the {@link PredictionsPlugin}
+	 */
     public static PredictionsPlugin getPlugin() {
         if (instance == null)
             instance = new PredictionsPlugin();
         return instance;
     }
 
+	/** Instanciate a new plugin instance */
     protected PredictionsPlugin() {
         loadSettings();
     }
 
+	/** Update the instance from the settings */
     public static void updateFromSettings() {
         instance = new PredictionsPlugin();
     }
@@ -82,12 +94,26 @@ public class PredictionsPlugin {
         predictionModel = new SlopeBGPredictionModel();
     }
 
+	/** Get the predictions for the start time 
+	 *
+	 * @param	startTime		Starting time of the predictions
+	 * @return					An array of predicted values
+	 */
     public float[] getPredictions(long startTime) {
         InterpolationMethod<Double, Double> interpolMethod = new SplineInterpolation();
         PredictionInputs predInputs = new InterpolatedBgReadingsInput(interpolMethod, startTime);
         return predictionModel.predict(predInputs);
     }
 
+	/** Get the blood glucose level reading equivalent of the predictions.
+	 *
+	 * The difference between this method and {@link #getPredictions} is mostly that they are
+	 * represented as a {@link List<BgReading>} instead of a set of raw-values. They are also offset
+	 * by the value of the last read blood glucose, as the predictions are generally offsets and not
+	 * absolute values.
+	 *
+	 * @return	A list of {@link BgReading} that represent the predictions
+	 */
     public List<BgReading> getPredictionReadings() {
         BgReading lastBg = DatabaseHelper.lastBg();
         if (lastBg == null) {

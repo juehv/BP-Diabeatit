@@ -1,5 +1,8 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
+/** 
+ * An abstract model of predicting values based on a set of inputs
+ */
 public interface PredictionModel {
     /**
      * Run a prediction over the inputs.

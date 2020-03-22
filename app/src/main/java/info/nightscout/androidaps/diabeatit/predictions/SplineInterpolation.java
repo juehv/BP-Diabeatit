@@ -5,17 +5,22 @@ import java.util.List;
 
 import info.nightscout.androidaps.db.BgReading;
 
+/** Interpolation method using cubic splines */
 public class SplineInterpolation implements InterpolationMethod<Double, Double> {
     private ArrayList<Double> x;
     private ArrayList<Double> y;
     private double[] m;
 
-
+	/** Create a new instance empty instance of this interpolation method */
     public SplineInterpolation() {
         x = new ArrayList<>();
         y = new ArrayList<>();
     }
 
+	/** Create a new instance of this interpolation method, using the provided readings as data base
+	 * 
+	 * @param	readings		The list of {@link BgReading}s to use as a data base for the spline
+	 */
     public SplineInterpolation(List<BgReading> readings) {
         for (BgReading reading : readings) {
             x.add(reading.getX());
@@ -24,6 +29,7 @@ public class SplineInterpolation implements InterpolationMethod<Double, Double> 
         recalculateParameters();
     }
 
+	/** Recalculate the spline parameters based on the current data */
     private void recalculateParameters() {
         if (this.x.size() <= 2) {
             throw new IllegalArgumentException("There must be at least two control points");
