@@ -1,157 +1,158 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Html;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
 import info.nightscout.androidaps.plugins.treatments.CarbsGenerator;
 
 public class ManualCarbsEntryActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
+	private EditText carbsInput, notesInput;
+	private ImageView previewV;
+	private Button selDateB, selTimeB;
+	private ImageButton delPicB;
 
-    private Button enterButton;
-    private EditText carbsText;
-    private EditText notes;
-    private Button selectTimestampButton;
-    private Button selectPictureButton;
-    private ImageView imagePreview;
+	Uri currentPicture;
+	Calendar timestamp;
 
-    private Calendar timestamp;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.d_activity_manual_carbs_entry);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.d_activity_manual_carbs_entry);
 
-        enterButton = findViewById(R.id.button_enter);
-        carbsText = findViewById(R.id.edit_text_carbs);
-        notes = findViewById(R.id.edit_text_notes);
-        selectTimestampButton = findViewById(R.id.btn_timestamp);
-        selectPictureButton = findViewById(R.id.btn_take_picture);
-        imagePreview = findViewById(R.id.iv_picture);
+		carbsInput = findViewById(R.id.mc_input);
+		notesInput = findViewById(R.id.mc_notes);
 
-        selectTimestampButton.setOnClickListener(v -> selectTimestampButtonOnClick());
-        selectPictureButton.setOnClickListener(v -> selectPictureOnClick());
-        enterButton.setOnClickListener(v -> enterButtonOnClick());
+		previewV = findViewById(R.id.mc_picture_preview);
 
-        resetDate();
-        updateText();
-    }
+		delPicB = findViewById(R.id.mc_picture_delete);
+		selDateB = findViewById(R.id.mc_date);
+		selTimeB = findViewById(R.id.mc_time);
 
-    private void selectPictureOnClick() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        } else {
-            Log.d("UI", "Could not take picture");
-        }
-    }
+		findViewById(R.id.mc_picture_set).setOnClickListener(v -> selectPicture());
+		delPicB.setOnClickListener(v -> deletePicture());
+		selDateB.setOnClickListener(v -> selectDate());
+		selTimeB.setOnClickListener(v -> selectTime());
+		findViewById(R.id.mc_save).setOnClickListener(v -> save());
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case REQUEST_IMAGE_CAPTURE:
-                onImageCaptureResult(resultCode, data);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
+		timestamp = new Calendar.Builder()
+						.setInstant(Instant.now().toEpochMilli())
+						.setTimeZone(Calendar.getInstance().getTimeZone())
+						.build();
 
+	}
 
-        }
-    }
+	private void selectPicture() {
 
-    private void onImageCaptureResult(int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imagePreview.setImageBitmap(imageBitmap);
-        }
-    }
+		Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(pickPhoto , 1);
 
-    private void resetDate() {
-        timestamp = new Calendar.Builder()
-                .setInstant(Instant.now().toEpochMilli())
-                .setTimeZone(Calendar.getInstance().getTimeZone())
-                .build();
-    }
+	}
 
-    private void updateText() {
-        Date ts = timestamp.getTime();
-        String timestamp = DateFormat.getDateTimeInstance().format(ts);
-        String btnHtml = String.format("<b>Date and Time</b><br /><small>%s</small>", timestamp);
-        selectTimestampButton.setText(Html.fromHtml(btnHtml));
-    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-    private void selectTimestampButtonOnClick() {
-        DatePickerDialog diag = new DatePickerDialog(this,
-                (v, y, m, d) -> {
-                    timestamp.set(Calendar.YEAR, y);
-                    timestamp.set(Calendar.MONTH, m);
-                    timestamp.set(Calendar.DAY_OF_MONTH, d);
-                    selectTime();
-                },
-                timestamp.get(Calendar.YEAR),
-                timestamp.get(Calendar.MONTH),
-                timestamp.get(Calendar.DAY_OF_MONTH));
-        diag.show();
-    }
+		if (requestCode == 1 && resultCode == RESULT_OK) {
 
-    private void selectTime() {
-        TimePickerDialog diag = new TimePickerDialog(this,
-                (v, h, m) -> {
-                    timestamp.set(Calendar.HOUR, h);
-                    timestamp.set(Calendar.MINUTE, m);
-                    updateText();
-                },
-                timestamp.get(Calendar.HOUR),
-                timestamp.get(Calendar.MINUTE),
-                true);
-        diag.show();
-    }
+			try {
 
-    private void enterButtonOnClick() {
-        int carbs;
-        String notes;
-        long timestamp;
+				currentPicture = data.getData();
+				previewV.setImageURI(currentPicture);
 
-        try {
-            Double c = Double.parseDouble(carbsText.getText().toString());
-            carbs = c.intValue();
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return;
-            // TODO: Handle this properly!
-        }
-        notes = this.notes.getText().toString();
-        timestamp = this.timestamp.toInstant().toEpochMilli();
+				previewV.setVisibility(View.VISIBLE);
+				delPicB.setVisibility(View.VISIBLE);
 
-        CarbsGenerator.createCarb(carbs, timestamp, "ManualCarbsActivity", notes);
+			} catch (Exception ignored) {}
 
-        // Update GUI
-        HomeFragment fragment = HomeFragment.getInstance();
-        if (fragment != null) {
-            fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
-        }
+		} else super.onActivityResult(requestCode, resultCode, data);
 
-        finish();
-    }
+	}
+
+	private void deletePicture() {
+
+		currentPicture = null;
+
+		delPicB.setVisibility(View.GONE);
+		previewV.setVisibility(View.GONE);
+
+	}
+
+	private void selectDate() {
+
+		new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+						(v, y, m, d) -> {
+							timestamp.set(Calendar.YEAR, y);
+							timestamp.set(Calendar.MONTH, m);
+							timestamp.set(Calendar.DAY_OF_MONTH, d);
+							selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
+						},
+						timestamp.get(Calendar.YEAR), timestamp.get(Calendar.MONTH), timestamp.get(Calendar.DAY_OF_MONTH)
+		).show();
+
+	}
+
+	private void selectTime() {
+
+		new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
+						(v, h, m) -> {
+							timestamp.set(Calendar.HOUR, h);
+							timestamp.set(Calendar.MINUTE, m);
+							selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
+						},
+						timestamp.get(Calendar.HOUR), timestamp.get(Calendar.MINUTE), true
+		).show();
+
+	}
+
+	private void save() {
+
+		if (carbsInput.getText().toString().isEmpty()) {
+
+			carbsInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+			return;
+
+		}
+
+		try {
+
+			int carbs = Integer.parseInt(carbsInput.getText().toString());
+			long ts = timestamp.toInstant().toEpochMilli();
+			String notes = notesInput.getText().toString();
+
+			CarbsGenerator.createCarb(carbs, ts, "ManualCarbsActivity", notes);
+
+		} catch (Exception ignored) { return; }
+
+		// Update GUI
+		HomeFragment fragment = HomeFragment.getInstance();
+		if (fragment != null)
+			fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
+
+		// TODO Store data (+ picture) in database
+
+		finish();
+
+	}
+
 }
