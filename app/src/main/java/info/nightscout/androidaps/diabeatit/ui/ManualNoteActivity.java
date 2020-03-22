@@ -47,6 +47,9 @@ public class ManualNoteActivity extends AppCompatActivity {
         takePicture.setOnClickListener(this::onTakePictureClick);
         selectTimestamp.setOnClickListener(this::onSelectTimestampClick);
         enter.setOnClickListener(this::onEnterClick);
+
+        resetTimestamp();
+        updateTexts();
     }
 
     @Override
