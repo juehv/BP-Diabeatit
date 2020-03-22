@@ -76,6 +76,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".diabeatit.ui.LogActivity" android:theme="@style/diabeatit" android:label="@string/nav_navigation_log" />
+        <activity android:name=".diabeatit.ui.SettingsActivity" android:theme="@style/diabeatit" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".diabeatit.ui.HomeActivity"/>
+        </activity>
         <activity
             android:name=".diabeatit.ui.ManualSportsEntryActivity"
             android:theme="@style/diabeatit" />
