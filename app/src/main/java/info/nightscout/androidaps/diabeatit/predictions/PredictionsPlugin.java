@@ -70,7 +70,11 @@ public class PredictionsPlugin {
         log.info("Loading AI Model from {}", path);
 
         Context appCtx = MainApp.instance().getApplicationContext();
-        predictionModel = TensorflowPredictionModel.fromAsset(appCtx, path);
+        try {
+            predictionModel = TensorflowPredictionModel.fromFile(appCtx, path);
+        } catch (IOException ex) {
+            predictionModel = TensorflowPredictionModel.fromAsset(appCtx, path);
+        }
     }
 
     /** Load the AvgDelta model */
