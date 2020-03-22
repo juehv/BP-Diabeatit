@@ -3,13 +3,6 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.BaseKeyListener;
-import android.text.method.DigitsKeyListener;
-import android.text.method.KeyListener;
-import android.text.method.NumberKeyListener;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +41,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this).get(BolusCalculatorViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_bolus_calculator, container, false);
+        View root = inflater.inflate(R.layout.d_fragment_bolus_calculator, container, false);
         //final TextView textView = root.findViewById(R.id.text_home);
 
         // we need to get a profile

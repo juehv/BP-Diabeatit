@@ -4,14 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import org.slf4j.Logger;
@@ -31,7 +26,7 @@ public class DownloadModelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_download_model);
+        setContentView(R.layout.d_activity_download_model);
 
         link = findViewById(R.id.tv_download_link);
 
@@ -49,7 +44,7 @@ public class DownloadModelActivity extends AppCompatActivity {
 
             link.setText(u.toString());
             log.info(String.format("Downloading model from '%s'", u));
-            FileDownloader.download(this, u.toString(), null, new FileDownloader.DownloadCallback() {
+            FileDownloader.download(HomeActivity.getInstance().getApplicationContext(), u.toString(), null, new FileDownloader.DownloadCallback() {
                 @Override
                 public void onDownloadCompleted(String filePath) {
                     SP.putString(PredictionsPlugin.PREF_KEY_KI_MODEL_PATH, filePath);
@@ -63,7 +58,19 @@ public class DownloadModelActivity extends AppCompatActivity {
                     // TODO: Not sure what to do here; Probably an alert
                 }
             });
+
             finish();
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 }

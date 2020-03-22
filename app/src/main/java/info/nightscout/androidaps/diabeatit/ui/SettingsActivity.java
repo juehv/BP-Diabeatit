@@ -19,7 +19,7 @@ public class SettingsActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.d_settings_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity implements
         }
     }
 
-    public static class GeneralFragment extends PreferenceFragmentCompat {
+    /*public static class GeneralFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -98,7 +98,7 @@ public class SettingsActivity extends AppCompatActivity implements
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.d_sync_preferences, rootKey);
         }
-    }
+    }*/
 
     public static class PredictionsFragment extends PreferenceFragmentCompat {
         @Override

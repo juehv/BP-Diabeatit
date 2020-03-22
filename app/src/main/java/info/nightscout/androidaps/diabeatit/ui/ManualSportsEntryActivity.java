@@ -31,7 +31,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_sports_entry);
+        setContentView(R.layout.d_activity_manual_sports_entry);
 
         resetStart();
         resetEnd();

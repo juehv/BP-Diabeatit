@@ -43,14 +43,6 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
-        <!--TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="#6F6F6F"
-            android:textStyle="bold"
-            android:text="Optional Fields" /-->
-
         <EditText
             android:id="@+id/bc_extra_bg_input"
             android:layout_width="match_parent"
@@ -88,17 +80,6 @@
             android:hint="@string/correction_label" />
 
     </LinearLayout>
-
-    <!--Button
-        android:id="@+id/bc_button_more_values"
-        android:layout_width="35dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/bc_carbs_input"
-        android:layout_alignBottom="@id/bc_carbs_input"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="#F0F0F0"
-        android:textColor="@color/colorFont"
-        android:text="..." /-->
 
     <TextView
         android:id="@+id/bc_dosage_label"

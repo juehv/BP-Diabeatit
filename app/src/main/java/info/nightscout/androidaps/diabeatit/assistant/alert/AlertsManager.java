@@ -176,7 +176,7 @@ class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHolder> {
   public AlertAdapter.AlertViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 	CardView card = (CardView) LayoutInflater.from(parent.getContext())
-			.inflate(R.layout.assistant_card, parent, false);
+			.inflate(R.layout.d_assistant_card, parent, false);
 
 	return new AlertViewHolder(card);
 

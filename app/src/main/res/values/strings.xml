@@ -11,27 +11,13 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="title_activity_setup">Setup</string>
-
-    <string-array name="sensors">
-        <item>None</item>
-        <item>xDrip</item>
-        <item>FakeSensor 3</item>
-    </string-array>
+    <!-- Prediction Settings -->
+    <string name="settings_prediction">Prediction Settings</string>
+    <string name="prediction_model_select_description">Which kind of model to use for BG Predictions</string>
+    <string name="prediction_model_select_title">Model type</string>
+    <string name="prediction_category_ai_title">AI Predictions</string>
+    <string name="prediction_model_path_description">Path to the model (.tflite)</string>
+    <string name="prediction_model_path_title">Path to model</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -57,6 +43,12 @@
     <string name="assistant_peek_title_warning">Warning</string>
     <string name="assistant_peek_title_urgent">Urgent Alert</string>
     <string name="assistant_peek_description">notification(s) available</string>
+    <string name="assistant_sheet_current_alerts">Current Alerts</string>
+    <string name="assistant_sheet_clear_all">Clear All</string>
+    <string name="assistant_sheet_no_alerts">No Alerts</string>
+    <string name="assistant_sheet_settings">Notification Settings</string>
+    <string name="assistant_sheet_history">Previous Alerts</string>
+    <string name="assistant_sheet_close_hint">Swipe down to close</string>
 
     <!-- Calculator -->
     <string name="bolus_limit_exceeded_label">Limit exceeded</string>

@@ -112,7 +112,7 @@ class DismissedAlertAdapter extends RecyclerView.Adapter<DismissedAlertAdapter.D
   public DismissedAlertAdapter.DismissedAlertViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 	RelativeLayout view = (RelativeLayout) LayoutInflater.from(parent.getContext())
-			.inflate(R.layout.alert_history_entry, parent, false);
+			.inflate(R.layout.d_alert_history_entry, parent, false);
 
 	return new DismissedAlertViewHolder(view);
 

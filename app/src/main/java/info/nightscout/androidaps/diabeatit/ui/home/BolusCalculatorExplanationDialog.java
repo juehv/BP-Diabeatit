@@ -2,7 +2,6 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ public class BolusCalculatorExplanationDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.dialog_bolus_explanation, container, false);
+        View root = inflater.inflate(R.layout.d_dialog_bolus_explanation, container, false);
         root.findViewById(R.id.button_cancel).setOnClickListener(this::onClickCancel);
 
         TextView text = root.findViewById(R.id.textView_bolus_explanation);

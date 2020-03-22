@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/alert_cardview"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp" >
 
@@ -14,9 +16,9 @@
         android:textStyle="italic"
         android:textSize="14sp"
         android:textColor="#666666"
-        android:text="@string/alert_no_data" />
+        android:text="@string/assistant_sheet_no_alerts" />
 
-    <include layout="@layout/assistant_card_list" />
+    <include layout="@layout/d_assistant_card_list" />
 
     <Button
         android:id="@+id/alert_clear_all"
@@ -31,13 +33,15 @@
         android:textSize="14sp"
         android:textColor="#666666"
         android:textAllCaps="true"
-        android:text="Clear All" />
+        android:text="@string/assistant_sheet_clear_all" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp" />
 
     <androidx.cardview.widget.CardView
+        style="@style/diabeatit"
+        android:theme="@style/diabeatit.AssistantButton"
         xmlns:card="http://schemas.android.com/apk/res-auto"
         android:id="@+id/alert_settings"
         android:layout_width="match_parent"
@@ -53,13 +57,15 @@
             android:textAlignment="center"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Notification Settings"
+            android:text="@string/assistant_sheet_settings"
             android:drawableStart="@drawable/ic_settings_alt"
             android:drawableTint="#888888" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        style="@style/diabeatit"
+        android:theme="@style/diabeatit.AssistantButton"
         xmlns:card="http://schemas.android.com/apk/res-auto"
         android:id="@+id/alert_history"
         android:layout_width="match_parent"
@@ -75,7 +81,7 @@
             android:textAlignment="center"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="Previous Alerts"
+            android:text="@string/assistant_sheet_history"
             android:drawableStart="@drawable/ic_history"
             android:drawableTint="#888888" />
 

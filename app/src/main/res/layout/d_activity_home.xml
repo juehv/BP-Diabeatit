@@ -12,13 +12,13 @@
 
     <include
         style="@style/diabeatit"
-        layout="@layout/app_bar_home"
+        layout="@layout/d_app_bar_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <include
         style="@style/diabeatit"
-        layout="@layout/assistant_sheet"
+        layout="@layout/d_assistant_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -31,7 +31,7 @@
         android:layout_gravity="start"
         android:background="@color/colorBackground"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_home"
+        app:headerLayout="@layout/d_nav_header_home"
         app:itemTextColor="@color/colorFont"
         app:menu="@menu/d_activity_home_drawer">
     </com.google.android.material.navigation.NavigationView>

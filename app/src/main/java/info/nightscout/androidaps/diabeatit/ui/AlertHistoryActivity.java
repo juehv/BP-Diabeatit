@@ -18,7 +18,7 @@ public class AlertHistoryActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_alert_history);
+		setContentView(R.layout.d_activity_alert_history);
 
 		setTheme(R.style.diabeatit);
 

@@ -59,7 +59,7 @@ public class FileDownloader {
 
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(uri));
 		request.setTitle(fileName);
-		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+		request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
 		request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName == null ? "data" : fileName);
 
 		return request;
@@ -82,6 +82,10 @@ public class FileDownloader {
 					// Get status information
 			    Cursor c = dm.query(new DownloadManager.Query().setFilterById(id));
 			    c.moveToFirst();
+
+			    // Check if download was cancelled
+			    if (c.getCount() == 0)
+			    	throw new Exception("Cancelled by user");
 
 			    // Check if the download failed
 			    if (c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_FAILED) {

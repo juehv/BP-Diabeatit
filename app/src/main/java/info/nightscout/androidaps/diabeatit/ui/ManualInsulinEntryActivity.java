@@ -7,7 +7,6 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,10 +14,8 @@ import java.text.DateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 
-import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.DetailedBolusInfo;
-import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.Source;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
@@ -37,7 +34,7 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_insulin_entry);
+        setContentView(R.layout.d_activity_manual_insulin_entry);
 
         // dateTimeText = findViewById(R.id.edit_text_date_time);
         enterButton = findViewById(R.id.button_enter);

@@ -40,7 +40,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_carbs_entry);
+        setContentView(R.layout.d_activity_manual_carbs_entry);
 
         enterButton = findViewById(R.id.button_enter);
         carbsText = findViewById(R.id.edit_text_carbs);

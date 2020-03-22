@@ -3,8 +3,8 @@
     <style name="diabeatit" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/d_primary</item>
         <item name="android:colorPrimary">@color/d_primary</item>
-        <item name="colorPrimaryDark">@color/d_primaryDark</item>
-        <item name="android:colorPrimaryDark">@color/d_primaryDark</item>
+        <item name="colorPrimaryDark">@color/d_primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/d_primary_dark</item>
         <item name="colorAccent">@color/d_accent</item>
         <item name="android:colorAccent">@color/d_accent</item>
 
@@ -41,7 +41,7 @@
     </style>
 
     <style name="diabeatit.NavView" parent="diabeatit">
-        <item name="android:textColorSecondary">@color/d_primaryDark</item>
+        <item name="android:textColorSecondary">@color/d_primary_dark</item>
     </style>
 
     <style name="diabeatit.Container">
