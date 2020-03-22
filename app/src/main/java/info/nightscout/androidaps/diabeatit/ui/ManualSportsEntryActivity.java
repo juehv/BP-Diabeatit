@@ -131,7 +131,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
     private void selectDate(Calendar cal, Runnable finished) {
         DatePickerDialog diag = new DatePickerDialog(this,
-                R.style.diabeatit_PopupWindow,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, y, m, d) -> {
                     cal.set(Calendar.YEAR, y);
                     cal.set(Calendar.MONTH, m);
@@ -148,7 +148,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
     private void selectTime(Calendar cal, Runnable finished) {
         TimePickerDialog diag = new TimePickerDialog(this,
-                R.style.diabeatit_PopupWindow,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
                     cal.set(Calendar.HOUR_OF_DAY, h);
                     cal.set(Calendar.MINUTE, m);

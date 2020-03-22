@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="diabeatit" parent="Theme.AppCompat">
+    <style name="diabeatit" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/d_primary</item>
         <item name="android:colorPrimary">@color/d_primary</item>
         <item name="colorPrimaryDark">@color/d_primaryDark</item>
@@ -26,8 +26,6 @@
 <!--
         <item name="alertDialogStyle">@style/diabeatit.PopupWindow</item>
 -->
-        <item name="android:timePickerDialogTheme">@style/diabeatit.TimePicker</item>
-        <item name="android:datePickerDialogTheme">@style/diabeatit.PopupWindow</item>
     </style>
 
     <style name="diabeatit.PreferenceTheme" parent="PreferenceThemeOverlay">
@@ -89,7 +87,7 @@
         <item name="android:backgroundTint">@android:color/white</item>
     </style>
 
-    <style name="diabeatit.PopupWindow">
+    <style name="diabeatit.PopupWindow" parent="diabeatit">
         <item name="colorPrimary">@color/d_primary</item>
         <item name="android:colorPrimary">@color/d_primary</item>
         <item name="colorPrimaryDark">@color/d_primaryDark</item>
@@ -124,10 +122,6 @@
         <item name="editTextStyle">@style/diabeatit.EditText</item>
         <item name="android:listViewStyle">@style/diabeatit</item>
         <item name="listMenuViewStyle">@style/diabeatit</item>
-    </style>
-
-    <style name="diabeatit.TimePicker" parent="diabeatit.PopupWindow">
-        <item name="android:numbersBackgroundColor">@color/mdtp_red</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
