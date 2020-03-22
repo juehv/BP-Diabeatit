@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import info.nightscout.androidaps.MainActivity;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
@@ -24,6 +27,8 @@ import info.nightscout.androidaps.data.Profile;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.StaticData;
+import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
+import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
@@ -133,6 +138,29 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             startActivity(intent);
 
             startActivity(new Intent(getContext(), MainActivity.class));
+
+        }
+
+        if (last.equals(StaticData.DUMMYDATA_PIN)) {
+
+            carbs.setText("");
+
+            final long timespan = 60 * 60 * 1000;
+            List<BgReading> data = ChartDataParser.getDummyData(System.currentTimeMillis() - timespan, System.currentTimeMillis());
+
+            for (BgReading r : data)
+                MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
+
+            HomeFragment frag = HomeFragment.getInstance();
+            if (frag != null)
+                frag.scheduleUpdateGUI("Dummy data added");
+
+            List<Alert> as = new ArrayList<>();
+            as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
+            as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
+            as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
+            if (AlertStore.getActiveAlerts().length == 0)
+                AlertStore.initAlerts(as.toArray(new Alert[0]));
 
         }
 

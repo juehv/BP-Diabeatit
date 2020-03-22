@@ -39,7 +39,8 @@
         android:theme="@style/AppTheme.Launcher"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".diabeatit.ui.ManualNoteActivity"></activity>
+
+        <activity android:name=".diabeatit.ui.ManualNoteActivity" />
 
         <meta-data
             android:name="com.google.android.gms.car.application"
@@ -74,15 +75,7 @@
                 <data android:scheme="diabeatit" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".diabeatit.ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/diabeatit" />
-        <activity android:name=".diabeatit.ui.setup.ActualSetup" />
-        <activity
-            android:name=".diabeatit.ui.setup.SetupInsight"
-            android:label="@string/title_activity_setup_insight"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".diabeatit.ui.LogActivity" android:theme="@style/diabeatit" android:label="@string/nav_navigation_log" />
         <activity
             android:name=".diabeatit.ui.ManualSportsEntryActivity"
             android:theme="@style/diabeatit" />
@@ -91,9 +84,6 @@
             android:theme="@style/diabeatit" />
         <activity
             android:name=".diabeatit.ui.ManualInsulinEntryActivity"
-            android:theme="@style/diabeatit" />
-        <activity
-            android:name=".diabeatit.ui.setup.SetupActivity"
             android:theme="@style/diabeatit" />
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"

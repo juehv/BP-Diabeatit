@@ -25,9 +25,9 @@
                     android:icon="@drawable/d_ic_settings"
                     android:title="@string/nav_navigation_setup" />
 
-                <item android:id="@+id/add_dummy_data"
-                    android:icon="@drawable/ic_warning"
-                    android:title="@string/nav_navigation_dummy" />
+                <item android:id="@+id/nav_log"
+                    android:icon="@drawable/ic_history"
+                    android:title="@string/nav_navigation_log" />
 
             </menu>
 

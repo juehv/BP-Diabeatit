@@ -77,13 +77,12 @@ public class SetupWizardActivity extends NoSplashAppCompatActivity {
     @Override
     public void onBackPressed() {
         if (currentWizardPage == 0)
-            OKDialog.showConfirmation(this, MainApp.gs(R.string.exitwizard), this::finish);
+            OKDialog.showConfirmation(this, MainApp.gs(R.string.exitwizard), () -> finishSetupWizard(null));
         else showPreviousPage(null);
     }
 
     public void exitPressed(View view) {
-        SP.putBoolean(R.string.key_setupwizard_processed, true);
-        OKDialog.showConfirmation(this, MainApp.gs(R.string.exitwizard), this::finish);
+        OKDialog.showConfirmation(this, MainApp.gs(R.string.exitwizard), () -> finishSetupWizard(null));
     }
 
     @Override
@@ -173,12 +172,8 @@ public class SetupWizardActivity extends NoSplashAppCompatActivity {
         startActivity(intent);
     }
 
-    // Go back to overview
     public void finishSetupWizard(View view) {
         SP.putBoolean(R.string.key_setupwizard_processed, true);
-        //Intent intent = new Intent(this, HomeActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(intent);
         AppRestarter.restartApp();
         finish();
     }

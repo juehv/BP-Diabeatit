@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -236,14 +237,6 @@ public class HomeActivity extends AppCompatActivity {
 		CardView alertHistoryC = findViewById(R.id.alert_history);
 		alertHistoryC.setOnClickListener(view -> startActivity(new Intent(HomeActivity.this, AlertHistoryActivity.class)));
 
-		// TODO Example alerts - Remove
-		List<Alert> as = new ArrayList<>();
-		as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
-		as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
-		as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
-		if (AlertStore.getActiveAlerts().length == 0)
-			AlertStore.initAlerts(as.toArray(new Alert[0]));
-
 		findViewById(R.id.alert_settings).setOnClickListener(
 						view -> {
 							Intent intent = new Intent();
@@ -270,31 +263,40 @@ public class HomeActivity extends AppCompatActivity {
 
 		navView.setNavigationItemSelectedListener(menuItem -> {
 
-			if (menuItem.getItemId() == R.id.nav_settings)
-				startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
-			else if (menuItem.getItemId() == R.id.nav_setup)
-				startActivity(new Intent(HomeActivity.this, SetupWizardActivity.class));
-			else if (menuItem.getItemId() == R.id.nav_assistant) {
-				drawer.closeDrawers();
-				expandAssistant();
-			} else if (menuItem.getItemId() == R.id.add_dummy_data)
-				addDummyData();
+			drawer.closeDrawers();
+
+			switch (menuItem.getItemId()) {
+
+				case R.id.nav_assistant:
+					expandAssistant();
+					break;
+
+				case R.id.nav_settings:
+					startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+					break;
+
+				case R.id.nav_setup:
+					startActivity(new Intent(HomeActivity.this, SetupWizardActivity.class));
+					break;
+
+				case R.id.nav_log:
+					startActivity(new Intent(HomeActivity.this, LogActivity.class));
+					break;
+
+				case R.id.nav_help_guide:
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(StaticData.HANDBOOK_URL)));
+					break;
+
+				case R.id.nav_help_contact_us:
+					startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(StaticData.CONTACT_MAIL)));
+					break;
+
+			}
+
 			return true;
 
 		});
 
-	}
-
-	private void addDummyData() {
-		final long timespan = 60 * 60 * 1000;
-		List<BgReading> data = ChartDataParser.getDummyData(System.currentTimeMillis() - timespan, System.currentTimeMillis());
-		for (BgReading r : data) {
-			MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
-		}
-		HomeFragment frag = HomeFragment.getInstance();
-		if (frag != null) {
-			frag.scheduleUpdateGUI("Dummy data added");
-		}
 	}
 
 	@Override
