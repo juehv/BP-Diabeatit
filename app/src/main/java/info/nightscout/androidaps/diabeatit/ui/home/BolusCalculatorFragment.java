@@ -3,6 +3,7 @@ package info.nightscout.androidaps.diabeatit.ui.home;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
     TextView notes;
     EditText carbs;
 
+    String last = "";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(this).get(BolusCalculatorViewModel.class);
@@ -70,6 +73,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
         root.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
+            onCarbsChanged();
+
             if (homeFragment == null || homeActivity == null) return;
 
             Rect temp = new Rect();
@@ -100,18 +105,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
         carbs.setOnKeyListener((v, keyCode, event) -> {
 
-            if (carbs.getText().toString().equals(StaticData.DEVELOPER_PIN)) {
-
-                carbs.setText(R.string.developer_mode_opening);
-
-                Intent intent = new Intent(getContext(), HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-                startActivity(new Intent(getContext(), MainActivity.class));
-
-            } else onCarbsChanged();
-
+            onCarbsChanged();
             return false;
 
         });
@@ -125,9 +119,26 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
     private void onCarbsChanged() {
 
+        if (carbs.getText().toString().equals(last))
+            return;
+
+        last = carbs.getText().toString();
+
+        if (last.equals(StaticData.DEVELOPER_PIN)) {
+
+            carbs.setText(R.string.developer_mode_opening);
+
+            Intent intent = new Intent(getContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            startActivity(new Intent(getContext(), MainActivity.class));
+
+        }
+
         try {
 
-            Double d = carbs.getText().length() == 0 ? 0 : Double.parseDouble(carbs.getText().toString());
+            Double d = last.length() == 0 ? 0 : Double.parseDouble(last);
             calc.setCarbs(d.intValue());
 
         } catch (Exception e) {}

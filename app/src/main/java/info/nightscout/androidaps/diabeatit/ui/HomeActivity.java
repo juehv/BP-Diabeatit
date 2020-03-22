@@ -2,14 +2,9 @@ package info.nightscout.androidaps.diabeatit.ui;
 
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -266,8 +260,7 @@ public class HomeActivity extends AppCompatActivity {
 		final DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		final NavigationView navView = findViewById(R.id.nav_view);
 
-		mAppBarConfiguration = new AppBarConfiguration.Builder(
-						R.id.nav_home, R.id.nav_settings, R.id.nav_device_sensor, R.id.nav_device_pump, R.id.nav_device_tracker)
+		mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_assistant, R.id.nav_settings)
 						.setDrawerLayout(drawer)
 						.build();
 
@@ -281,9 +274,10 @@ public class HomeActivity extends AppCompatActivity {
 				startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
 			else if (menuItem.getItemId() == R.id.nav_setup)
 				startActivity(new Intent(HomeActivity.this, SetupWizardActivity.class));
-			else if (menuItem.getItemId() == R.id.nav_home)
+			else if (menuItem.getItemId() == R.id.nav_assistant) {
 				drawer.closeDrawers();
-			else if (menuItem.getItemId() == R.id.add_dummy_data)
+				expandAssistant();
+			} else if (menuItem.getItemId() == R.id.add_dummy_data)
 				addDummyData();
 			return true;
 
@@ -332,14 +326,6 @@ public class HomeActivity extends AppCompatActivity {
 		}
 
 		return super.dispatchTouchEvent(event);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.d_home, menu);
-		return true;
 	}
 
 	@Override
