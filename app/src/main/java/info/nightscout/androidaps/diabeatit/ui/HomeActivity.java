@@ -96,6 +96,7 @@ public class HomeActivity extends AppCompatActivity {
 		FloatingActionButton manualInsulinButton = findViewById(R.id.fab_manual_insulin);
 		FloatingActionButton manualCarbsButton = findViewById(R.id.fab_manual_carbs);
 		FloatingActionButton manualSportsButton = findViewById(R.id.fab_manual_sports);
+		FloatingActionButton manualNoteButton = findViewById(R.id.fab_note);
 
 		manualInsulinButton.setOnClickListener(v -> {
 			startActivity(new Intent(HomeActivity.this, ManualInsulinEntryActivity.class));
@@ -112,6 +113,10 @@ public class HomeActivity extends AppCompatActivity {
 			entryMenu.collapseImmediately();
 		});
 
+		manualNoteButton.setOnClickListener(v -> {
+			startActivity(new Intent(HomeActivity.this, ManualNoteActivity.class));
+			entryMenu.collapseImmediately();
+		});
 	}
 
 	private void expandAssistant() {

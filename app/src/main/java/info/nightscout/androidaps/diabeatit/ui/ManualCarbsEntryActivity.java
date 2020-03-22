@@ -118,11 +118,11 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
     private void selectTime() {
         TimePickerDialog diag = new TimePickerDialog(this,
                 (v, h, m) -> {
-                    timestamp.set(Calendar.HOUR, h);
+                    timestamp.set(Calendar.HOUR_OF_DAY, h);
                     timestamp.set(Calendar.MINUTE, m);
                     updateText();
                 },
-                timestamp.get(Calendar.HOUR),
+                timestamp.get(Calendar.HOUR_OF_DAY),
                 timestamp.get(Calendar.MINUTE),
                 true);
         diag.show();
