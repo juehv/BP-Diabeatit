@@ -7,7 +7,7 @@
 
     <!-- NavDrawer in HomeActivity -->
     <string name="nav_header_title">DiaBEATit</string>
-    <string name="nav_header_subtitle">Just beat it!</string>
+    <string name="nav_header_subtitle">TU Darmstadt\nTelecooperation Lab</string>
     <string name="nav_navigation_title">Navigation</string>
     <string name="nav_navigation_assistant">Assistant</string>
     <string name="nav_navigation_settings">Settings</string>
