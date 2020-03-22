@@ -90,8 +90,8 @@
     <style name="diabeatit.PopupWindow" parent="diabeatit">
         <item name="colorPrimary">@color/d_primary</item>
         <item name="android:colorPrimary">@color/d_primary</item>
-        <item name="colorPrimaryDark">@color/d_primaryDark</item>
-        <item name="android:colorPrimaryDark">@color/d_primaryDark</item>
+        <item name="colorPrimaryDark">@color/d_primary_dark</item>
+        <item name="android:colorPrimaryDark">@color/d_primary_dark</item>
         <item name="colorAccent">@color/d_accent</item>
         <item name="android:colorAccent">@color/d_accent</item>
 
@@ -116,7 +116,7 @@
 
         <item name="colorControlActivated">@color/d_primary</item>
         <item name="colorControlHighlight">@color/d_accent</item>
-        <item name="android:selectableItemBackgroundBorderless">@color/d_primaryDark</item>
+        <item name="android:selectableItemBackgroundBorderless">@color/d_primary_dark</item>
 
         <item name="android:windowIsFloating">true</item>
         <item name="editTextStyle">@style/diabeatit.EditText</item>
