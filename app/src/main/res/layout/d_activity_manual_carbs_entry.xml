@@ -1,98 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/diabeatit.Container">
+    style="@style/diabeatit.Container" >
 
-    <TableLayout
+    <TextView
+        android:id="@+id/mc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/colorFont"
+        android:text="@string/mc_title" />
+
+    <EditText
+        android:id="@+id/mc_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mc_title"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        style="@style/diabeatit.EditText"
+        android:inputType="number"
+        android:textColor="@color/colorFont"
+        android:textColorHint="#777777"
+        android:hint="@string/mc_input_hint" />
+
+    <EditText
+        android:id="@+id/mc_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mc_input"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        style="@style/diabeatit.EditText"
+        android:textColor="@color/colorFont"
+        android:textColorHint="#777777"
+        android:hint="@string/mc_notes_hint" />
+
+    <LinearLayout
+        android:id="@+id/mc_datetime_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/mc_notes"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="8dp" >
+
+        <Button
+            android:id="@+id/mc_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:padding="8dp"
+            android:background="#EFEFEF"
+            android:drawableStart="@drawable/ic_date"
+            android:drawableTint="#777777"
+            android:drawablePadding="8dp"
+            android:textColor="#777777"
+            android:textStyle="bold"
+            android:text="--.--.----" />
+
+        <Button
+            android:id="@+id/mc_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:padding="8dp"
+            android:background="#EFEFEF"
+            android:drawableStart="@drawable/ic_time"
+            android:drawableTint="#777777"
+            android:drawablePadding="8dp"
+            android:textColor="#777777"
+            android:textStyle="bold"
+            android:text="--:--" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/mc_picture_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mc_datetime_layout"
+        android:layout_centerHorizontal="true"
+        android:padding="8dp"
+        android:background="#EFEFEF"
+        android:drawableStart="@drawable/ic_camera"
+        android:drawableTint="#777777"
+        android:drawablePadding="8dp"
+        android:textColor="#777777"
+        android:textStyle="bold"
+        android:text="@string/mc_picture_attach" />
+
+    <ImageView
+        android:id="@+id/mc_picture_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchColumns="1">
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textAlignment="textEnd"
-                android:text="@string/carbs"
-                android:labelFor="@id/edit_text_carbs"/>
+        android:layout_below="@id/mc_picture_set"
+        android:layout_above="@id/mc_save"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp" />
 
-            <EditText
-                android:id="@+id/edit_text_carbs"
-                style="@style/diabeatit.EditText"
-                android:layout_margin="2dp"
-                android:inputType="numberDecimal" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textStart"
-                android:labelFor="@id/edit_text_carbs"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:text="@string/kcal" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textAlignment="textEnd"
-                android:text="@string/notes"
-                android:labelFor="@id/edit_text_notes" />
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/mc_picture_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/mc_picture_preview"
+        android:layout_alignBottom="@id/mc_picture_preview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:tint="#FF0000"
+        android:src="@drawable/ic_delete" />
 
-            <EditText
-                android:id="@+id/edit_text_notes"
-                style="@style/diabeatit.EditText"
-                android:layout_margin="2dp"
-                android:layout_span="2"
-                android:inputType="text" />
-        </TableRow>
-        <TableRow>
-            <Button
-                android:id="@+id/btn_timestamp"
-                android:layout_span="3"
-                android:layout_height="72dp"
-                android:layout_width="match_parent"
-                android:text="DATE/TIME"
-                style="@style/diabeatit.Button"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:labelFor="@id/iv_picture"
-                android:text="Picture:" />
-            <ImageView
-                android:id="@+id/iv_picture"
-                android:layout_height="200dp"
-                android:layout_width="200dp"
-                android:background="@color/cardview_shadow_start_color"
-                />
-            <Button
-                android:id="@+id/btn_take_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select..."
-                style="@style/diabeatit.Button"/>
-        </TableRow>
-        <TableRow android:layout_weight="1.0" />
-        <TableRow>
-            <Button
-                android:id="@+id/button_enter"
-                android:layout_span="3"
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:text="Enter"
-                android:textColor="@color/cardview_light_background"
-                android:background="@color/colorPrimary"
-                style="@style/diabeatit.Button"
-                />
-        </TableRow>
-    </TableLayout>
+    <Button
+        android:id="@+id/mc_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="#EFEFEF"
+        android:textColor="#777777"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="@string/mc_save" />
+    
 </RelativeLayout>

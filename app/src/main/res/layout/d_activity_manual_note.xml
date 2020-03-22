@@ -6,7 +6,7 @@
     style="@style/diabeatit.Container" >
 
     <TextView
-        android:id="@+id/ms_title"
+        android:id="@+id/mn_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -14,31 +14,31 @@
         android:layout_margin="8dp"
         android:textSize="24sp"
         android:textColor="@color/colorFont"
-        android:text="@string/ms_title" />
+        android:text="@string/mn_title" />
 
     <EditText
-        android:id="@+id/ms_description"
+        android:id="@+id/mn_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ms_title"
+        android:layout_below="@id/mn_title"
         android:gravity="center_horizontal"
         android:layout_marginHorizontal="16dp"
         style="@style/diabeatit.EditText"
         android:textColor="@color/colorFont"
         android:textColorHint="#777777"
-        android:hint="@string/ms_input_hint" />
+        android:hint="@string/mn_notes_hint" />
 
     <LinearLayout
-        android:id="@+id/ms_datetime_layout"
+        android:id="@+id/mn_datetime_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/ms_description"
+        android:layout_below="@id/mn_notes"
         android:gravity="center_horizontal"
         android:layout_marginVertical="8dp" >
 
         <Button
-            android:id="@+id/ms_date"
+            android:id="@+id/mn_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -53,7 +53,7 @@
             android:text="--.--.----" />
 
         <Button
-            android:id="@+id/ms_time"
+            android:id="@+id/mn_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -70,23 +70,44 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/ms_duration"
+        android:id="@+id/mn_picture_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ms_datetime_layout"
+        android:layout_below="@id/mn_datetime_layout"
         android:layout_centerHorizontal="true"
         android:padding="8dp"
         android:background="#EFEFEF"
-        android:drawableStart="@drawable/ic_timer"
+        android:drawableStart="@drawable/ic_camera"
         android:drawableTint="#777777"
         android:drawablePadding="8dp"
         android:textColor="#777777"
         android:textStyle="bold"
-        android:textAllCaps="false"
-        android:text="0m" />
+        android:text="@string/mn_picture_attach" />
+
+    <ImageView
+        android:id="@+id/mn_picture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mn_picture_set"
+        android:layout_above="@id/mn_save"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp" />
+
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/mn_picture_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/mn_picture_preview"
+        android:layout_alignBottom="@id/mn_picture_preview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:tint="#FF0000"
+        android:src="@drawable/ic_delete" />
 
     <Button
-        android:id="@+id/ms_save"
+        android:id="@+id/mn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -96,6 +117,6 @@
         android:textColor="#777777"
         android:textStyle="bold"
         android:textSize="24sp"
-        android:text="@string/ms_save" />
+        android:text="@string/mn_save" />
 
 </RelativeLayout>
