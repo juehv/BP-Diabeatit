@@ -104,6 +104,7 @@ public class ManualNoteActivity extends AppCompatActivity {
 
     private void promptDate() {
         DatePickerDialog diag = new DatePickerDialog(this,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, y, m, d) -> {
                     timestamp.set(Calendar.YEAR, y);
                     timestamp.set(Calendar.MONTH, m);
@@ -118,6 +119,7 @@ public class ManualNoteActivity extends AppCompatActivity {
 
     private void promptTime() {
         TimePickerDialog diag = new TimePickerDialog(this,
+                android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
                     timestamp.set(Calendar.HOUR_OF_DAY, h);
                     timestamp.set(Calendar.MINUTE, m);
