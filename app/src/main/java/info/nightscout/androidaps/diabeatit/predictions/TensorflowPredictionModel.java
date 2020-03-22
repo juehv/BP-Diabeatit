@@ -35,7 +35,7 @@ public class TensorflowPredictionModel implements PredictionModel {
 
 	/** Create a new instance of a tensorflow powered prediction model
 	 *
-	 * @param	interpereter	The tensorflow interpreter to use to make predictions 
+	 * @param	interpreter	    The tensorflow interpreter to use to make predictions
 	 */
     public TensorflowPredictionModel(Interpreter interpreter) {
         this.interpreter = interpreter;
