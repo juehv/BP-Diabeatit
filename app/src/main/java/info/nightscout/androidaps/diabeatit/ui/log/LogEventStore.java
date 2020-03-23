@@ -24,7 +24,7 @@ public class LogEventStore {
 	public static void addEvent(LogEvent event) {
 
 		events.add(event);
-		events.sort((a, b) -> a.TIMESTAMP.compareTo(a.TIMESTAMP));
+		events.sort((a, b) -> b.TIMESTAMP.compareTo(a.TIMESTAMP));
 
 		for (LogEventStoreListener l : listeners)
 			l.onDatasetChange(event);

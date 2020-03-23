@@ -43,7 +43,7 @@ public class BolusEvent extends LogEvent {
 		timeV.setText(new SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.GERMAN).format(Date.from(TIMESTAMP)));
 
 		contentV.setVisibility(View.VISIBLE);
-		noteV.setVisibility(NOTE != "" ? View.VISIBLE : View.GONE);
+		noteV.setVisibility(!NOTE.isEmpty() ? View.VISIBLE : View.GONE);
 		imgV.setVisibility(View.GONE);
 
 		contentV.setText(BOLUS + " IE");

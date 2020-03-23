@@ -46,10 +46,11 @@ public class NoteEvent extends LogEvent {
 
 		contentV.setVisibility(View.GONE);
 		noteV.setVisibility(View.VISIBLE);
-		imgV.setVisibility(View.VISIBLE);
+		imgV.setVisibility(IMAGE != null ? View.VISIBLE : View.GONE);
 
 		noteV.setText(NOTE);
-		imgV.setImageBitmap(IMAGE);
+		if (IMAGE != null)
+			imgV.setImageBitmap(IMAGE);
 
 	}
 

@@ -149,7 +149,10 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 			CarbsGenerator.createCarb(carbs, ts, "ManualCarbsActivity", notes);
 
-			Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
+			Bitmap bm = null;
+			if (currentPicture != null)
+				bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
+
 			LogEventStore.addEvent(new CarbsEvent(timestamp.toInstant(), bm, carbs, notes));
 
 		} catch (Exception ignored) { return; }

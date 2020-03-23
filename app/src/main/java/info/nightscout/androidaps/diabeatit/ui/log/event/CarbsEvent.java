@@ -47,14 +47,14 @@ public class CarbsEvent extends LogEvent {
 		timeV.setText(new SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.GERMAN).format(Date.from(TIMESTAMP)));
 
 		contentV.setVisibility(View.VISIBLE);
-		noteV.setVisibility(NOTE != "" ? View.VISIBLE : View.GONE);
-		imgV.setVisibility(View.VISIBLE);
+		noteV.setVisibility(!NOTE.isEmpty() ? View.VISIBLE : View.GONE);
+		imgV.setVisibility(IMAGE != null ? View.VISIBLE : View.GONE);
 
 		contentV.setText(CARBS + " kcal");
 		noteV.setText(NOTE);
 
-		imgV.setImageBitmap(IMAGE);
-		imgV.setMaxHeight(IMAGE.getHeight());
+		if (IMAGE != null)
+			imgV.setImageBitmap(IMAGE);
 
 	}
 

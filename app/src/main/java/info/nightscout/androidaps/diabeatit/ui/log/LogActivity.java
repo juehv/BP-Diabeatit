@@ -36,14 +36,14 @@ public class LogActivity extends AppCompatActivity {
 
         findViewById(R.id.event_log_empty_notice).setVisibility(adapter.events.isEmpty() ? View.VISIBLE : View.GONE);
 
-        LogEventStore.attachListener(e -> change(e));
+        LogEventStore.attachListener(this::change);
 
     }
 
     private void change(LogEvent e) {
 
-        adapter.events.add(0, e);
-        adapter.events.sort((a, b) -> a.TIMESTAMP.compareTo(a.TIMESTAMP));
+        adapter.events.add(e);
+	      adapter.events.sort((a, b) -> b.TIMESTAMP.compareTo(a.TIMESTAMP));
 
         adapter.notifyDataSetChanged();
 

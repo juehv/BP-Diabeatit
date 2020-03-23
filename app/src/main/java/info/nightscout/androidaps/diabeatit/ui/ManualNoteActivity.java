@@ -139,7 +139,10 @@ public class ManualNoteActivity extends AppCompatActivity {
 
         try {
 
-            Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
+            Bitmap bm = null;
+            if (currentPicture != null)
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
+
             LogEventStore.addEvent(new NoteEvent(timestamp.toInstant(), bm, notesInput.getText().toString()));
 
         } catch (Exception ignored) { return; }
