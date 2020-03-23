@@ -24,12 +24,14 @@
     <string name="mc_notes_hint">Notes</string>
     <string name="mc_picture_attach">Attach Picture</string>
     <string name="mc_save">Save</string>
+    <string name="mc_event_title">Carbs Intake</string>
 
     <!-- Manual Insulin -->
     <string name="mi_title">Add Insulin Bolus</string>
     <string name="mi_input_hint">Bolus</string>
     <string name="mi_notes_hint">Notes</string>
     <string name="mi_save">Save</string>
+    <string name="mi_event_title">Bolus Event</string>
 
     <!-- Manual Sports -->
     <string name="ms_title">Add Exercise Unit</string>
@@ -39,12 +41,14 @@
     <string name="ms_duration_ok">Done</string>
     <string name="ms_duration_cancel">Cancel</string>
     <string name="ms_save">Save</string>
+    <string name="ms_event_title">Exercise Unit</string>
 
     <!-- Manual Note -->
     <string name="mn_title">Add Note</string>
     <string name="mn_notes_hint">Text</string>
     <string name="mn_picture_attach">Attach Picture</string>
     <string name="mn_save">Save</string>
+    <string name="mn_event_title">Note</string>
 
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>
@@ -56,6 +60,9 @@
     <string name="prediction_category_ai_title">AI Predictions</string>
     <string name="prediction_model_path_description">Path to the model (.tflite)</string>
     <string name="prediction_model_path_title">Path to model</string>
+
+    <!-- Event Log -->
+    <string name="event_log_no_entries">No Entries</string>
 
     <!-- Alerts -->
     <string name="alert_label_info">info</string>

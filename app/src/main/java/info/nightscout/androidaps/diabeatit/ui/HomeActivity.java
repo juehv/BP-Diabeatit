@@ -30,12 +30,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import info.nightscout.androidaps.MainApp;
-import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 import info.nightscout.androidaps.diabeatit.service.ForegroundService;
@@ -44,8 +40,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
-import info.nightscout.androidaps.diabeatit.ui.home.ChartDataParser;
-import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
+import info.nightscout.androidaps.diabeatit.ui.log.LogActivity;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class HomeActivity extends AppCompatActivity {

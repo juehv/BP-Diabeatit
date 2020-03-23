@@ -3,8 +3,11 @@ package info.nightscout.androidaps.diabeatit.ui;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +25,8 @@ import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
+import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.ui.log.event.CarbsEvent;
 import info.nightscout.androidaps.plugins.treatments.CarbsGenerator;
 
 public class ManualCarbsEntryActivity extends AppCompatActivity {
@@ -118,7 +123,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 		new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
 						(v, h, m) -> {
-							timestamp.set(Calendar.HOUR, h);
+							timestamp.set(Calendar.HOUR_OF_DAY, h);
 							timestamp.set(Calendar.MINUTE, m);
 							selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
 						},
@@ -144,14 +149,15 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 			CarbsGenerator.createCarb(carbs, ts, "ManualCarbsActivity", notes);
 
+			Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
+			LogEventStore.addEvent(new CarbsEvent(timestamp.toInstant(), bm, carbs, notes));
+
 		} catch (Exception ignored) { return; }
 
 		// Update GUI
 		HomeFragment fragment = HomeFragment.getInstance();
 		if (fragment != null)
 			fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
-
-		// TODO Store data (+ picture) in database
 
 		finish();
 

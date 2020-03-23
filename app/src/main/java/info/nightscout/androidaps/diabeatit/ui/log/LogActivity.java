@@ -1,0 +1,102 @@
+package info.nightscout.androidaps.diabeatit.ui.log;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import info.nightscout.androidaps.R;
+
+public class LogActivity extends AppCompatActivity {
+
+    private LogEventAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.d_activity_log);
+
+        setTheme(R.style.diabeatit);
+
+        adapter = new LogEventAdapter(getApplicationContext(), LogEventStore.getEvents());
+
+        RecyclerView recycler = findViewById(R.id.event_log_layout);
+        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.setAdapter(adapter);
+
+        findViewById(R.id.event_log_empty_notice).setVisibility(adapter.events.isEmpty() ? View.VISIBLE : View.GONE);
+
+        LogEventStore.attachListener(e -> change(e));
+
+    }
+
+    private void change(LogEvent e) {
+
+        adapter.events.add(0, e);
+        adapter.events.sort((a, b) -> a.TIMESTAMP.compareTo(a.TIMESTAMP));
+
+        adapter.notifyDataSetChanged();
+
+        findViewById(R.id.event_log_empty_notice).setVisibility(View.GONE);
+
+    }
+
+}
+
+class LogEventAdapter extends RecyclerView.Adapter<LogEventAdapter.LogEventViewHolder> {
+
+    private final Context CONTEXT;
+    public List<LogEvent> events;
+
+    public static class LogEventViewHolder extends RecyclerView.ViewHolder {
+
+        public RelativeLayout view;
+
+        public LogEventViewHolder(RelativeLayout view) {
+
+            super(view);
+            this.view = view;
+
+        }
+
+    }
+
+    public LogEventAdapter(Context context, List<LogEvent> events) {
+
+        CONTEXT = context;
+        this.events = events;
+
+    }
+
+    @Override
+    public LogEventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        RelativeLayout view = (RelativeLayout) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.d_log_event, parent, false);
+
+        return new LogEventViewHolder(view);
+
+    }
+
+    @Override
+    public void onBindViewHolder(LogEventViewHolder holder, int position) {
+
+        LogEvent event = events.get(position);
+        event.createLayout(CONTEXT, holder.view);
+
+    }
+
+    @Override
+    public int getItemCount() { return events.size(); }
+
+}

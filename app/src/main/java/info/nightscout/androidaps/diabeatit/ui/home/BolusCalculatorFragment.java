@@ -30,6 +30,8 @@ import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
+import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.insulin.BolusCalculator;

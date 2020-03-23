@@ -18,14 +18,16 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
 
 public class ManualSportsEntryActivity extends AppCompatActivity {
 
-    private EditText descriptionInput, notesInput;
+    private EditText descriptionInput;
     private Button selDateB, selTimeB, selDurB;
 
     Calendar timestamp;
-    int durationMinutes;
+    int durationMinutes = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
         selDateB.setText(new SimpleDateFormat("dd.MM.YYYY", Locale.GERMAN).format(timestamp.getTime()));
         selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
-        selDurB.setText("30m");
+        selDurB.setText(durationMinutes + "m");
 
     }
 
@@ -73,7 +75,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
         new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
-                    timestamp.set(Calendar.HOUR, h);
+                    timestamp.set(Calendar.HOUR_OF_DAY, h);
                     timestamp.set(Calendar.MINUTE, m);
                     selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
                 },
@@ -113,7 +115,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
         }
 
-        // TODO Store data in database
+        LogEventStore.addEvent(new SportsEvent(timestamp.toInstant(), durationMinutes, descriptionInput.getText().toString()));
 
         finish();
 

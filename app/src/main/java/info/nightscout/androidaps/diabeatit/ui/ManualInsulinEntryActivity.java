@@ -18,6 +18,8 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.DetailedBolusInfo;
 import info.nightscout.androidaps.db.Source;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
+import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 
 public class ManualInsulinEntryActivity extends AppCompatActivity {
@@ -70,7 +72,7 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
         new TimePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert,
                 (v, h, m) -> {
-                    timestamp.set(Calendar.HOUR, h);
+                    timestamp.set(Calendar.HOUR_OF_DAY, h);
                     timestamp.set(Calendar.MINUTE, m);
                     selTimeB.setText(new SimpleDateFormat("HH:mm", Locale.GERMAN).format(timestamp.getTime()));
                 },
@@ -102,14 +104,14 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
             TreatmentsPlugin.getPlugin().addToHistoryTreatment(bolus, true);
 
+            LogEventStore.addEvent(new BolusEvent(timestamp.toInstant(), insulin, notesInput.getText().toString()));
+
         } catch (Exception ignored) { return; }
 
         // Update GUI
         HomeFragment fragment = HomeFragment.getInstance();
         if (fragment != null)
             fragment.scheduleUpdateGUI(this.getClass().getCanonicalName());
-
-        // TODO Store data in database
 
         finish();
 
