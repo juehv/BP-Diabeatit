@@ -12,7 +12,6 @@
     <string name="nav_navigation_assistant">Assistant</string>
     <string name="nav_navigation_settings">Settings</string>
     <string name="nav_navigation_setup">Setup</string>
-    <string name="nav_navigation_dummy">Add Dummy Data</string>
     <string name="nav_navigation_log">Event Log</string>
     <string name="nav_help_title">Help</string>
     <string name="nav_help_guide">Online Manual</string>
@@ -97,11 +96,10 @@
     <string name="correction_label">Correction (optional)</string>
     <string name="developer_mode_opening">Opening developer interface</string>
     <string name="bolus_explanation_title">Bolus calculation details</string>
-    <string name="bolus_explanation_back_button">Done</string>
+    <string name="bolus_explanation_back_button">Close</string>
     <string name="bolus_explanation"><![CDATA[<b>Trend</b>: %1$.3f<br/><b>Carbs I/C</b>: %2$.3f<br/><b>Blood Glucose</b>: %3$.3f]]></string>
 
     <!-- Misc -->
-    <string name="title_activity_setup_insight">SetupInsight</string>
     <string name="title_activity_download_model">DownloadModelActivity</string>
     <string name="restart_app">Restarting app</string>
 
