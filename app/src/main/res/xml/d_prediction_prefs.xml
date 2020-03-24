@@ -10,7 +10,7 @@
         android:entryValues="@array/d_model_types_array" />
 
     <PreferenceCategory
-        android:summary="Settings for the AI Predictions"
+        android:summary="@string/prediction_category_ai_description"
         android:title="@string/prediction_category_ai_title" >
 
         <EditTextPreference

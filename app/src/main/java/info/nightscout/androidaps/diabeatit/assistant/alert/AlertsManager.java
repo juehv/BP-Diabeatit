@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 

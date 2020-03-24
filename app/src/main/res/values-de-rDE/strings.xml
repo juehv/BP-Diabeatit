@@ -1412,14 +1412,15 @@ Unerwartetes Verhalten.</string>
     <string name="prediction_model_select_description">Welches Modell soll zur Vorhersage verwendet werden</string>
     <string name="prediction_model_select_title">Modelltyp</string>
     <string name="prediction_category_ai_title">KI-Vorhersage</string>
+    <string name="prediction_category_ai_description">Vorhersageeinstellungen</string>
     <string name="prediction_model_path_description">Modellpfad (.tflite)</string>
     <string name="prediction_model_path_title">Modellpfad</string>
     <string name="event_log_no_entries">Keine Einträge</string>
     <string name="alert_label_info">Hinweis</string>
     <string name="alert_label_warning">Warnung</string>
     <string name="alert_label_urgent">Dringend</string>
-    <string name="alert_undo_text">Löschen rückgängig machen?</string>
-    <string name="alert_undo_action">Rückgängig machen</string>
+    <string name="alert_undo_text">Mitteilung verworfen</string>
+    <string name="alert_undo_action">Rückgängig</string>
     <string name="title_activity_alert_history">Verlauf</string>
     <string name="assistant_peek_title_none">Alles erledigt!</string>
     <string name="assistant_peek_title_info">Hinweis verfügbar</string>
@@ -1436,12 +1437,13 @@ Unerwartetes Verhalten.</string>
     <string name="recommended_dosage_label">Empfohlene Dosis</string>
     <string name="tap_label">(Für Details antippen)</string>
     <string name="bolus_calculator_title">Bolusrechner</string>
-    <string name="carbs_label">Kohlenhydrate der Mahlzeit</string>
+    <string name="carbs_label">Eingenommene Kohlenhydrate</string>
     <string name="bg_label">Blutzuckerspiegel (optional)</string>
-    <string name="time_label">Blutzuckerzeit (optional)</string>
+    <string name="time_label">KH-Zeit (optional)</string>
     <string name="correction_label">Korrektur (optional)</string>
     <string name="developer_mode_opening">Öffne Entwicklungsansicht</string>
     <string name="bolus_explanation_title">Berechnungsparameter</string>
     <string name="bolus_explanation_back_button">Schließen</string>
     <string name="bolus_explanation"><![CDATA[<b>Trend</b>: %1$.3f<br/><b>Kohlenhydrate I/C</b>: %2$.3f<br/><b>Blutzucker</b>: %3$.3f]]></string>
+    <string name="title_activity_download_model">Download-Tool</string>
 </resources>

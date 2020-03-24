@@ -24,7 +24,7 @@
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:text="urgent" />
+            android:text="@string/alert_label_urgent" />
 
         <ImageView
             android:id="@+id/card_icon"
