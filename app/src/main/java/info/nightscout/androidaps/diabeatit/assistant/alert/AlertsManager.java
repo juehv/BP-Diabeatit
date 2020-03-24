@@ -2,7 +2,7 @@ package info.nightscout.androidaps.diabeatit.assistant.alert;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -137,10 +138,10 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   private void showUndoDialog() {
 
-	Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
-	((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(context.getColor(android.R.color.white));
-	snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
-	snackbar.show();
+		Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
+		((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(context.getColor(android.R.color.white));
+		snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
+	  snackbar.show();
 
   }
 

@@ -42,6 +42,7 @@
     <string name="ms_duration_cancel">Cancel</string>
     <string name="ms_save">Save</string>
     <string name="ms_event_title">Exercise Unit</string>
+    <string name="ms_event_minutes">%1$d minutes</string>
 
     <!-- Manual Note -->
     <string name="mn_title">Add Note</string>

@@ -147,7 +147,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
             carbs.setText("");
 
-            final long timespan = 60 * 60 * 1000;
+            final long timespan = 6 * 60 * 60 * 1000;
             List<BgReading> data = ChartDataParser.getDummyData(System.currentTimeMillis() - timespan, System.currentTimeMillis());
 
             for (BgReading r : data)

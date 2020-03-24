@@ -46,7 +46,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="2dp"
         android:textAlignment="center"
-        android:textColor="#535353"
+        android:textColor="#858585"
         android:textStyle="bold"
         android:text="Lorem Ipsum Dolor Sit Amet\nThe Text Ends Here" />
 
@@ -69,6 +69,7 @@
         android:id="@+id/log_event_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/log_event_note"
         android:layout_margin="8dp"
         android:adjustViewBounds="true"
