@@ -272,12 +272,12 @@ public class HomeFragment extends Fragment {
             // chartDataParser.addBgReadings(fromTime, toTime, lowLine, highLine, null);
             try {
                 data.clearSeries();
-                data.addInRangeArea(fromTime, toTime, profile.getTargetLow(), profile.getTargetHigh());
                 data.addBgReadings(fromTime, endTime, lowLine, highLine);
                 data.addNowLine();
-                data.addPredictions(fromTime, endTime);
+                long lastTs = data.addPredictions(fromTime, endTime);
                 data.addBolusEvents(fromTime, endTime);
                 data.addIob(fromTime, now, false, 0.5d, false);
+                data.addInRangeArea(fromTime, Math.max(toTime, lastTs), profile.getTargetLow(), profile.getTargetHigh());
                 data.formatAxis(fromTime, endTime);
                 Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
             } catch (Exception ex) {

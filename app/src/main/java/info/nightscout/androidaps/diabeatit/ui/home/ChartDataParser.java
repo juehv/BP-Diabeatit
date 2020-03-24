@@ -155,9 +155,10 @@ public class ChartDataParser {
         series.add(bgSeries);
     }
 
-    public void addPredictions(long fromTime, long endTime) {
+    public long addPredictions(long fromTime, long endTime) {
+        long lastTs = 0;
         if (DatabaseHelper.lastBg() == null)
-            return;
+            return lastTs;
         List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
         BgReading lastBg = DatabaseHelper.lastBg();
         List<BgReading> preds;
@@ -172,6 +173,7 @@ public class ChartDataParser {
 
         for (BgReading r : preds) {
             r.value += lastBg.value;
+            lastTs = Math.max(lastTs, r.date);
         }
 
         DataPointWithLabelInterface[] pred = new DataPointWithLabelInterface[preds.size()];
@@ -184,6 +186,7 @@ public class ChartDataParser {
         predSeries.setSize(10);
 
         series.add(predSeries);
+        return lastTs;
     }
 
     public void addBolusEvents(long fromTime, long toTime) {
