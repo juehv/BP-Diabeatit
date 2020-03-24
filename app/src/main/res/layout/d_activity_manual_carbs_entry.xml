@@ -98,6 +98,7 @@
         android:text="@string/mc_picture_attach" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/mc_picture_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

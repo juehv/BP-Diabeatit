@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/log_event_note"
         android:layout_margin="8dp"
+        android:adjustViewBounds="true"
         android:background="@drawable/log_event_picture_border" />
-
 
 </RelativeLayout>
