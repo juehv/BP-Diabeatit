@@ -35,6 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Locale;
 
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
@@ -63,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 		setContentView(R.layout.d_activity_home);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
 
 		getSystemService(NotificationManager.class).cancelAll();
 		NotificationStore.reset();
@@ -163,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
 
 		assistantPeek.setOnClickListener(view -> assistant.setState(BottomSheetBehavior.STATE_EXPANDED));
 
-		AlertStore.activeAlerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
+		AlertStore.activeAlerts = new AlertsManager(this, findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
 
 		Button alertClearB = findViewById(R.id.alert_clear_all);
 		TextView alertEmptyT = findViewById(R.id.alert_empty_notice);

@@ -32,6 +32,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
 import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
+import info.nightscout.androidaps.diabeatit.util.AppRestarter;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
@@ -155,6 +156,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
             HomeFragment frag = HomeFragment.getInstance();
             if (frag != null)
+                frag.graph.onDataChanged(false, false);
                 frag.scheduleUpdateGUI("Dummy data added");
 
             List<Alert> as = new ArrayList<>();

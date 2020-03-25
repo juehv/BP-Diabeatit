@@ -136,7 +136,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 		if (carbsInput.getText().toString().isEmpty()) {
 
-			carbsInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+			carbsInput.setHintTextColor(ContextCompat.getColor(this, R.color.d_important));
 			return;
 
 		}

@@ -132,7 +132,7 @@ public class ManualNoteActivity extends AppCompatActivity {
 
         if (notesInput.getText().toString().isEmpty()) {
 
-            notesInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+            notesInput.setHintTextColor(ContextCompat.getColor(this, R.color.d_important));
             return;
 
         }
