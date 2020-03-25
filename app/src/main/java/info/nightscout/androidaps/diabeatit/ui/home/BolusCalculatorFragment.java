@@ -155,9 +155,13 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
                 MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
 
             HomeFragment frag = HomeFragment.getInstance();
-            if (frag != null)
+            if (frag != null) {
+
                 frag.graph.onDataChanged(false, false);
+                frag.graph.invalidate();
                 frag.scheduleUpdateGUI("Dummy data added");
+
+            }
 
             List<Alert> as = new ArrayList<>();
             as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));

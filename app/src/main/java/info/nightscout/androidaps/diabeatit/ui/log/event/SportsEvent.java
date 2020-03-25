@@ -49,7 +49,7 @@ public class SportsEvent extends LogEvent {
 		noteV.setVisibility(View.VISIBLE);
 		imgV.setVisibility(View.GONE);
 
-		contentV.setText(MainApp.instance().getString(R.string.ms_event_minutes, DURATION));
+		contentV.setText(context.getString(R.string.ms_event_minutes, DURATION));
 		noteV.setText(DESCRIPTION);
 
 	}
