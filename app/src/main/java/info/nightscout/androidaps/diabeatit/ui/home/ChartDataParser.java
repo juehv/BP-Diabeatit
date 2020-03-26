@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
@@ -115,7 +116,7 @@ public class ChartDataParser {
     public void addBgReadings(long fromTime, long toTime, double lowLine, double highLine) {
         double maxBgValue = Double.MIN_VALUE;
         bgReadingsArray = IobCobCalculatorPlugin.getPlugin().getBgReadings();
-        List<DataPointWithLabelInterface> bgListArray = new ArrayList<>();
+        List<DataPointInterface> bgListArray = new ArrayList<>();
 
         if (bgReadingsArray == null || bgReadingsArray.size() == 0) {
             if (L.isEnabled(L.OVERVIEW))
@@ -137,7 +138,7 @@ public class ChartDataParser {
         // int numOfVertLines = units.equals(Constants.MGDL) ? (int) (maxBgValue / 40 + 1) : (int) (maxBgValue / 2 + 1);
         int numOfVertLines = (int) maxBgValue / 2 + 1;
 
-        DataPointWithLabelInterface[] bg = new DataPointWithLabelInterface[bgListArray.size()];
+        DataPointInterface[] bg = new DataPointInterface[bgListArray.size()];
         bg = bgListArray.toArray(bg);
 
         maxY = maxBgValue;
@@ -145,7 +146,7 @@ public class ChartDataParser {
         // set manual y bounds to have nice steps
         graph.getGridLabelRenderer().setNumVerticalLabels(numOfVertLines);
 
-        LineGraphSeries<DataPointWithLabelInterface> bgSeries = new LineGraphSeries<>(bg);
+        LineGraphSeries<DataPointInterface> bgSeries = new LineGraphSeries<>(bg);
         bgSeries.setColor(graph.getContext().getColor(R.color.graphBgReadingsColor));
         bgSeries.setDrawDataPoints(true);
         bgSeries.setDataPointsRadius(1);
@@ -269,11 +270,6 @@ public class ChartDataParser {
             DataPointWithLabelInterface[] iobp2 = new DataPointWithLabelInterface[iobPred2.size()];
             iobp2 = iobPred2.toArray(iobp2);
             this.series.add(new PointsWithLabelGraphSeries<>(iobp2));
-
-            if (L.isEnabled(L.AUTOSENS)) {
-                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(lastAutosensResult.ratio) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray));
-                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(1) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray2));
-            }
         }
 
         if (useForScale) {
