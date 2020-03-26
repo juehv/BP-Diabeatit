@@ -285,7 +285,7 @@ public class HomeFragment extends Fragment {
                 data.addNowLine();
                 data.addPredictions();
                 data.addBolusEvents(fromTime);
-                data.addIob(fromTime, now, true, 0.5d, false);
+                data.addIob(fromTime, now, true, 0.5d);
                 data.formatAxis(fromTime, endTime);
                 Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
             } catch (Exception ex) {
