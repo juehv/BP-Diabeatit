@@ -1,7 +1,6 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.db.BgReading;
@@ -19,14 +17,18 @@ import info.nightscout.androidaps.utils.SP;
 
 /**
  * Plugin that manages predictions, including providing the values as well as loading the appropiate
- * {@link PredictionModel} from the settings stored in the {@link SharedPreference}s
+ * {@link PredictionModel} from the settings stored in the {@link android.content.SharedPreferences}
  */
 public class PredictionsPlugin {
     // Settings keys we use. See also xml/d_predictions_prefs.xml
+    /** Key of the preference containing the model type */
     public final static String PREF_KEY_MODEL_TYPE = "d_selected_model_type";
-    public final static String PREF_KEY_KI_MODEL_PATH = "d_ki_model_name";
+    /** Key of the preference containing the path the the ai model */
+    public final static String PREF_KEY_AI_MODEL_PATH = "d_ki_model_name";
 
-    public final static String MODEL_TYPE_KI = "ki";
+    /** Value representing an AI model */
+    public final static String MODEL_TYPE_AI = "ki";
+    /** Value representing a simple averge delta as prediction model */
     public final static String MODEL_TYPE_AVGDELTA = "avgdelta";
 
     private static Logger log = LoggerFactory.getLogger("PREDICTIONS");
@@ -61,7 +63,7 @@ public class PredictionsPlugin {
         String modelType = SP.getString(PREF_KEY_MODEL_TYPE, MODEL_TYPE_AVGDELTA);
         log.info("Loading model type: {} = {}", PREF_KEY_MODEL_TYPE, modelType);
 
-        if (modelType.equals(MODEL_TYPE_KI)) {
+        if (modelType.equals(MODEL_TYPE_AI)) {
             try {
                 loadKiModel();
                 return;
@@ -78,7 +80,7 @@ public class PredictionsPlugin {
     /** Load a KI Model as defined in preferences */
     private void loadKiModel() throws IOException {
         // TODO: From files other than assets
-        String path = SP.getString(PREF_KEY_KI_MODEL_PATH, "");
+        String path = SP.getString(PREF_KEY_AI_MODEL_PATH, "");
 
         log.info("Loading AI Model from {}", path);
 

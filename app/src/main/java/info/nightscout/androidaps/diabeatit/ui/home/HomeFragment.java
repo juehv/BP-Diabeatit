@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
     private void prefsChanged(SharedPreferences prefs, String key) {
         Log.d("PREF", String.format("Updated prefs w/ key %s", key));
         switch (key) {
-            case PredictionsPlugin.PREF_KEY_KI_MODEL_PATH:
+            case PredictionsPlugin.PREF_KEY_AI_MODEL_PATH:
             case PredictionsPlugin.PREF_KEY_MODEL_TYPE:
                 PredictionsPlugin.updateFromSettings();
                 scheduleUpdateGUI("Preferences updated");

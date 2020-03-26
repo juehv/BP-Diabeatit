@@ -7,8 +7,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
 
-import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
@@ -60,8 +57,8 @@ public class DownloadModelActivity extends AppCompatActivity {
                 @Override
                 public void onDownloadCompleted(String filePath) {
 
-                    SP.putString(PredictionsPlugin.PREF_KEY_KI_MODEL_PATH, filePath);
-                    SP.putString(PredictionsPlugin.PREF_KEY_MODEL_TYPE, PredictionsPlugin.MODEL_TYPE_KI);
+                    SP.putString(PredictionsPlugin.PREF_KEY_AI_MODEL_PATH, filePath);
+                    SP.putString(PredictionsPlugin.PREF_KEY_MODEL_TYPE, PredictionsPlugin.MODEL_TYPE_AI);
                     PredictionsPlugin.updateFromSettings();
 
                     beginToast.cancel();
