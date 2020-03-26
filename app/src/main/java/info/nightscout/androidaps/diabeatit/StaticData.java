@@ -12,6 +12,7 @@ public class StaticData {
 
 	public static final String HANDBOOK_URL = "http://lu-e.de/d"; // TODO Update
 	public static final String CONTACT_MAIL = "mailto:bp@lu-e.de"; // TODO Update
+	public static final String ERROR_MAIL = CONTACT_MAIL  +"?subject=Stacktrace&body=%s"; // TODO Update
 
 	public static boolean assistantInhibitClose = false;
 

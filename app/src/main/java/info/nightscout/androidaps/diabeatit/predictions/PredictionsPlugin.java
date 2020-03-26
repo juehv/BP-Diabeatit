@@ -1,6 +1,7 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

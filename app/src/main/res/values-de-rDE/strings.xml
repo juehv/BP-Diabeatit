@@ -1446,4 +1446,8 @@ Unerwartetes Verhalten.</string>
     <string name="bolus_explanation_back_button">Schließen</string>
     <string name="bolus_explanation"><![CDATA[<b>Trend</b>: %1$.3f<br/><b>Kohlenhydrate I/C</b>: %2$.3f<br/><b>Blutzucker</b>: %3$.3f]]></string>
     <string name="title_activity_download_model">Download-Tool</string>
+    <string name="download_model_start">Voraussagemodell wird aktualisiert, bitte warten</string>
+    <string name="download_model_finished">Voraussagemodell aktualisiert</string>
+    <string name="download_model_failed">Voraussagemodell konnte nicht aktualisiert werden</string>
+    <string name="download_model_failed_action">Bericht senden</string>
 </resources>

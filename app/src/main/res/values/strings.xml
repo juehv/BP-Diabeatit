@@ -102,6 +102,10 @@
 
     <!-- Misc -->
     <string name="title_activity_download_model">Download Tool</string>
+    <string name="download_model_start">Updating prediction model, please wait</string>
+    <string name="download_model_finished">Prediction model updated</string>
+    <string name="download_model_failed">Could not update prediction model</string>
+    <string name="download_model_failed_action">Report</string>
     <string name="restart_app">Restarting app</string>
 
     <!-- Backend & Legacy UI -->
