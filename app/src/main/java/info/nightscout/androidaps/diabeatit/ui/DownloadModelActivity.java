@@ -44,7 +44,7 @@ public class DownloadModelActivity extends AppCompatActivity {
 
             link.setText(u.toString());
             log.info(String.format("Downloading model from '%s'", u));
-            FileDownloader.download(HomeActivity.getInstance().getApplicationContext(), u.toString(), null, new FileDownloader.DownloadCallback() {
+            FileDownloader.download(HomeActivity.getInstance(), u.toString(), null, new FileDownloader.DownloadCallback() {
                 @Override
                 public void onDownloadCompleted(String filePath) {
                     SP.putString(PredictionsPlugin.PREF_KEY_KI_MODEL_PATH, filePath);

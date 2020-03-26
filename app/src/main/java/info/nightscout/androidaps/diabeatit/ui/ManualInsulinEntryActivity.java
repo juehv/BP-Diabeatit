@@ -85,7 +85,7 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
         if (bolusInput.getText().toString().isEmpty()) {
 
-            bolusInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+            bolusInput.setHintTextColor(ContextCompat.getColor(this, R.color.d_important));
             return;
 
         }

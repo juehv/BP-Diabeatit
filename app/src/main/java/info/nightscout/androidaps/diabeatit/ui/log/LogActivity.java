@@ -26,12 +26,13 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_log);
 
+        getSupportActionBar().setTitle(getResources().getString(R.string.nav_navigation_log));
         setTheme(R.style.diabeatit);
 
-        adapter = new LogEventAdapter(getApplicationContext(), LogEventStore.getEvents());
+        adapter = new LogEventAdapter(this, LogEventStore.getEvents());
 
         RecyclerView recycler = findViewById(R.id.event_log_layout);
-        recycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
 
         findViewById(R.id.event_log_empty_notice).setVisibility(adapter.events.isEmpty() ? View.VISIBLE : View.GONE);

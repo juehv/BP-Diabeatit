@@ -110,7 +110,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
         if (descriptionInput.getText().toString().isEmpty()) {
 
-            descriptionInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+            descriptionInput.setHintTextColor(ContextCompat.getColor(this, R.color.d_important));
             return;
 
         }

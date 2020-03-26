@@ -12,7 +12,6 @@
     <string name="nav_navigation_assistant">Assistant</string>
     <string name="nav_navigation_settings">Settings</string>
     <string name="nav_navigation_setup">Setup</string>
-    <string name="nav_navigation_dummy">Add Dummy Data</string>
     <string name="nav_navigation_log">Event Log</string>
     <string name="nav_help_title">Help</string>
     <string name="nav_help_guide">Online Manual</string>
@@ -42,6 +41,7 @@
     <string name="ms_duration_cancel">Cancel</string>
     <string name="ms_save">Save</string>
     <string name="ms_event_title">Exercise Unit</string>
+    <string name="ms_event_minutes">%1$d minutes</string>
 
     <!-- Manual Note -->
     <string name="mn_title">Add Note</string>
@@ -57,6 +57,7 @@
     <string name="settings_prediction">Prediction Settings</string>
     <string name="prediction_model_select_description">Which kind of model to use for BG Predictions</string>
     <string name="prediction_model_select_title">Model type</string>
+    <string name="prediction_category_ai_description">Settings for the AI Predictions</string>
     <string name="prediction_category_ai_title">AI Predictions</string>
     <string name="prediction_model_path_description">Path to the model (.tflite)</string>
     <string name="prediction_model_path_title">Path to model</string>
@@ -65,10 +66,10 @@
     <string name="event_log_no_entries">No Entries</string>
 
     <!-- Alerts -->
-    <string name="alert_label_info">info</string>
+    <string name="alert_label_info">SCHUSTER</string>
     <string name="alert_label_warning">warning</string>
     <string name="alert_label_urgent">urgent</string>
-    <string name="alert_undo_text">Undo deletion?</string>
+    <string name="alert_undo_text">Alert dismissed</string>
     <string name="alert_undo_action">Undo</string>
     <string name="title_activity_alert_history">History</string>
 
@@ -92,16 +93,15 @@
     <string name="bolus_calculator_title">Bolus Calculator</string>
     <string name="carbs_label">How many carbs did you take in?</string>
     <string name="bg_label">BG level (optional)</string>
-    <string name="time_label">BG time (optional)</string>
+    <string name="time_label">Carbs time (optional)</string>
     <string name="correction_label">Correction (optional)</string>
     <string name="developer_mode_opening">Opening developer interface</string>
     <string name="bolus_explanation_title">Bolus calculation details</string>
-    <string name="bolus_explanation_back_button">Done</string>
+    <string name="bolus_explanation_back_button">Close</string>
     <string name="bolus_explanation"><![CDATA[<b>Trend</b>: %1$.3f<br/><b>Carbs I/C</b>: %2$.3f<br/><b>Blood Glucose</b>: %3$.3f]]></string>
 
     <!-- Misc -->
-    <string name="title_activity_setup_insight">SetupInsight</string>
-    <string name="title_activity_download_model">DownloadModelActivity</string>
+    <string name="title_activity_download_model">Download Tool</string>
     <string name="restart_app">Restarting app</string>
 
     <!-- Backend & Legacy UI -->

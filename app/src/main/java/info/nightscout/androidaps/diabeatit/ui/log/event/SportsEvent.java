@@ -11,7 +11,10 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Locale;
 
+import info.nightscout.androidaps.MainActivity;
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
+import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
 
 public class SportsEvent extends LogEvent {
@@ -43,10 +46,11 @@ public class SportsEvent extends LogEvent {
 		timeV.setText(new SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.GERMAN).format(Date.from(TIMESTAMP)));
 
 		contentV.setVisibility(View.VISIBLE);
-		noteV.setVisibility(View.GONE);
+		noteV.setVisibility(View.VISIBLE);
 		imgV.setVisibility(View.GONE);
 
-		contentV.setText(String.format(Locale.GERMAN, "%s (%dm)", DESCRIPTION, DURATION));
+		contentV.setText(context.getString(R.string.ms_event_minutes, DURATION));
+		noteV.setText(DESCRIPTION);
 
 	}
 

@@ -32,6 +32,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
 import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
+import info.nightscout.androidaps.diabeatit.util.AppRestarter;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
@@ -147,15 +148,20 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
             carbs.setText("");
 
-            final long timespan = 60 * 60 * 1000;
+            final long timespan = 6 * 60 * 60 * 1000;
             List<BgReading> data = ChartDataParser.getDummyData(System.currentTimeMillis() - timespan, System.currentTimeMillis());
 
             for (BgReading r : data)
                 MainApp.getDbHelper().createIfNotExists(r, "DUMMY");
 
             HomeFragment frag = HomeFragment.getInstance();
-            if (frag != null)
+            if (frag != null) {
+
+                frag.graph.onDataChanged(false, false);
+                frag.graph.invalidate();
                 frag.scheduleUpdateGUI("Dummy data added");
+
+            }
 
             List<Alert> as = new ArrayList<>();
             as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));

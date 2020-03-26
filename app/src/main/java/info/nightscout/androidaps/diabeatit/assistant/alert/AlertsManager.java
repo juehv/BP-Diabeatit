@@ -3,6 +3,7 @@ package info.nightscout.androidaps.diabeatit.assistant.alert;
 import android.content.Context;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
@@ -137,10 +141,10 @@ class SwipeToDismissCallback extends ItemTouchHelper.SimpleCallback{
 
   private void showUndoDialog() {
 
-	Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
-	((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(context.getColor(android.R.color.white));
-	snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
-	snackbar.show();
+		Snackbar snackbar = Snackbar.make(alertView, R.string.alert_undo_text, Snackbar.LENGTH_LONG);
+		((TextView) snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setTextColor(context.getColor(android.R.color.white));
+		snackbar.setAction(R.string.alert_undo_action, v -> AlertStore.restoreAlert(lastRemoved));
+	  snackbar.show();
 
   }
 
@@ -196,7 +200,7 @@ class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertViewHolder> {
 	TextView descV = card.findViewById(R.id.card_description);
 
 	/* Replace label */
-	labelV.setText(CONTEXT.getString(alert.URGENCY.getStringId()));
+	labelV.setText(CONTEXT.getResources().getString(alert.URGENCY.getStringId()));
 	labelV.setBackground(CONTEXT.getDrawable(alert.URGENCY.getBackground()));
 
 	/* Set icon and text */

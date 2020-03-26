@@ -1,11 +1,14 @@
 package info.nightscout.androidaps.diabeatit.ui;
 
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Locale;
 
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
@@ -59,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 		setContentView(R.layout.d_activity_home);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
 
 		getSystemService(NotificationManager.class).cancelAll();
 		NotificationStore.reset();
@@ -127,13 +133,14 @@ public class HomeActivity extends AppCompatActivity {
 
 	private void setupAssistant() {
 
-		View nestedScrollView = findViewById(R.id.assistant_scrollview);
+		final View nestedScrollView = findViewById(R.id.assistant_scrollview);
 		final BottomSheetBehavior assistant = BottomSheetBehavior.from(nestedScrollView);
 		final RelativeLayout assistantPeek = findViewById(R.id.assistant_peek);
 		final RelativeLayout assistantPeekAlt = findViewById(R.id.assistant_peek_alt);
 		final TextView assistantCloseHint = findViewById(R.id.assistant_close_hint);
 
 		assistant.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
 			@Override
 			public void onStateChanged(@NonNull View bottomSheet, int newState) {
 
@@ -144,15 +151,21 @@ public class HomeActivity extends AppCompatActivity {
 				assistantPeekAlt.setVisibility(newState != BottomSheetBehavior.STATE_COLLAPSED ? View.VISIBLE : View.GONE);
 				assistantCloseHint.setVisibility(newState == BottomSheetBehavior.STATE_EXPANDED ? View.VISIBLE : View.GONE);
 
+				if (StaticData.assistantInhibitClose && newState == BottomSheetBehavior.STATE_DRAGGING)
+					assistant.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+				StaticData.assistantInhibitClose = false;
+
 			}
 
 			@Override
 			public void onSlide(@NonNull View view, float v) {}
+
 		});
 
 		assistantPeek.setOnClickListener(view -> assistant.setState(BottomSheetBehavior.STATE_EXPANDED));
 
-		AlertStore.activeAlerts = new AlertsManager(getApplicationContext(), findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
+		AlertStore.activeAlerts = new AlertsManager(this, findViewById(R.id.assistant_card_list), findViewById(R.id.alert_cardview));
 
 		Button alertClearB = findViewById(R.id.alert_clear_all);
 		TextView alertEmptyT = findViewById(R.id.alert_empty_notice);
@@ -240,6 +253,18 @@ public class HomeActivity extends AppCompatActivity {
 							startActivity(intent);
 						}
 		);
+
+		boolean a = false;
+
+		findViewById(R.id.assistant_card_list).setOnTouchListener(new OnSwipeTouchListener(this) {
+
+			@Override
+			public void onSwipeLeft() { StaticData.assistantInhibitClose = true; }
+
+			@Override
+			public void onSwipeRight() { StaticData.assistantInhibitClose = true; }
+
+		});
 
 	}
 
@@ -338,4 +363,72 @@ public class HomeActivity extends AppCompatActivity {
 
 	}
 
+}
+
+/* Class from https://gist.github.com/nesquena/ed58f34791da00da9751 under MIT license */
+
+class OnSwipeTouchListener implements View.OnTouchListener {
+
+	private GestureDetector gestureDetector;
+
+	public OnSwipeTouchListener(Context c) {
+		gestureDetector = new GestureDetector(c, new GestureListener());
+	}
+
+	public boolean onTouch(final View view, final MotionEvent motionEvent) {
+		return gestureDetector.onTouchEvent(motionEvent);
+	}
+
+	private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+		private static final int SWIPE_THRESHOLD = 100;
+		private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		// Determines the fling velocity and then fires the appropriate swipe event accordingly
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			boolean result = false;
+			try {
+				float diffY = e2.getY() - e1.getY();
+				float diffX = e2.getX() - e1.getX();
+				if (Math.abs(diffX) > Math.abs(diffY)) {
+					if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+						if (diffX > 0) {
+							onSwipeRight();
+						} else {
+							onSwipeLeft();
+						}
+					}
+				} else {
+					if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+						if (diffY > 0) {
+							onSwipeDown();
+						} else {
+							onSwipeUp();
+						}
+					}
+				}
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+			return result;
+		}
+	}
+
+	public void onSwipeRight() {
+	}
+
+	public void onSwipeLeft() {
+	}
+
+	public void onSwipeUp() {
+	}
+
+	public void onSwipeDown() {
+	}
 }
