@@ -73,6 +73,19 @@ public class HomeFragment extends Fragment {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
+    private int numberOfLines = 1;
+    private int maxNumberOfLines = 4;
+    private int numberOfPoints = 12;
+
+    float[][] randomNumbersTab = new float[maxNumberOfLines][numberOfPoints];
+
+    private boolean hasAxes = true;
+    private boolean hasAxesNames = true;
+    private boolean hasPoints = true;
+    private boolean hasLines = true;
+    private boolean isCubic = false;
+    private boolean hasLabels = false;
+
     private static final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture<?> scheduledUpdate = null;
 
@@ -211,6 +224,7 @@ public class HomeFragment extends Fragment {
         final boolean finalPredictionsAvailable = predictionsAvailable;
 
         // ****** GRAPH *******
+
         new Thread(() -> {
             // allign to hours
             Calendar calendar = Calendar.getInstance();
@@ -249,6 +263,10 @@ public class HomeFragment extends Fragment {
 
             final long now = System.currentTimeMillis();
 
+            //  ------------------ 1st graph
+            if (L.isEnabled(L.OVERVIEW))
+                Profiler.log(log, from + " - 1st graph - START", updateGUIStart);
+
             Profile profile;
             if (!ProfileFunctions.getInstance().isProfileValid("HOME")) {
                 // TODO
@@ -285,6 +303,9 @@ public class HomeFragment extends Fragment {
                 });
             }
         }).start();
+
+        if (L.isEnabled(L.OVERVIEW))
+            Profiler.log(log, from, updateGUIStart);
     }
 
 }
