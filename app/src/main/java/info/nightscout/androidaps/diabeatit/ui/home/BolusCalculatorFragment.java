@@ -166,8 +166,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             HomeFragment frag = HomeFragment.getInstance();
             if (frag != null) {
 
-                frag.graph.onDataChanged(false, false);
-                frag.graph.invalidate();
+                //frag.graph.onDataChanged(false, false);
+                //frag.graph.invalidate();
                 frag.scheduleUpdateGUI("Dummy data added");
 
             }

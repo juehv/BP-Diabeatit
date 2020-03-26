@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -151,9 +153,7 @@ public class ChartDataParser {
 //        bgSeries.setShape(PointsGraphSeries.Shape.POINT);
 //        bgSeries.setSize(10);
 
-        graph.getLegendRenderer().setBackgroundColor(android.R.color.white);
         series.add(bgSeries);
-        graph.getLegendRenderer().setBackgroundColor(android.R.color.white);
     }
 
     /** Add a series for the predictons */
@@ -198,21 +198,34 @@ public class ChartDataParser {
         List<Treatment> treatments = TreatmentsPlugin.getPlugin().getService().getTreatmentDataFromTime(fromTime, true);
 
         treatments.sort((t1, t2) -> Long.compare(t1.date, t2.date));
-        List<DataPoint> points = treatments.stream()
-                .filter(t -> t.isValid)
-                .map(t -> new DataPoint(t.date, t.insulin * 10))
+        List<DataPoint> pointsMeal = treatments.stream()
+                .filter(t -> t.isValid && t.mealBolus)
+                .map(t -> new DataPoint(t.date, 0))
                 .collect(Collectors.toList());
-        DataPoint[] pointsArray = new DataPoint[points.size()];
-        pointsArray = points.toArray(pointsArray);
 
-        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(pointsArray);
+        DataPoint[] mealPointsArray = pointsMeal.toArray(new DataPoint[0]);
 
-        // styling (Kind of TODO. I'm not satisified here)
-        series.setColor(MainApp.gc(R.color.graphBolusColor));
-        series.setShape(PointsGraphSeries.Shape.TRIANGLE);
-        series.setSize(20);
+        List<DataPoint> pointsBolus = treatments.stream()
+                .filter(t -> t.isValid && !t.mealBolus)
+                .map(t -> new DataPoint(t.date, 0))
+                .collect(Collectors.toList());
 
-        this.series.add(series);
+        DataPoint[] bolusPointsArray = pointsBolus.toArray(new DataPoint[0]);
+
+        PointsGraphSeries<DataPoint> seriesMeal = new PointsGraphSeries<>(mealPointsArray);
+
+        seriesMeal.setColor(MainApp.gc(R.color.graphMealColor));
+        seriesMeal.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        seriesMeal.setSize(20);
+
+        PointsGraphSeries<DataPoint> seriesBolus = new PointsGraphSeries<>(bolusPointsArray);
+
+        seriesBolus.setColor(MainApp.gc(R.color.graphBolusColor));
+        seriesBolus.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        seriesBolus.setSize(20);
+
+        this.series.add(seriesMeal);
+        this.series.add(seriesBolus);
     }
 
     /** Add the curve displaying the insulin on board
