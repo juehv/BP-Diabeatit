@@ -1437,7 +1437,7 @@ Unerwartetes Verhalten.</string>
     <string name="recommended_dosage_label">Empfohlene Dosis</string>
     <string name="tap_label">(Für Details antippen)</string>
     <string name="bolus_calculator_title">Bolusrechner</string>
-    <string name="carbs_label">Eingenommene Kohlenhydrate</string>
+    <string name="carbs_label">Menge an Kohlenhydraten</string>
     <string name="bg_label">Blutzuckerspiegel (optional)</string>
     <string name="time_label">KH-Zeit (optional)</string>
     <string name="correction_label">Korrektur (optional)</string>

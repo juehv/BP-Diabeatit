@@ -91,7 +91,7 @@
     <string name="recommended_dosage_label">Recommended dosage</string>
     <string name="tap_label">(Tap for more details)</string>
     <string name="bolus_calculator_title">Bolus Calculator</string>
-    <string name="carbs_label">How many carbs did you take in?</string>
+    <string name="carbs_label">How many carbs?</string>
     <string name="bg_label">BG level (optional)</string>
     <string name="time_label">Carbs time (optional)</string>
     <string name="correction_label">Correction (optional)</string>
