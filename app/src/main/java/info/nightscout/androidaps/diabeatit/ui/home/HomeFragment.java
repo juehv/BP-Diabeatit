@@ -39,6 +39,8 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.events.EventNewBG;
+import info.nightscout.androidaps.events.EventReloadTreatmentData;
+import info.nightscout.androidaps.events.EventTreatmentChange;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.interfaces.PumpInterface;
 import info.nightscout.androidaps.logging.L;
@@ -71,7 +73,6 @@ public class HomeFragment extends Fragment {
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
-
     private int numberOfLines = 1;
     private int maxNumberOfLines = 4;
     private int numberOfPoints = 12;
@@ -90,10 +91,8 @@ public class HomeFragment extends Fragment {
 
     SharedPreferences.OnSharedPreferenceChangeListener listener;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle _b) {
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.d_fragment_home, container, false);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -150,9 +149,18 @@ public class HomeFragment extends Fragment {
         disposable.add(RxBus.INSTANCE
             .toObservable(EventNewBG.class)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(event -> {
-                scheduleUpdateGUI("New BG Event", 100);
-            }, FabricPrivacy::logException));
+            .subscribe(event -> scheduleUpdateGUI("New BG Event", 100),
+                        FabricPrivacy::logException));
+        disposable.add(RxBus.INSTANCE
+            .toObservable(EventTreatmentChange.class)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(event -> scheduleUpdateGUI("TREATMENT", 200),
+                        FabricPrivacy::logException));
+        disposable.add(RxBus.INSTANCE
+            .toObservable(EventReloadTreatmentData.class)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(event -> scheduleUpdateGUI("TREATMENT", 200),
+                        FabricPrivacy::logException));
     }
 
     public void scheduleUpdateGUI(final String from, final long delay) {
