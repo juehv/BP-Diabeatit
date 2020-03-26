@@ -155,6 +155,11 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 			LogEventStore.addEvent(new CarbsEvent(timestamp.toInstant(), bm, carbs, notes));
 
+			long min30 = 30 * 60 * 1000;
+			HomeFragment frag = HomeFragment.getInstance();
+			if (ts > (System.currentTimeMillis() - min30) && frag != null && frag.bc != null)
+				frag.bc.setCarbs(carbs);
+
 		} catch (Exception ignored) { return; }
 
 		// Update GUI

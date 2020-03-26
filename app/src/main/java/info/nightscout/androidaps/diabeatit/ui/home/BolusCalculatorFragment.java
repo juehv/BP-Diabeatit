@@ -45,7 +45,7 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
 
     TextView bolusText;
     TextView notes;
-    EditText carbs;
+    public EditText carbs;
 
     String last = "";
 
@@ -123,6 +123,15 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
         updateText(calc);
 
         return root;
+    }
+
+    public void setCarbs(int amount) {
+
+        if (carbs == null) return;
+
+        carbs.setText(String.valueOf(amount));
+        onCarbsChanged();
+
     }
 
     private void onCarbsChanged() {

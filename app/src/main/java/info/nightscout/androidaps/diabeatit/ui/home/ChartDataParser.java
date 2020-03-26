@@ -148,11 +148,13 @@ public class ChartDataParser {
         LineGraphSeries<DataPointWithLabelInterface> bgSeries = new LineGraphSeries<>(bg);
         bgSeries.setColor(graph.getContext().getColor(R.color.graphBgReadingsColor));
         bgSeries.setDrawDataPoints(true);
-        bgSeries.setDataPointsRadius(10);
+        bgSeries.setDataPointsRadius(1);
 //        bgSeries.setShape(PointsGraphSeries.Shape.POINT);
 //        bgSeries.setSize(10);
 
+        graph.getLegendRenderer().setBackgroundColor(android.R.color.white);
         series.add(bgSeries);
+        graph.getLegendRenderer().setBackgroundColor(android.R.color.white);
     }
 
     public void addPredictions(long fromTime, long endTime) {
@@ -178,10 +180,12 @@ public class ChartDataParser {
         pred = preds.toArray(pred);
         // Predictions are offsets!
 
-        PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
+        LineGraphSeries<DataPointWithLabelInterface> predSeries = new LineGraphSeries<>(pred);
         predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
-        predSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
-        predSeries.setSize(10);
+        predSeries.setDrawDataPoints(true);
+        predSeries.setDataPointsRadius(1);
+        //predSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
+        //predSeries.setSize(10);
 
         series.add(predSeries);
     }

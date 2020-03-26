@@ -69,6 +69,8 @@ public class HomeFragment extends Fragment {
     public GraphView graph;
     private ChartDataParser data;
 
+    public BolusCalculatorFragment bc;
+
     private CompositeDisposable disposable = new CompositeDisposable();
 
 
@@ -141,9 +143,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Fragment childFragment = new BolusCalculatorFragment();
+        bc = new BolusCalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.bolus_calculator_fragment_container, childFragment).commit();
+        transaction.replace(R.id.bolus_calculator_fragment_container, bc).commit();
         scheduleUpdateGUI("onViewCreated");
 
         // Update GUI whenever we receive a new BG reading
