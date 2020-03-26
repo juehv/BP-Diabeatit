@@ -114,11 +114,6 @@ public class FixedLineGraphSeries<E extends DataPointInterface> extends BaseSeri
         init();
     }
 
-    @Override
-    public void drawSelection(GraphView mGraphView, Canvas canvas, boolean b, DataPointInterface value) {
-        // TODO
-    }
-
     /**
      * do the initialization
      * creates internal objects
@@ -153,8 +148,8 @@ public class FixedLineGraphSeries<E extends DataPointInterface> extends BaseSeri
         double maxY;
         double minY;
         if (isSecondScale) {
-            maxY = graphView.getSecondScale().getMaxY(false);
-            minY = graphView.getSecondScale().getMinY(false);
+            maxY = graphView.getSecondScale().getMaxY();
+            minY = graphView.getSecondScale().getMinY();
         } else {
             maxY = graphView.getViewport().getMaxY(false);
             minY = graphView.getViewport().getMinY(false);
