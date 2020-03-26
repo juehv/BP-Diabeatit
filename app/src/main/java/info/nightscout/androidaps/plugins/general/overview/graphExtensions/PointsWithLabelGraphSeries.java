@@ -36,6 +36,7 @@ import android.graphics.Typeface;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BaseSeries;
+import com.jjoe64.graphview.series.DataPointInterface;
 
 import java.util.Iterator;
 
@@ -105,6 +106,11 @@ public class PointsWithLabelGraphSeries<E extends DataPointWithLabelInterface> e
         init();
     }
 
+    @Override
+    public void drawSelection(GraphView mGraphView, Canvas canvas, boolean b, DataPointInterface value) {
+
+    }
+
     /**
      * inits the internal objects
      * set the defaults
@@ -132,8 +138,8 @@ public class PointsWithLabelGraphSeries<E extends DataPointWithLabelInterface> e
         double maxY;
         double minY;
         if (isSecondScale) {
-            maxY = graphView.getSecondScale().getMaxY();
-            minY = graphView.getSecondScale().getMinY();
+            maxY = graphView.getSecondScale().getMaxY(false);
+            minY = graphView.getSecondScale().getMinY(false);
         } else {
             maxY = graphView.getViewport().getMaxY(false);
             minY = graphView.getViewport().getMinY(false);
