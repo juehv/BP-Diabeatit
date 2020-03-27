@@ -50,7 +50,7 @@ public class CarbsEvent extends LogEvent {
 		noteV.setVisibility(!NOTE.isEmpty() ? View.VISIBLE : View.GONE);
 		imgV.setVisibility(IMAGE != null ? View.VISIBLE : View.GONE);
 
-		contentV.setText(CARBS + " kcal");
+		contentV.setText(CARBS + "g");
 		noteV.setText(NOTE);
 
 		if (IMAGE != null)

@@ -173,9 +173,9 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             }
 
             List<Alert> as = new ArrayList<>();
-            as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_battery_alert, "Battery low", "The battery is low."));
-            as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Lorem Ipsum", "Lorem Ipsum!"));
-            as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_bluetooth_disabled, "Multiline", "Line<br>Break"));
+            as.add(new Alert(Alert.Urgency.WARNING, R.drawable.ic_battery_alert, "Batterie schwach", "Der Systemakku ist schwach."));
+            as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Statistik verfügbar", "Ein neuer Statistikbericht ist verfügbar."));
+            as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_bluetooth_disabled, "Verbindung verloren", "Verbindung zum Sensor veloren."));
             if (AlertStore.getActiveAlerts().length == 0)
                 AlertStore.initAlerts(as.toArray(new Alert[0]));
 
