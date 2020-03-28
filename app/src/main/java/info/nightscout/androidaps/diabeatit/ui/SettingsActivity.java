@@ -21,6 +21,8 @@ public class SettingsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_settings_activity);
         getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_settings));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()

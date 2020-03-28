@@ -111,17 +111,14 @@ public class PredictionsPlugin {
 	/** Get the blood glucose level reading equivalent of the predictions.
 	 *
 	 * The difference between this method and {@link #getPredictions} is mostly that they are
-	 * represented as a {@link List<BgReading>} instead of a set of raw-values. They are also offset
-	 * by the value of the last read blood glucose, as the predictions are generally offsets and not
-	 * absolute values.
-	 *
+	 * represented as a {@link List<BgReading>} instead of a set of raw-values.  They values are
+     * still offests instead of an absolute value.
+     *
 	 * @return	A list of {@link BgReading} that represent the predictions
 	 */
     public List<BgReading> getPredictionReadings() {
+        // get the last known reading value as base
         BgReading lastBg = DatabaseHelper.lastBg();
-        if (lastBg == null) {
-            log.warn("Could not find last bg reading");
-        }
         long timestamp_base = lastBg != null ? lastBg.date : System.currentTimeMillis();
         for (BgReading reading : MainApp.getDbHelper().getBgreadingsDataFromTime(Instant.now().toEpochMilli() - 1000 * 60 * 60 * 24, true)) {
             if (reading.date > timestamp_base)

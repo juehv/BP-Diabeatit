@@ -161,8 +161,14 @@ public class ChartDataParser {
         if (DatabaseHelper.lastBg() == null)
             return;
         List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
-        BgReading lastBg = DatabaseHelper.lastBg();
+        BgReading lastBg = null;
         List<BgReading> preds;
+
+        DatabaseHelper dbh = new DatabaseHelper(MainApp.instance().getApplicationContext());
+        for (BgReading r : dbh.getBgreadingsDataFromTime(Instant.now().toEpochMilli() - 60*60*1000,false)) {
+            if (lastBg == null) lastBg = r;
+            if (r.date > lastBg.date) lastBg = r;
+        }
 
         if (readings == null || readings.size() == 0) {
             preds = new ArrayList<>();

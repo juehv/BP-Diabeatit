@@ -41,7 +41,8 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".diabeatit.ui.ManualNoteActivity"
-            android:theme="@style/diabeatit" />
+            android:theme="@style/diabeatit"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.car.application"
@@ -76,24 +77,34 @@
                 <data android:scheme="diabeatit" />
             </intent-filter>
         </activity>
-        <activity android:name=".diabeatit.log.LogActivity" android:theme="@style/diabeatit" android:label="@string/nav_navigation_log" />
-        <activity android:name=".diabeatit.ui.SettingsActivity" android:theme="@style/diabeatit" >
+        <activity
+            android:name=".diabeatit.log.LogActivity"
+            android:theme="@style/diabeatit"
+            android:label="@string/nav_navigation_log"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
+        <activity android:name=".diabeatit.ui.SettingsActivity"
+            android:theme="@style/diabeatit"
+            android:parentActivityName=".diabeatit.ui.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".diabeatit.ui.HomeActivity"/>
         </activity>
         <activity
             android:name=".diabeatit.ui.ManualSportsEntryActivity"
-            android:theme="@style/diabeatit" />
+            android:theme="@style/diabeatit"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
         <activity
             android:name=".diabeatit.ui.ManualCarbsEntryActivity"
-            android:theme="@style/diabeatit" />
+            android:theme="@style/diabeatit"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
         <activity
             android:name=".diabeatit.ui.ManualInsulinEntryActivity"
-            android:theme="@style/diabeatit" />
+            android:theme="@style/diabeatit"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
-            android:label="@string/title_activity_alert_history" />
+            android:label="@string/title_activity_alert_history"
+            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
         <activity android:name=".MainActivity">
 
             <!--

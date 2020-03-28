@@ -27,6 +27,9 @@ public class LogActivity extends AppCompatActivity {
         setContentView(R.layout.d_activity_log);
 
         getSupportActionBar().setTitle(getResources().getString(R.string.nav_navigation_log));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         setTheme(R.style.diabeatit);
 
         adapter = new LogEventAdapter(this, LogEventStore.getEvents());
