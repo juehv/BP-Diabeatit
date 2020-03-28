@@ -39,6 +39,8 @@ import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.predictions.PredictionsPlugin;
 import info.nightscout.androidaps.events.EventNewBG;
+import info.nightscout.androidaps.events.EventReloadTreatmentData;
+import info.nightscout.androidaps.events.EventTreatmentChange;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.interfaces.PumpInterface;
 import info.nightscout.androidaps.logging.L;
@@ -49,13 +51,11 @@ import info.nightscout.androidaps.plugins.configBuilder.ConfigBuilderPlugin;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
 import info.nightscout.androidaps.plugins.general.nsclient.data.NSDeviceStatus;
 import info.nightscout.androidaps.plugins.general.overview.OverviewPlugin;
-import info.nightscout.androidaps.plugins.iob.iobCobCalculator.events.EventIobCalculationProgress;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 import info.nightscout.androidaps.utils.FabricPrivacy;
 import info.nightscout.androidaps.utils.Profiler;
 import info.nightscout.androidaps.utils.SP;
 import info.nightscout.androidaps.utils.T;
-import io.fabric.sdk.android.Fabric;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -69,8 +69,9 @@ public class HomeFragment extends Fragment {
     public GraphView graph;
     private ChartDataParser data;
 
-    private CompositeDisposable disposable = new CompositeDisposable();
+    public BolusCalculatorFragment bc;
 
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     private int numberOfLines = 1;
     private int maxNumberOfLines = 4;
@@ -90,10 +91,8 @@ public class HomeFragment extends Fragment {
 
     SharedPreferences.OnSharedPreferenceChangeListener listener;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle _b) {
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.d_fragment_home, container, false);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -128,7 +127,7 @@ public class HomeFragment extends Fragment {
     private void prefsChanged(SharedPreferences prefs, String key) {
         Log.d("PREF", String.format("Updated prefs w/ key %s", key));
         switch (key) {
-            case PredictionsPlugin.PREF_KEY_KI_MODEL_PATH:
+            case PredictionsPlugin.PREF_KEY_AI_MODEL_PATH:
             case PredictionsPlugin.PREF_KEY_MODEL_TYPE:
                 PredictionsPlugin.updateFromSettings();
                 scheduleUpdateGUI("Preferences updated");
@@ -141,18 +140,27 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Fragment childFragment = new BolusCalculatorFragment();
+        bc = new BolusCalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.bolus_calculator_fragment_container, childFragment).commit();
+        transaction.replace(R.id.bolus_calculator_fragment_container, bc).commit();
         scheduleUpdateGUI("onViewCreated");
 
         // Update GUI whenever we receive a new BG reading
         disposable.add(RxBus.INSTANCE
             .toObservable(EventNewBG.class)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(event -> {
-                scheduleUpdateGUI("New BG Event", 100);
-            }, FabricPrivacy::logException));
+            .subscribe(event -> scheduleUpdateGUI("New BG Event", 100),
+                        FabricPrivacy::logException));
+        disposable.add(RxBus.INSTANCE
+            .toObservable(EventTreatmentChange.class)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(event -> scheduleUpdateGUI("TREATMENT", 200),
+                        FabricPrivacy::logException));
+        disposable.add(RxBus.INSTANCE
+            .toObservable(EventReloadTreatmentData.class)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(event -> scheduleUpdateGUI("TREATMENT", 200),
+                        FabricPrivacy::logException));
     }
 
     public void scheduleUpdateGUI(final String from, final long delay) {
@@ -275,115 +283,16 @@ public class HomeFragment extends Fragment {
                 data.addInRangeArea(fromTime, Math.max(endTime, now + 1000*60*60), profile.getTargetLow(), profile.getTargetHigh());
                 data.addBgReadings(fromTime, endTime, lowLine, highLine);
                 data.addNowLine();
-                data.addPredictions(fromTime, endTime);
-                data.addBolusEvents(fromTime, endTime);
-                data.addIob(fromTime, now, false, 0.5d, false);
+                data.addPredictions();
+                data.addBolusEvents(fromTime);
+                data.addIob(fromTime, now, false, 0.5d);
                 data.formatAxis(fromTime, endTime);
                 Log.d("GRAPH", String.format("fromTime=%d endTime=%d toTime=%d", fromTime, endTime, toTime));
             } catch (Exception ex) {
                 log.error("Failed to display graph", ex);
                 throw ex;
             }
-/*
-            // **** In range Area ****
-            graphData.addInRangeArea(fromTime, endTime, lowLine, highLine);
 
-            // **** BG ****
-            if (finalPredictionsAvailable && SP.getBoolean("showprediction", false))
-                graphData.addBgReadings(fromTime, toTime, lowLine, highLine,
-                        apsResult.getPredictions());
-            else
-                graphData.addBgReadings(fromTime, toTime, lowLine, highLine, null);
-
-            // set manual x bounds to have nice steps
-            graphData.formatAxis(fromTime, endTime);
-
-            // Treatments
-            graphData.addTreatments(fromTime, endTime);
-
-            if (SP.getBoolean("showactivityprimary", true)) {
-                graphData.addActivity(fromTime, endTime, false, 0.8d);
-            }
-
-            // add basal data
-            if (pump.getPumpDescription().isTempBasalCapable && SP.getBoolean("showbasals", true)) {
-                graphData.addBasals(fromTime, now, lowLine / graphData.maxY / 1.2d);
-            }
-
-            // add target line
-            graphData.addTargetLine(fromTime, toTime, profile);
-
-            // **** NOW line ****
-            graphData.addNowLine(now);
-*/
-            /*
-            // ------------------ 2nd graph
-            if (L.isEnabled(L.OVERVIEW))
-                Profiler.log(log, from + " - 2nd graph - START", updateGUIStart);
-
-            final GraphData secondGraphData = new GraphData(iobGraph, IobCobCalculatorPlugin.getPlugin());
-
-            boolean useIobForScale = false;
-            boolean useCobForScale = false;
-            boolean useDevForScale = false;
-            boolean useRatioForScale = false;
-            boolean useDSForScale = false;
-            boolean useIAForScale = false;
-
-            if (SP.getBoolean("showiob", true)) {
-                useIobForScale = true;
-            } else if (SP.getBoolean("showcob", true)) {
-                useCobForScale = true;
-            } else if (SP.getBoolean("showdeviations", false)) {
-                useDevForScale = true;
-            } else if (SP.getBoolean("showratios", false)) {
-                useRatioForScale = true;
-            } else if (SP.getBoolean("showactivitysecondary", false)) {
-                useIAForScale = true;
-            } else if (SP.getBoolean("showdevslope", false)) {
-                useDSForScale = true;
-            }
-
-            if (SP.getBoolean("showiob", true))
-                secondGraphData.addIob(fromTime, now, useIobForScale, 1d, SP.getBoolean("showprediction", false));
-            if (SP.getBoolean("showcob", true))
-                secondGraphData.addCob(fromTime, now, useCobForScale, useCobForScale ? 1d : 0.5d);
-            if (SP.getBoolean("showdeviations", false))
-                secondGraphData.addDeviations(fromTime, now, useDevForScale, 1d);
-            if (SP.getBoolean("showratios", false))
-                secondGraphData.addRatio(fromTime, now, useRatioForScale, 1d);
-            if (SP.getBoolean("showactivitysecondary", true))
-                secondGraphData.addActivity(fromTime, endTime, useIAForScale, 0.8d);
-            if (SP.getBoolean("showdevslope", false) && MainApp.devBranch)
-                secondGraphData.addDeviationSlope(fromTime, now, useDSForScale, 1d);
-
-            // **** NOW line ****
-            // set manual x bounds to have nice steps
-            secondGraphData.formatAxis(fromTime, endTime);
-            secondGraphData.addNowLine(now);
-
-            // do GUI update
-            FragmentActivity activity = getActivity();
-            if (activity != null) {
-                activity.runOnUiThread(() -> {
-                    if (SP.getBoolean("showiob", true)
-                            || SP.getBoolean("showcob", true)
-                            || SP.getBoolean("showdeviations", false)
-                            || SP.getBoolean("showratios", false)
-                            || SP.getBoolean("showactivitysecondary", false)
-                            || SP.getBoolean("showdevslope", false)) {
-                        iobGraph.setVisibility(View.VISIBLE);
-                    } else {
-                        iobGraph.setVisibility(View.GONE);
-                    }
-                    // finally enforce drawing of graphs
-                    graphData.performUpdate();
-                    secondGraphData.performUpdate();
-                    if (L.isEnabled(L.OVERVIEW))
-                        Profiler.log(log, from + " - onDataChanged", updateGUIStart);
-                });
-            }
-            */
             FragmentActivity activity = getActivity();
             if (activity != null) {
                 activity.runOnUiThread(() -> {

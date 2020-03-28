@@ -15,18 +15,23 @@ import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorP
  */
 public class InterpolatedBgReadingsInput implements PredictionInputs {
     // Constants for time calculations, the time in milliseconds the unit represents
+    /** Amount of milliseconds in a second */
     private final static long SECOND = 1000;
+    /** Amount of milliseconds in a minute */
     private final static long MINUTE = 60 * SECOND;
+    /** Amount of milliseconds in an hour */
     private final static long HOUR = 60 * MINUTE;
 
-	// Interval between datapoints
+	/** Interval between datapoints */
     private final static long DATAPOINT_INTERVAL = 5 * MINUTE;
-	// Amount of datapoints to use
+	/** Amount of datapoints to use */
     private final static long DATAPOINT_COUNT = 30;
 
+    /** Interpolation method used */
     private InterpolationMethod<Double, Double> interpolation;
-    // private Context ctx;
+    /** {@code true} if the interpolation is set up */
     private boolean isSetup;
+    /** The timestamp that is considered 'now' in the calculations */
     private long currentTimestamp;
 
 	/** Create a new input for the given `startTimestamp` and {@link InterpolationMethod}*/

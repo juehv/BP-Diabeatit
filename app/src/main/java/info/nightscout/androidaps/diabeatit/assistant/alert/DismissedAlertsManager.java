@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 
@@ -130,7 +131,7 @@ class DismissedAlertAdapter extends RecyclerView.Adapter<DismissedAlertAdapter.D
 	TextView descV = view.findViewById(R.id.alert_history_entry_description);
 
 	timeV.setText(new SimpleDateFormat("d.M. H:mm").format(alert.timestamp));
-	urgencyV.setText(CONTEXT.getString(alert.URGENCY.getStringId()));
+	urgencyV.setText(CONTEXT.getResources().getString(alert.URGENCY.getStringId()));
 	urgencyV.setTextColor(CONTEXT.getColor(alert.URGENCY.getRawColor()));
 	titleV.setText(alert.title);
 	descV.setText(Html.fromHtml(alert.desc, Html.FROM_HTML_MODE_COMPACT));

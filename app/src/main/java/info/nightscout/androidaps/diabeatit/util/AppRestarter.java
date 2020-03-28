@@ -15,13 +15,13 @@ public class AppRestarter {
 
 	public static void restartApp() {
 
-		Context context = MainApp.instance().getApplicationContext();
+		Context context = MainApp.instance();
 
 		Intent initIntent = new Intent(context, HomeActivity.class);
 		PendingIntent restartIntent = PendingIntent.getActivity(context, StaticData.RESTART_INTENT_ID, initIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, restartIntent);
+		mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 500, restartIntent);
 
 		System.exit(0);
 

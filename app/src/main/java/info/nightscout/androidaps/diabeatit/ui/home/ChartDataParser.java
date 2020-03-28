@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,10 +46,13 @@ import info.nightscout.androidaps.plugins.iob.iobCobCalculator.AutosensResult;
 import info.nightscout.androidaps.plugins.iob.iobCobCalculator.IobCobCalculatorPlugin;
 import info.nightscout.androidaps.plugins.treatments.Treatment;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
-import info.nightscout.androidaps.utils.DecimalFormatter;
 import info.nightscout.androidaps.utils.Round;
 import kotlin.random.Random;
 
+/**
+ * Wrapper class that handles the collection and conversion of data shown in the graph in the
+ * HomeActivity
+ */
 public class ChartDataParser {
     private static Logger log = LoggerFactory.getLogger(L.HOME);
 
@@ -63,6 +69,10 @@ public class ChartDataParser {
     private PointsWithLabelGraphSeries<DataPointWithLabelInterface> bgSeries;
     private PointsWithLabelGraphSeries<DataPointWithLabelInterface> predSeries;
 
+    /** Creates a new chart data parser
+     *
+     * @param graph The graph that should be updated
+     */
     public ChartDataParser(GraphView graph) {
         this.graph = graph;
     }
@@ -91,31 +101,22 @@ public class ChartDataParser {
         return readings;
     }
 
+    /** Clear any existing series of data */
     public void clearSeries() {
         series.clear();
     }
 
-    public static List<BgReading> getDummyPredictions() {
-        final long SECOND = 1000;
-        final long MINUTE = 60 * SECOND;
-
-        ArrayList<BgReading> preds = new ArrayList<>();
-
-        long start = System.currentTimeMillis();
-        long end = start + 30 * MINUTE;
-
-        for (long current = start; current < end; current += 5*MINUTE) {
-            double value = 120 +0; // Random.Default.nextDouble(-5, 5);
-            preds.add(new BgReading().date(current).value(value));
-        }
-
-        return preds;
-    }
-
+    /** Add a series for the blood glucose level readings
+     *
+     * @param fromTime          Time from which readings will be displayed
+     * @param toTime            Time to which readings will be displayed
+     * @param lowLine           Lower bound of the target range for the values
+     * @param highLine          Upper bound of the target range for the values
+     */
     public void addBgReadings(long fromTime, long toTime, double lowLine, double highLine) {
         double maxBgValue = Double.MIN_VALUE;
         bgReadingsArray = IobCobCalculatorPlugin.getPlugin().getBgReadings();
-        List<DataPointWithLabelInterface> bgListArray = new ArrayList<>();
+        List<DataPointInterface> bgListArray = new ArrayList<>();
 
         if (bgReadingsArray == null || bgReadingsArray.size() == 0) {
             if (L.isEnabled(L.OVERVIEW))
@@ -137,7 +138,7 @@ public class ChartDataParser {
         // int numOfVertLines = units.equals(Constants.MGDL) ? (int) (maxBgValue / 40 + 1) : (int) (maxBgValue / 2 + 1);
         int numOfVertLines = (int) maxBgValue / 2 + 1;
 
-        DataPointWithLabelInterface[] bg = new DataPointWithLabelInterface[bgListArray.size()];
+        DataPointInterface[] bg = new DataPointInterface[bgListArray.size()];
         bg = bgListArray.toArray(bg);
 
         maxY = maxBgValue;
@@ -145,17 +146,18 @@ public class ChartDataParser {
         // set manual y bounds to have nice steps
         graph.getGridLabelRenderer().setNumVerticalLabels(numOfVertLines);
 
-        LineGraphSeries<DataPointWithLabelInterface> bgSeries = new LineGraphSeries<>(bg);
+        LineGraphSeries<DataPointInterface> bgSeries = new LineGraphSeries<>(bg);
         bgSeries.setColor(graph.getContext().getColor(R.color.graphBgReadingsColor));
         bgSeries.setDrawDataPoints(true);
-        bgSeries.setDataPointsRadius(10);
+        bgSeries.setDataPointsRadius(1);
 //        bgSeries.setShape(PointsGraphSeries.Shape.POINT);
 //        bgSeries.setSize(10);
 
         series.add(bgSeries);
     }
 
-    public void addPredictions(long fromTime, long endTime) {
+    /** Add a series for the predictons */
+    public void addPredictions() {
         if (DatabaseHelper.lastBg() == null)
             return;
         List<BgReading> readings = IobCobCalculatorPlugin.getPlugin().getBgReadings();
@@ -163,7 +165,7 @@ public class ChartDataParser {
         List<BgReading> preds;
 
         if (readings == null || readings.size() == 0) {
-            preds = getDummyPredictions();
+            preds = new ArrayList<>();
         } else {
             preds = PredictionsPlugin.getPlugin().getPredictionReadings();
         }
@@ -178,36 +180,62 @@ public class ChartDataParser {
         pred = preds.toArray(pred);
         // Predictions are offsets!
 
-        PointsGraphSeries<DataPointWithLabelInterface> predSeries = new PointsGraphSeries<>(pred);
+        LineGraphSeries<DataPointWithLabelInterface> predSeries = new LineGraphSeries<>(pred);
         predSeries.setColor(graph.getContext().getColor(R.color.graphBgPredictionColor));
-        predSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
-        predSeries.setSize(10);
+        predSeries.setDrawDataPoints(true);
+        predSeries.setDataPointsRadius(1);
+        //predSeries.setShape(PointsGraphSeries.Shape.RECTANGLE);
+        //predSeries.setSize(10);
 
         series.add(predSeries);
     }
 
-    public void addBolusEvents(long fromTime, long toTime) {
+    /** Add the icons indicating a bolus event has occured
+     *
+     * @param fromTime          Start time to add events from
+     */
+    public void addBolusEvents(long fromTime) {
         List<Treatment> treatments = TreatmentsPlugin.getPlugin().getService().getTreatmentDataFromTime(fromTime, true);
 
         treatments.sort((t1, t2) -> Long.compare(t1.date, t2.date));
-        List<DataPoint> points = treatments.stream()
-                .filter(t -> t.isValid)
-                .map(t -> new DataPoint(t.date, t.insulin * 10))
+        List<DataPoint> pointsMeal = treatments.stream()
+                .filter(t -> t.isValid && t.mealBolus)
+                .map(t -> new DataPoint(t.date, 0))
                 .collect(Collectors.toList());
-        DataPoint[] pointsArray = new DataPoint[points.size()];
-        pointsArray = points.toArray(pointsArray);
 
-        PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(pointsArray);
+        DataPoint[] mealPointsArray = pointsMeal.toArray(new DataPoint[0]);
 
-        // styling (Kind of TODO. I'm not satisified here)
-        series.setColor(MainApp.gc(R.color.graphBolusColor));
-        series.setShape(PointsGraphSeries.Shape.TRIANGLE);
-        series.setSize(20);
+        List<DataPoint> pointsBolus = treatments.stream()
+                .filter(t -> t.isValid && !t.mealBolus)
+                .map(t -> new DataPoint(t.date, 0))
+                .collect(Collectors.toList());
 
-        this.series.add(series);
+        DataPoint[] bolusPointsArray = pointsBolus.toArray(new DataPoint[0]);
+
+        PointsGraphSeries<DataPoint> seriesMeal = new PointsGraphSeries<>(mealPointsArray);
+
+        seriesMeal.setColor(MainApp.gc(R.color.graphMealColor));
+        seriesMeal.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        seriesMeal.setSize(20);
+
+        PointsGraphSeries<DataPoint> seriesBolus = new PointsGraphSeries<>(bolusPointsArray);
+
+        seriesBolus.setColor(MainApp.gc(R.color.graphBolusColor));
+        seriesBolus.setShape(PointsGraphSeries.Shape.TRIANGLE);
+        seriesBolus.setSize(20);
+
+        this.series.add(seriesMeal);
+        this.series.add(seriesBolus);
     }
 
-    public void addIob(long fromTime, long toTime, boolean useForScale, double scale, boolean showPrediction) {
+    /** Add the curve displaying the insulin on board
+     *
+     * @param fromTime          Starting time from which to consider the data
+     * @param toTime            End time to which data should be displayed
+     * @param useForScale       Use this data for scaling
+     * @param scale             The scale to apply
+     */
+    public void addIob(long fromTime, long toTime, boolean useForScale, double scale) {
         FixedLineGraphSeries<ScaledDataPoint> iobSeries;
         List<ScaledDataPoint> iobArray = new ArrayList<>();
         Double maxIobValueFound = Double.MIN_VALUE;
@@ -236,42 +264,6 @@ public class ChartDataParser {
         iobSeries.setColor(MainApp.gc(R.color.graphIobColor));
         iobSeries.setThickness(3);
 
-        if (showPrediction) {
-            AutosensResult lastAutosensResult;
-            AutosensData autosensData = IobCobCalculatorPlugin.getPlugin().getLastAutosensDataSynchronized("GraphData");
-            if (autosensData == null)
-                lastAutosensResult = new AutosensResult();
-            else
-                lastAutosensResult = autosensData.autosensResult;
-            boolean isTempTarget = TreatmentsPlugin.getPlugin().getTempTargetFromHistory(System.currentTimeMillis()) != null;
-
-            List<DataPointWithLabelInterface> iobPred = new ArrayList<>();
-            IobTotal[] iobPredArray = IobCobCalculatorPlugin.getPlugin().calculateIobArrayForSMB(lastAutosensResult, SMBDefaults.exercise_mode, SMBDefaults.half_basal_exercise_target, isTempTarget);
-            for (IobTotal i : iobPredArray) {
-                iobPred.add(i.setColor(MainApp.gc(R.color.iobPredAS)));
-                maxIobValueFound = Math.max(maxIobValueFound, Math.abs(i.iob));
-            }
-            DataPointWithLabelInterface[] iobp = new DataPointWithLabelInterface[iobPred.size()];
-            iobp = iobPred.toArray(iobp);
-            this.series.add(new PointsWithLabelGraphSeries<>(iobp));
-
-
-            List<DataPointWithLabelInterface> iobPred2 = new ArrayList<>();
-            IobTotal[] iobPredArray2 = IobCobCalculatorPlugin.getPlugin().calculateIobArrayForSMB(new AutosensResult(), SMBDefaults.exercise_mode, SMBDefaults.half_basal_exercise_target, isTempTarget);
-            for (IobTotal i : iobPredArray2) {
-                iobPred2.add(i.setColor(MainApp.gc(R.color.iobPred)));
-                maxIobValueFound = Math.max(maxIobValueFound, Math.abs(i.iob));
-            }
-            DataPointWithLabelInterface[] iobp2 = new DataPointWithLabelInterface[iobPred2.size()];
-            iobp2 = iobPred2.toArray(iobp2);
-            this.series.add(new PointsWithLabelGraphSeries<>(iobp2));
-
-            if (L.isEnabled(L.AUTOSENS)) {
-                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(lastAutosensResult.ratio) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray));
-                log.debug("IOB pred for AS=" + DecimalFormatter.to2Decimal(1) + ": " + IobCobCalculatorPlugin.getPlugin().iobArrayToString(iobPredArray2));
-            }
-        }
-
         if (useForScale) {
             maxY = maxIobValueFound;
             minY = -maxIobValueFound;
@@ -282,6 +274,13 @@ public class ChartDataParser {
         this.series.add(iobSeries);
     }
 
+    /** Add the area depicting which blood glucose values are within the target area
+     *
+     * @param fromTime      Start time from which to display this area
+     * @param toTime        End time to which to display the area
+     * @param lowLine       Lower bound of the area
+     * @param highLine      Upper bound of the area
+     */
     public void addInRangeArea(long fromTime, long toTime, double lowLine, double highLine) {
         AreaGraphSeries<DoubleDataPoint> inRangeAreaSeries;
 
@@ -297,6 +296,7 @@ public class ChartDataParser {
         series.add(inRangeAreaSeries);
     }
 
+    /** Add the line depicting the current point in time */
     public void addNowLine() {
         long now = Instant.now().toEpochMilli();
         LineGraphSeries<DataPoint> seriesNow;
@@ -319,29 +319,30 @@ public class ChartDataParser {
         tsNow = now;
     }
 
+    /** Format the axis and labels */
     public void formatAxis(long startTime, long endTime) {
-        // TODO: Externalize these
         Context ctx = graph.getContext();
+
         graph.getViewport().setMaxX(endTime);
         graph.getViewport().setMinX(startTime);
+
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
-        graph.getGridLabelRenderer().setLabelFormatter(
-                new TimeAsXAxisLabelFormatter(ctx.getString(R.string.graphLabelFormat)));
+
+        graph.getGridLabelRenderer().setLabelFormatter(new TimeAsXAxisLabelFormatter(ctx.getString(R.string.graphLabelFormat)));
         graph.getGridLabelRenderer().setNumHorizontalLabels(7);
         graph.getGridLabelRenderer().setNumVerticalLabels(7);
-        graph.getGridLabelRenderer().setGridColor(
-                ctx.getColor(R.color.graphGridColor));
-        graph.getGridLabelRenderer().setVerticalLabelsColor(
-                ctx.getColor(R.color.graphVerticalLabelColor));
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(
-                ctx.getColor(R.color.graphHorizontalLabelColor));
+
+        graph.getGridLabelRenderer().setGridColor(ctx.getColor(R.color.graphGridColor));
+        graph.getGridLabelRenderer().setVerticalLabelsColor(ctx.getColor(R.color.graphVerticalLabelColor));
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(ctx.getColor(R.color.graphHorizontalLabelColor));
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+
         graph.getGridLabelRenderer().reloadStyles();
     }
 
-
+    /** Force an update and recalculate all series */
     public void forceUpdate() {
         // clear old data
         graph.getSeries().clear();

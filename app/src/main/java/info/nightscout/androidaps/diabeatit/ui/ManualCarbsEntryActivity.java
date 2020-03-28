@@ -136,7 +136,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 		if (carbsInput.getText().toString().isEmpty()) {
 
-			carbsInput.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.d_important));
+			carbsInput.setHintTextColor(ContextCompat.getColor(this, R.color.d_important));
 			return;
 
 		}
@@ -154,6 +154,11 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 				bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPicture);
 
 			LogEventStore.addEvent(new CarbsEvent(timestamp.toInstant(), bm, carbs, notes));
+
+			long min30 = 30 * 60 * 1000;
+			HomeFragment frag = HomeFragment.getInstance();
+			if (ts > (System.currentTimeMillis() - min30) && frag != null && frag.bc != null)
+				frag.bc.setCarbs(carbs);
 
 		} catch (Exception ignored) { return; }
 

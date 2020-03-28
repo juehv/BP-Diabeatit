@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
@@ -18,11 +19,11 @@ public class AlertHistoryActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-		setContentView(R.layout.d_activity_alert_history);
+	setContentView(R.layout.d_activity_alert_history);
 
-		setTheme(R.style.diabeatit);
+	setTheme(R.style.diabeatit);
 
-		AlertStore.dismissedAlerts = new DismissedAlertsManager(getApplicationContext(), findViewById(R.id.alert_history_layout));
+	AlertStore.dismissedAlerts = new DismissedAlertsManager(this, findViewById(R.id.alert_history_layout));
 
 	  TextView dismissedEmptyT = findViewById(R.id.alert_history_empty_notice);
 

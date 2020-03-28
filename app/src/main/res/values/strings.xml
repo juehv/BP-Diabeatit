@@ -66,7 +66,7 @@
     <string name="event_log_no_entries">No Entries</string>
 
     <!-- Alerts -->
-    <string name="alert_label_info">info</string>
+    <string name="alert_label_info">SCHUSTER</string>
     <string name="alert_label_warning">warning</string>
     <string name="alert_label_urgent">urgent</string>
     <string name="alert_undo_text">Alert dismissed</string>
@@ -91,7 +91,7 @@
     <string name="recommended_dosage_label">Recommended dosage</string>
     <string name="tap_label">(Tap for more details)</string>
     <string name="bolus_calculator_title">Bolus Calculator</string>
-    <string name="carbs_label">How many carbs did you take in?</string>
+    <string name="carbs_label">How many carbs?</string>
     <string name="bg_label">BG level (optional)</string>
     <string name="time_label">Carbs time (optional)</string>
     <string name="correction_label">Correction (optional)</string>
@@ -102,6 +102,10 @@
 
     <!-- Misc -->
     <string name="title_activity_download_model">Download Tool</string>
+    <string name="download_model_start">Updating prediction model, please wait</string>
+    <string name="download_model_finished">Prediction model updated</string>
+    <string name="download_model_failed">Could not update prediction model</string>
+    <string name="download_model_failed_action">Report</string>
     <string name="restart_app">Restarting app</string>
 
     <!-- Backend & Legacy UI -->
