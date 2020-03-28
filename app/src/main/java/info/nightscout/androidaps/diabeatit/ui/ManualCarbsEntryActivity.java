@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,8 +24,8 @@ import java.util.Locale;
 
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
-import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
-import info.nightscout.androidaps.diabeatit.ui.log.event.CarbsEvent;
+import info.nightscout.androidaps.diabeatit.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.log.event.CarbsEvent;
 import info.nightscout.androidaps.plugins.treatments.CarbsGenerator;
 
 public class ManualCarbsEntryActivity extends AppCompatActivity {

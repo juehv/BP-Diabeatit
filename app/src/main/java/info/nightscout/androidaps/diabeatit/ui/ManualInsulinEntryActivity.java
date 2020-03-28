@@ -18,8 +18,8 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.data.DetailedBolusInfo;
 import info.nightscout.androidaps.db.Source;
 import info.nightscout.androidaps.diabeatit.ui.home.HomeFragment;
-import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
-import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
+import info.nightscout.androidaps.diabeatit.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.log.event.BolusEvent;
 import info.nightscout.androidaps.plugins.treatments.TreatmentsPlugin;
 
 public class ManualInsulinEntryActivity extends AppCompatActivity {

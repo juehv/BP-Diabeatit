@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +33,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.Locale;
 
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
@@ -45,7 +42,7 @@ import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStoreListener;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertsManager;
-import info.nightscout.androidaps.diabeatit.ui.log.LogActivity;
+import info.nightscout.androidaps.diabeatit.log.LogActivity;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class HomeActivity extends AppCompatActivity {

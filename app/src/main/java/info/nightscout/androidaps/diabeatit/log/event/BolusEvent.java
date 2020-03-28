@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.diabeatit.ui.log.event;
+package info.nightscout.androidaps.diabeatit.log.event;
 
 import android.content.Context;
 import android.view.View;
@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Locale;
 
 import info.nightscout.androidaps.R;
-import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
+import info.nightscout.androidaps.diabeatit.log.LogEvent;
 
 @Entity
 public class BolusEvent extends LogEvent {

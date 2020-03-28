@@ -1,23 +1,17 @@
-package info.nightscout.androidaps.diabeatit.ui.log;
-
-import android.provider.ContactsContract;
-import android.util.Log;
+package info.nightscout.androidaps.diabeatit.log;
 
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.db.DiabeatitDatabase;
-import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
-import info.nightscout.androidaps.diabeatit.ui.log.event.CarbsEvent;
-import info.nightscout.androidaps.diabeatit.ui.log.event.NoteEvent;
-import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
-import info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.history.Bolus;
+import info.nightscout.androidaps.diabeatit.log.event.BolusEvent;
+import info.nightscout.androidaps.diabeatit.log.event.CarbsEvent;
+import info.nightscout.androidaps.diabeatit.log.event.NoteEvent;
+import info.nightscout.androidaps.diabeatit.log.event.SportsEvent;
 
 public class LogEventStore {
 
@@ -25,6 +19,7 @@ public class LogEventStore {
 	private static List<LogEvent> events = new ArrayList<>();
 
 	static {
+
 		DiabeatitDatabase db = Room.databaseBuilder(
 					MainApp.instance().getApplicationContext(),
 					DiabeatitDatabase.class,
@@ -39,9 +34,9 @@ public class LogEventStore {
 
 		events.sort((a, b) -> b.TIMESTAMP.compareTo(a.TIMESTAMP));
 
-		for (LogEventStoreListener l : listeners) {
+		for (LogEventStoreListener l : listeners)
 			l.onDatasetChange((LogEvent[]) events.toArray());
-		}
+
 	}
 
 	public interface LogEventStoreListener {

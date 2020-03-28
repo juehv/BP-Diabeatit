@@ -16,8 +16,11 @@ public interface AlertDao {
     @Query("SELECT * FROM Alert")
     List<Alert> getAll();
 
-    @Query("SELECT * FROM Alert ORDER BY timestamp LIMIT 512")
-    List<Alert> getLimited();
+    @Query("SELECT * FROM Alert WHERE active = '1' ORDER BY timestamp")
+    List<Alert> getActive();
+
+    @Query("SELECT * FROM Alert WHERE active = '0' ORDER BY timestamp LIMIT 128")
+    List<Alert> getDismissedLimited();
 
     @Insert
     void insertAll(Alert... alerts);

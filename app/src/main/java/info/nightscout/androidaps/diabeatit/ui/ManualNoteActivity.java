@@ -23,8 +23,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import info.nightscout.androidaps.R;
-import info.nightscout.androidaps.diabeatit.ui.log.LogEventStore;
-import info.nightscout.androidaps.diabeatit.ui.log.event.NoteEvent;
+import info.nightscout.androidaps.diabeatit.log.LogEventStore;
+import info.nightscout.androidaps.diabeatit.log.event.NoteEvent;
 
 public class ManualNoteActivity extends AppCompatActivity {
 

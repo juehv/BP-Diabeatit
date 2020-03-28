@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
+import info.nightscout.androidaps.diabeatit.log.event.BolusEvent;
 
 @Dao
 public interface BolusEventDao {

@@ -118,7 +118,7 @@ public class Alert {
 
 	public void send() {
 
-		if (!notify) return;
+		if (!notify || !active) return;
 
 		destroy();
 		NOTIFICATION_ID = NotificationStore.sendNotification(URGENCY.getChannel(), this);
