@@ -17,6 +17,7 @@ import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
 import info.nightscout.androidaps.diabeatit.ui.log.event.CarbsEvent;
 import info.nightscout.androidaps.diabeatit.ui.log.event.NoteEvent;
 import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
+import info.nightscout.androidaps.plugins.pump.combo.ruffyscripter.history.Bolus;
 
 public class LogEventStore {
 
@@ -63,7 +64,7 @@ public class LogEventStore {
 		for (LogEventStoreListener l : listeners)
 			l.onDatasetChange(event);
 
-		Thread t = new Thread(() -> {
+		new Thread(() -> {
 			DiabeatitDatabase db = Room.databaseBuilder(
 						MainApp.instance().getApplicationContext(),
 						DiabeatitDatabase.class,
@@ -78,8 +79,31 @@ public class LogEventStore {
 			} else if (event instanceof NoteEvent) {
 				db.noteEventDao().insertAll((NoteEvent) event);
 			}
-		});
-		t.start();
+		}).start();
+	}
+
+	public static void removeEvent(LogEvent event) {
+
+		events.remove(event);
+
+		for (LogEventStoreListener l : listeners)
+			l.onDatasetChange(event);
+
+		new Thread(() -> {
+			DiabeatitDatabase db = Room.databaseBuilder(MainApp.instance().getApplicationContext(),
+					DiabeatitDatabase.class,
+					StaticData.ROOM_DATABASE_NAME).build();
+			if (event instanceof BolusEvent) {
+				db.bolusEventDao().delete((BolusEvent) event);
+			} else if (event instanceof CarbsEvent) {
+				db.carbsEventDao().delete((CarbsEvent) event);
+			} else if (event instanceof SportsEvent) {
+				db.sportsEventDao().delete((SportsEvent) event);
+			} else if (event instanceof NoteEvent) {
+				db.noteEventDao().delete((NoteEvent) event);
+			}
+		}).start();
+
 	}
 
 	public static List<LogEvent> getEvents() {
