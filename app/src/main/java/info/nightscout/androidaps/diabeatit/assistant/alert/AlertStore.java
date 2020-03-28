@@ -1,10 +1,17 @@
 package info.nightscout.androidaps.diabeatit.assistant.alert;
 
 import androidx.annotation.NonNull;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.diabeatit.StaticData;
+import info.nightscout.androidaps.diabeatit.db.DiabeatitDatabase;
+import kotlin.reflect.jvm.internal.calls.CallerImpl;
 
 public class AlertStore {
 
@@ -13,6 +20,21 @@ public class AlertStore {
 
   private static List<Alert> alerts = new ArrayList<>();
   private static List<AlertStoreListener> listeners = new ArrayList<>();
+
+  static {
+    DiabeatitDatabase db = Room.databaseBuilder(
+              MainApp.instance().getApplicationContext(),
+              DiabeatitDatabase.class,
+              StaticData.ROOM_DATABASE_NAME)
+            .allowMainThreadQueries()
+            .build();
+
+    alerts.addAll(db.alertDao().getLimited());
+
+    for (AlertStoreListener l : listeners) {
+      l.onDataSetInit();
+    }
+  }
 
   /**
    * Attaches an {@link AlertStoreListener} to the AlertStore.
@@ -44,7 +66,7 @@ public class AlertStore {
    * Distinction of active/dismissed is made on basis of {@link Alert#active}
    * @param alertBundle The new data set
    */
-  public static void initAlerts(@NonNull Alert[] alertBundle) {
+  private static void initAlerts(@NonNull Alert[] alertBundle) {
 
     alerts = new ArrayList<>();
     alerts.addAll(Arrays.asList(alertBundle));
@@ -73,6 +95,13 @@ public class AlertStore {
     for (AlertStoreListener l : listeners)
       l.onNewAlert(alert);
 
+    new Thread(() -> {
+      DiabeatitDatabase db = Room.databaseBuilder(
+              MainApp.instance().getApplicationContext(),
+              DiabeatitDatabase.class,
+              StaticData.ROOM_DATABASE_NAME).build();
+      db.alertDao().insertAll(alert);
+    }).start();
   }
 
   /**
@@ -91,6 +120,8 @@ public class AlertStore {
     int index = alerts.indexOf(alert);
     alerts.get(index).active = false;
     alert.destroy();
+
+    updateDatabaseEntry(alert);
 
     for (AlertStoreListener l : listeners)
       l.onAlertDismissed(alert);
@@ -122,9 +153,10 @@ public class AlertStore {
     alerts.get(index).active = true;
     alert.send();
 
+    updateDatabaseEntry(alert);
+
     for (AlertStoreListener l : listeners)
       l.onAlertRestored(alert);
-
   }
 
   /**
@@ -156,6 +188,17 @@ public class AlertStore {
 
     return alerts.stream().filter(a -> !a.active).toArray(Alert[]::new);
 
+  }
+
+  private static void updateDatabaseEntry(Alert alert) {
+    new Thread(() -> {
+      DiabeatitDatabase db = Room.databaseBuilder(
+                MainApp.instance().getApplicationContext(),
+                DiabeatitDatabase.class,
+                StaticData.ROOM_DATABASE_NAME)
+              .build();
+      db.alertDao().update(alert);
+    }).start();
   }
 
 }

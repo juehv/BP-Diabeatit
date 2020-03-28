@@ -68,7 +68,7 @@ public class Alert {
 
 	}
 
-	@PrimaryKey
+	@PrimaryKey(autoGenerate = true)
 	public long alertId;
 
 	@Ignore

@@ -177,7 +177,8 @@ public class BolusCalculatorFragment extends Fragment implements View.OnClickLis
             as.add(new Alert(Alert.Urgency.INFO, R.drawable.ic_timeline, "Statistik verfügbar", "Ein neuer Statistikbericht ist verfügbar."));
             as.add(new Alert(Alert.Urgency.URGENT, R.drawable.ic_bluetooth_disabled, "Verbindung verloren", "Verbindung zum Sensor veloren."));
             if (AlertStore.getActiveAlerts().length == 0)
-                AlertStore.initAlerts(as.toArray(new Alert[0]));
+                for (Alert a : as)
+                    AlertStore.newAlert(a);
 
         }
 
