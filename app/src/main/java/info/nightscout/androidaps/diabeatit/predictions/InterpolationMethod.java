@@ -1,6 +1,6 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
-/** An method of interpolation */
+/** A method of interpolation */
 public interface InterpolationMethod<TX, TY> {
 	/** 
 	 * Add a datapoint to the set.  These need to be added in ascending order before the
