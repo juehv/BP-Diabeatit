@@ -319,7 +319,13 @@ public class ChartDataParser {
         tsNow = now;
     }
 
-    /** Format the axis and labels */
+    /**
+     * Format the axis and labels. Also sets the viewport to display the range from {@code starTime}
+     * to {@code endTime}.
+     *
+     * @param startTime     Beginning timestamp of the visible data
+     * @param endTime       Ending timestamp of the visible data
+     */
     public void formatAxis(long startTime, long endTime) {
         Context ctx = graph.getContext();
 
