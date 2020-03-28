@@ -35,6 +35,12 @@ public class BolusEvent extends LogEvent {
 
 	}
 
+	public BolusEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, double BOLUS, String NOTE) {
+		super(logEventId, TITLE, ICON, TIMESTAMP);
+		this.BOLUS = BOLUS;
+		this.NOTE = NOTE;
+	}
+
 	@Override
 	public void createLayout(Context context, RelativeLayout root) {
 

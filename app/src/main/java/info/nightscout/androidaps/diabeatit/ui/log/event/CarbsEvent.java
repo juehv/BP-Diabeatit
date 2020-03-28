@@ -29,6 +29,13 @@ public class CarbsEvent extends LogEvent {
 	@ColumnInfo(name = "notes")
 	public final String NOTE;
 
+	public CarbsEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, Bitmap IMAGE, int CARBS, String NOTE) {
+		super(logEventId, TITLE, ICON, TIMESTAMP);
+		this.IMAGE = IMAGE;
+		this.CARBS = CARBS;
+		this.NOTE = NOTE;
+	}
+
 	public CarbsEvent(Instant timestamp, Bitmap image, int carbs, String note) {
 
 		super(R.string.mc_event_title, R.drawable.ic_fab_carbs, timestamp);

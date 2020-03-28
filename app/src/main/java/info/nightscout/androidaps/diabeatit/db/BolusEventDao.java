@@ -11,8 +11,11 @@ import info.nightscout.androidaps.diabeatit.ui.log.event.BolusEvent;
 
 @Dao
 public interface BolusEventDao {
-    @Query("SELECT * FROM bolusevent")
+    @Query("SELECT * FROM BolusEvent")
     List<BolusEvent> getAll();
+
+    @Query("SELECT * FROM BolusEvent ORDER BY timestamp DESC LIMIT 512")
+    List<BolusEvent> getLimited();
 
     @Insert
     void insertAll(BolusEvent... events);

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -68,14 +69,16 @@ public class Alert {
 	}
 
 	@PrimaryKey
-	public long AlertId;
+	public long alertId;
 
+	@Ignore
 	private int NOTIFICATION_ID = -1;
 
 	@ColumnInfo(name = "urgency")
 	public final Urgency URGENCY;
 	@ColumnInfo(name = "icon_id")
 	public final int ICON_ID;
+	@Ignore
 	public final Drawable ICON;
 	@ColumnInfo(name = "title")
 	public String title;
@@ -84,24 +87,33 @@ public class Alert {
 	@ColumnInfo(name = "timestamp")
 	public Date timestamp;
 
+	@ColumnInfo(name = "active")
 	public boolean active = true;
+	@ColumnInfo(name = "notify")
 	public boolean notify = true;
 
-	public Alert(Urgency urgency, int icon_id, String title, String descriptionHtml) {
+	public Alert(Urgency urgency, int iconId, String title, String descriptionHtml) {
 
-		this(urgency, icon_id, title, descriptionHtml, new Date());
+		this(urgency, iconId, title, descriptionHtml, new Date());
 
 	}
 
-	public Alert(Urgency urgency, int icon_id, String title, String descriptionHtml, Date creation) {
+	public Alert(Urgency urgency, int iconId, String title, String descriptionHtml, Date creation) {
 
 		URGENCY = urgency;
-		ICON_ID = icon_id;
-		ICON = MainApp.instance().getDrawable(icon_id);
+		ICON_ID = iconId;
+		ICON = MainApp.instance().getDrawable(iconId);
 		this.title = title;
 		desc = descriptionHtml;
 		timestamp = creation;
 
+	}
+
+	public Alert(long alertId, Urgency URGENCY, int ICON_ID, String title, String desc, Date timestamp, boolean active, boolean notify) {
+		this(URGENCY, ICON_ID, title, desc, timestamp);
+		this.alertId = alertId;
+		this.active = active;
+		this.notify = notify;
 	}
 
 	public void send() {

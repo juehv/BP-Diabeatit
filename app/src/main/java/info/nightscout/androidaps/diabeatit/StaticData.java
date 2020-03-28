@@ -14,6 +14,8 @@ public class StaticData {
 	public static final String CONTACT_MAIL = "mailto:bp@lu-e.de"; // TODO Update
 	public static final String ERROR_MAIL = CONTACT_MAIL  +"?subject=Stacktrace&body=%s"; // TODO Update
 
+	public static final String ROOM_DATABASE_NAME = "diabeatit";
+
 	public static boolean assistantInhibitClose = false;
 
 }

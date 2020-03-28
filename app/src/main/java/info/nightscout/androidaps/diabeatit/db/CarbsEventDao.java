@@ -14,6 +14,9 @@ public interface CarbsEventDao {
     @Query("SELECT * FROM carbsevent")
     List<CarbsEvent> getAll();
 
+    @Query("SELECT * FROM CarbsEvent ORDER BY timestamp DESC LIMIT 512")
+    List<CarbsEvent> getLimited();
+
     @Insert
     void insertAll(CarbsEvent... events);
 

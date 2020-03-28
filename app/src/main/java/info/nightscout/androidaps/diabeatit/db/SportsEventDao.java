@@ -14,6 +14,9 @@ public interface SportsEventDao {
     @Query("SELECT * FROM SportsEvent")
     List<SportsEvent> getAll();
 
+    @Query("SELECT * FROM SportsEvent ORDER BY timestamp DESC LIMIT 512")
+    List<SportsEvent> getLimited();
+
     @Insert
     void insertAll(SportsEvent... events);
 

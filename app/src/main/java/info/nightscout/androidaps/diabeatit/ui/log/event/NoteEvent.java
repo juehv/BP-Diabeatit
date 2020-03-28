@@ -27,6 +27,12 @@ public class NoteEvent extends LogEvent {
 	@ColumnInfo(name = "note")
 	public final String NOTE;
 
+	public NoteEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, Bitmap IMAGE, String NOTE) {
+		super(logEventId, TITLE, ICON, TIMESTAMP);
+		this.IMAGE = IMAGE;
+		this.NOTE = NOTE;
+	}
+
 	public NoteEvent(Instant timestamp, Bitmap image, String note) {
 
 		super(R.string.mn_event_title, R.drawable.ic_fab_note, timestamp);

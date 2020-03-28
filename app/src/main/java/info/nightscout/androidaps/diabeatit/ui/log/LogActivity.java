@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import info.nightscout.androidaps.R;
@@ -41,10 +42,10 @@ public class LogActivity extends AppCompatActivity {
 
     }
 
-    private void change(LogEvent e) {
+    private void change(LogEvent... e) {
 
-        adapter.events.add(e);
-	      adapter.events.sort((a, b) -> b.TIMESTAMP.compareTo(a.TIMESTAMP));
+        adapter.events.addAll(Arrays.asList(e));
+        adapter.events.sort((a, b) -> b.TIMESTAMP.compareTo(a.TIMESTAMP));
 
         adapter.notifyDataSetChanged();
 

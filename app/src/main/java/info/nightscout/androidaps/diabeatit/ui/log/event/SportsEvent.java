@@ -28,6 +28,12 @@ public class SportsEvent extends LogEvent {
 	@ColumnInfo(name = "description")
 	public final String DESCRIPTION;
 
+	public SportsEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, int DURATION, String DESCRIPTION) {
+		super(logEventId, TITLE, ICON, TIMESTAMP);
+		this.DURATION = DURATION;
+		this.DESCRIPTION = DESCRIPTION;
+	}
+
 	public SportsEvent(Instant timestamp, int duration, String description) {
 
 		super(R.string.ms_event_title, R.drawable.ic_fab_sports, timestamp);

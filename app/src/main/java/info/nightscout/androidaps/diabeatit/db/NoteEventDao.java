@@ -14,6 +14,9 @@ public interface NoteEventDao {
     @Query("SELECT * FROM noteevent")
     List<NoteEvent> getAll();
 
+    @Query("SELECT * FROM NoteEvent ORDER BY timestamp DESC LIMIT 512")
+    List<NoteEvent> getLimited();
+
     @Insert
     void insertAll(NoteEvent... events);
 
