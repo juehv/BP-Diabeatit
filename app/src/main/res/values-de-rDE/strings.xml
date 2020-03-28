@@ -1450,4 +1450,8 @@ Unerwartetes Verhalten.</string>
     <string name="download_model_finished">Voraussagemodell aktualisiert</string>
     <string name="download_model_failed">Voraussagemodell konnte nicht aktualisiert werden</string>
     <string name="download_model_failed_action">Bericht senden</string>
+    <string name="model_activation_failed_title">Modell konnte nicht aktiviert werden</string>
+    <string name="model_activation_failed_message">Die Aktivierung des Modells ist fehlgeschlagen, es wird das Rückfallmodell genutzt.\nFehlerbericht senden?</string>
+    <string name="model_activation_failed_send">SENDEN</string>
+    <string name="model_activation_failed_dont_send">IGNORIEREN</string>
 </resources>

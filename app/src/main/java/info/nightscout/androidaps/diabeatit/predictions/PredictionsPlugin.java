@@ -1,19 +1,32 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import info.nightscout.androidaps.MainApp;
+import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
+import info.nightscout.androidaps.diabeatit.StaticData;
+import info.nightscout.androidaps.diabeatit.db.AlertDao;
+import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
+import info.nightscout.androidaps.utils.OKDialog;
 import info.nightscout.androidaps.utils.SP;
+
+import static android.app.AlertDialog.*;
 
 /**
  * Plugin that manages predictions, including providing the values as well as loading the appropiate
@@ -69,7 +82,27 @@ public class PredictionsPlugin {
                 return;
             } catch (IOException e) {
                 log.error("Failed to load AI model, falling back to {}", MODEL_TYPE_AVGDELTA, e);
+                SP.putString(PREF_KEY_MODEL_TYPE, MODEL_TYPE_AVGDELTA);
                 modelType = MODEL_TYPE_AVGDELTA;
+                HomeActivity home = HomeActivity.getInstance();
+                if (home != null) {
+                    Builder builder = new Builder(home, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                    builder.setMessage(MainApp.instance().getString(R.string.model_activation_failed_message));
+                    builder.setTitle(MainApp.instance().getString(R.string.model_activation_failed_title));
+                    builder.setPositiveButton(
+                            MainApp.instance().getString(R.string.model_activation_failed_send),
+                            (d, i) -> {
+                                home.startActivity(new Intent(
+                                            Intent.ACTION_SENDTO,
+                                            Uri.parse(String.format(StaticData.ERROR_MAIL, URLEncoder.encode(e.getMessage()))))
+                                );
+                            });
+                    builder.setNegativeButton(
+                            MainApp.instance().getString(R.string.model_activation_failed_dont_send),
+                            (d, i) -> { return; });
+                    AlertDialog diag = builder.create();
+                    diag.show();
+                }
             }
         }
         if (modelType.equals(MODEL_TYPE_AVGDELTA)) {
