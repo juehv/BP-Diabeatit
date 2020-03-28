@@ -3,12 +3,17 @@ package info.nightscout.androidaps.diabeatit.assistant.alert;
 import android.app.NotificationManager;
 import android.graphics.drawable.Drawable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.Date;
 
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 
+@Entity
 public class Alert {
 
 	/*
@@ -62,12 +67,21 @@ public class Alert {
 
 	}
 
+	@PrimaryKey
+	public long AlertId;
+
 	private int NOTIFICATION_ID = -1;
 
+	@ColumnInfo(name = "urgency")
 	public final Urgency URGENCY;
+	@ColumnInfo(name = "icon_id")
 	public final int ICON_ID;
 	public final Drawable ICON;
-	public String title, desc;
+	@ColumnInfo(name = "title")
+	public String title;
+	@ColumnInfo(name = "description")
+	public String desc;
+	@ColumnInfo(name = "timestamp")
 	public Date timestamp;
 
 	public boolean active = true;

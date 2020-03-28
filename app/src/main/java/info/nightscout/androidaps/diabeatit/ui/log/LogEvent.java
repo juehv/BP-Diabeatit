@@ -4,11 +4,20 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
+
 import java.time.Instant;
 
 public abstract class LogEvent {
 
-	public final int TITLE, ICON;
+	@PrimaryKey
+	public long LogEventId;
+	@ColumnInfo(name = "title")
+	public final int TITLE;
+	@ColumnInfo(name = "icon")
+	public final int ICON;
+	@ColumnInfo(name = "timestamp")
 	public final Instant TIMESTAMP;
 
 	public LogEvent(int title, int icon, Instant timestamp) {

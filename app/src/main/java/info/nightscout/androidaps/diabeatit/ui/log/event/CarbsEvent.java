@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -16,10 +19,14 @@ import java.util.Locale;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
 
+@Entity
 public class CarbsEvent extends LogEvent {
 
+	@ColumnInfo(name = "image")
 	public final Bitmap IMAGE;
+	@ColumnInfo(name = "carbs")
 	public final int CARBS;
+	@ColumnInfo(name = "notes")
 	public final String NOTE;
 
 	public CarbsEvent(Instant timestamp, Bitmap image, int carbs, String note) {

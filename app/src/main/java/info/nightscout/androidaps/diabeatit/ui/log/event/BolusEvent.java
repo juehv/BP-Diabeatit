@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -14,10 +17,14 @@ import java.util.Locale;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
 
+@Entity
 public class BolusEvent extends LogEvent {
 
+	@ColumnInfo(name = "bolus")
 	public final double BOLUS;
+	@ColumnInfo(name = "note")
 	public final String NOTE;
+
 
 	public BolusEvent(Instant timestamp, double bolus, String note) {
 

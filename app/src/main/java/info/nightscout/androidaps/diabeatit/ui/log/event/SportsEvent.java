@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -17,9 +20,12 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
 
+@Entity
 public class SportsEvent extends LogEvent {
 
+	@ColumnInfo(name = "duration")
 	public final int DURATION;
+	@ColumnInfo(name = "description")
 	public final String DESCRIPTION;
 
 	public SportsEvent(Instant timestamp, int duration, String description) {
