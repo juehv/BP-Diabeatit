@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import info.nightscout.androidaps.diabeatit.ui.log.event.SportsEvent;
+import info.nightscout.androidaps.diabeatit.log.event.SportsEvent;
 
 @Dao
 public interface SportsEventDao {

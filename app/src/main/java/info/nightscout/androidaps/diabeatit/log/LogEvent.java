@@ -1,7 +1,6 @@
-package info.nightscout.androidaps.diabeatit.ui.log;
+package info.nightscout.androidaps.diabeatit.log;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.room.ColumnInfo;

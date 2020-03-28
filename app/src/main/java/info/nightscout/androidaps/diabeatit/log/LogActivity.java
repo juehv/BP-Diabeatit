@@ -1,4 +1,4 @@
-package info.nightscout.androidaps.diabeatit.ui.log;
+package info.nightscout.androidaps.diabeatit.log;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +59,7 @@ class LogEventAdapter extends RecyclerView.Adapter<LogEventAdapter.LogEventViewH
     private final Context CONTEXT;
     public List<LogEvent> events;
 
-    public static class LogEventViewHolder extends RecyclerView.ViewHolder {
+    public static class LogEventViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         public RelativeLayout view;
 
@@ -69,6 +68,11 @@ class LogEventAdapter extends RecyclerView.Adapter<LogEventAdapter.LogEventViewH
             super(view);
             this.view = view;
 
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return true;
         }
 
     }

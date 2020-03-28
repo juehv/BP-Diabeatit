@@ -1,8 +1,7 @@
-package info.nightscout.androidaps.diabeatit.ui.log.event;
+package info.nightscout.androidaps.diabeatit.log.event;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,7 +16,7 @@ import java.time.Instant;
 import java.util.Locale;
 
 import info.nightscout.androidaps.R;
-import info.nightscout.androidaps.diabeatit.ui.log.LogEvent;
+import info.nightscout.androidaps.diabeatit.log.LogEvent;
 
 @Entity
 public class NoteEvent extends LogEvent {

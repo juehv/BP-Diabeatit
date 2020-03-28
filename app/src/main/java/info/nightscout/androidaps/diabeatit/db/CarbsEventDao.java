@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import info.nightscout.androidaps.diabeatit.ui.log.event.CarbsEvent;
+import info.nightscout.androidaps.diabeatit.log.event.CarbsEvent;
 
 @Dao
 public interface CarbsEventDao {

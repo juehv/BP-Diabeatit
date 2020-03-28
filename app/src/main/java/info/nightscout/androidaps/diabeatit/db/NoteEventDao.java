@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import info.nightscout.androidaps.diabeatit.ui.log.event.NoteEvent;
+import info.nightscout.androidaps.diabeatit.log.event.NoteEvent;
 
 @Dao
 public interface NoteEventDao {

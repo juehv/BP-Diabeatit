@@ -1,5 +1,7 @@
 package info.nightscout.androidaps.diabeatit.assistant.alert;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -22,6 +24,7 @@ public class AlertStore {
   private static List<AlertStoreListener> listeners = new ArrayList<>();
 
   static {
+
     DiabeatitDatabase db = Room.databaseBuilder(
               MainApp.instance().getApplicationContext(),
               DiabeatitDatabase.class,
@@ -29,11 +32,10 @@ public class AlertStore {
             .allowMainThreadQueries()
             .build();
 
-    alerts.addAll(db.alertDao().getLimited());
+    List<Alert> loaded = db.alertDao().getActive();
+    loaded.addAll(db.alertDao().getDismissedLimited());
+    initAlerts(loaded.toArray(new Alert[0]));
 
-    for (AlertStoreListener l : listeners) {
-      l.onDataSetInit();
-    }
   }
 
   /**
