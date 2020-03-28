@@ -104,7 +104,8 @@
         <activity
             android:name=".diabeatit.ui.AlertHistoryActivity"
             android:label="@string/title_activity_alert_history"
-            android:parentActivityName=".diabeatit.ui.HomeActivity"/>
+            android:parentActivityName=".diabeatit.ui.HomeActivity"
+            android:theme="@style/diabeatit"/>
         <activity android:name=".MainActivity">
 
             <!--
