@@ -41,6 +41,7 @@ public class ManualNoteActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_manual_note);
+        getSupportActionBar().setTitle(getResources().getString(R.string.mn_title));
 
         notesInput = findViewById(R.id.mn_notes);
 

@@ -34,6 +34,7 @@ public class ManualSportsEntryActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_manual_sports_entry);
+        getSupportActionBar().setTitle(getResources().getString(R.string.ms_title));
 
         descriptionInput = findViewById(R.id.ms_description);
 

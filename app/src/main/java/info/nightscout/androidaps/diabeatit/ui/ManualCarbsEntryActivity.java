@@ -44,6 +44,7 @@ public class ManualCarbsEntryActivity extends AppCompatActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.d_activity_manual_carbs_entry);
+		getActionBar().setTitle(getResources().getString(R.string.mc_title));
 
 		carbsInput = findViewById(R.id.mc_input);
 		notesInput = findViewById(R.id.mc_notes);

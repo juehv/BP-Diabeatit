@@ -2,6 +2,8 @@
 
     <!-- Diabeatit -->
 
+    <!-- Activity Titles -->
+
     <!-- Graph in HomeActivity -->
     <string name="graphLabelFormat">HH</string>
 
@@ -107,6 +109,7 @@
     <string name="download_model_failed">Could not update prediction model</string>
     <string name="download_model_failed_action">Report</string>
     <string name="restart_app">Restarting app</string>
+    <string name="title_activity_home">Home</string>
 
     <!-- Backend & Legacy UI -->
 

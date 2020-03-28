@@ -20,6 +20,7 @@ public class AlertHistoryActivity extends AppCompatActivity {
 
     super.onCreate(savedInstanceState);
 	setContentView(R.layout.d_activity_alert_history);
+	getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_alert_history));
 
 	setTheme(R.style.diabeatit);
 

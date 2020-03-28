@@ -20,6 +20,8 @@ public class SettingsActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_settings_activity);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_settings));
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
