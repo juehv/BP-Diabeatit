@@ -70,4 +70,5 @@ public class AlertHistoryActivity extends AppCompatActivity {
 		finish();
 
 	}
+
 }
