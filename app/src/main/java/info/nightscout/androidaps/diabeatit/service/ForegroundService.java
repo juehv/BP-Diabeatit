@@ -10,6 +10,9 @@ import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.notification.NotificationStore;
 
+/**
+ * Foreground services that allows the app to run continuously without being automatically terminated
+ */
 public class ForegroundService extends Service {
 
 	@Override

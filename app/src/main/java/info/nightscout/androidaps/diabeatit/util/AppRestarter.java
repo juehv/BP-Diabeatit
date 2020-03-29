@@ -11,8 +11,14 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
+/**
+ * Helper class to restart the app
+ */
 public class AppRestarter {
 
+	/**
+	 * Restarts the app
+	 */
 	public static void restartApp() {
 
 		Context context = MainApp.instance();
