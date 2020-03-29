@@ -1454,4 +1454,8 @@ Unerwartetes Verhalten.</string>
     <string name="model_activation_failed_message">Die Aktivierung des Modells ist fehlgeschlagen, es wird das Rückfallmodell genutzt.\nFehlerbericht senden?</string>
     <string name="model_activation_failed_send">SENDEN</string>
     <string name="model_activation_failed_dont_send">IGNORIEREN</string>
+    <string name="event_log_hide_alert_title">Ereignisse verstecken?</string>
+    <string name="event_log_hide_alert_message">Dies versteckt den/die ausgewählten Eintrag/Einträge.\nDies hat KEINE Auswirkungen auf die Berechnung.\n\nDieser Vorgang kann nicht rückgängig gemacht werden.</string>
+    <string name="event_log_hide_alert_cancel">ABBRUCH</string>
+    <string name="event_log_hide_alert_ok">OK</string>
 </resources>

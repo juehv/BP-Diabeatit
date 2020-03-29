@@ -34,6 +34,7 @@ public class ManualInsulinEntryActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.d_activity_manual_insulin_entry);
+
         getSupportActionBar().setTitle(getResources().getString(R.string.mi_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -32,6 +32,6 @@ public abstract class LogEvent {
 
 	}
 
-	public abstract void createLayout(Context context, RelativeLayout root);
+	public abstract void createLayout(Context context, RelativeLayout root, boolean isSelected);
 
 }

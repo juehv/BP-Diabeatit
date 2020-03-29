@@ -6,7 +6,8 @@
     android:layout_marginHorizontal="4dp"
     android:layout_marginTop="4dp"
     android:padding="8dp"
-    android:background="@drawable/log_event_background" >
+    android:background="@drawable/log_event_background"
+    android:foreground="?android:attr/selectableItemBackground" >
 
     <TextView
         android:id="@+id/log_event_time"

@@ -42,7 +42,7 @@ public class NoteEvent extends LogEvent {
 	}
 
 	@Override
-	public void createLayout(Context context, RelativeLayout root) {
+	public void createLayout(Context context, RelativeLayout root, boolean isSelected) {
 
 		TextView titleV = root.findViewById(R.id.log_event_title);
 		ImageView iconV = root.findViewById(R.id.log_event_icon);
@@ -58,6 +58,8 @@ public class NoteEvent extends LogEvent {
 		contentV.setVisibility(View.GONE);
 		noteV.setVisibility(View.VISIBLE);
 		imgV.setVisibility(IMAGE != null ? View.VISIBLE : View.GONE);
+
+		root.setBackgroundResource(isSelected ? R.drawable.log_event_selected_background : R.drawable.log_event_background);
 
 		noteV.setText(NOTE);
 		if (IMAGE != null)

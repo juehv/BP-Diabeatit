@@ -60,21 +60,24 @@ public class LogEventStore {
 			l.onDatasetChange(event);
 
 		new Thread(() -> {
+
 			DiabeatitDatabase db = Room.databaseBuilder(
 						MainApp.instance().getApplicationContext(),
 						DiabeatitDatabase.class,
 						StaticData.ROOM_DATABASE_NAME)
 					.build();
-			if (event instanceof BolusEvent) {
+
+			if (event instanceof BolusEvent)
 				db.bolusEventDao().insertAll((BolusEvent) event);
-			} else if (event instanceof CarbsEvent) {
+			else if (event instanceof CarbsEvent)
 				db.carbsEventDao().insertAll((CarbsEvent) event);
-			} else if (event instanceof SportsEvent) {
+			else if (event instanceof SportsEvent)
 				db.sportsEventDao().insertAll((SportsEvent) event);
-			} else if (event instanceof NoteEvent) {
+			else if (event instanceof NoteEvent)
 				db.noteEventDao().insertAll((NoteEvent) event);
-			}
+
 		}).start();
+
 	}
 
 	public static void removeEvent(LogEvent event) {
@@ -82,21 +85,23 @@ public class LogEventStore {
 		events.remove(event);
 
 		for (LogEventStoreListener l : listeners)
-			l.onDatasetChange(event);
+			l.onDatasetChange();
 
 		new Thread(() -> {
+
 			DiabeatitDatabase db = Room.databaseBuilder(MainApp.instance().getApplicationContext(),
 					DiabeatitDatabase.class,
 					StaticData.ROOM_DATABASE_NAME).build();
-			if (event instanceof BolusEvent) {
+
+			if (event instanceof BolusEvent)
 				db.bolusEventDao().delete((BolusEvent) event);
-			} else if (event instanceof CarbsEvent) {
+			else if (event instanceof CarbsEvent)
 				db.carbsEventDao().delete((CarbsEvent) event);
-			} else if (event instanceof SportsEvent) {
+			else if (event instanceof SportsEvent)
 				db.sportsEventDao().delete((SportsEvent) event);
-			} else if (event instanceof NoteEvent) {
+			else if (event instanceof NoteEvent)
 				db.noteEventDao().delete((NoteEvent) event);
-			}
+
 		}).start();
 
 	}
