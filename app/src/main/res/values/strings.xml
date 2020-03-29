@@ -66,6 +66,10 @@
 
     <!-- Event Log -->
     <string name="event_log_no_entries">No Entries</string>
+    <string name="event_log_hide_alert_title">Hide event(s)?</string>
+    <string name="event_log_hide_alert_message">This will hide the selected event(s).\nHiding events will NOT revert their impact on calculations.\n\nThis action cannot be undone.</string>
+    <string name="event_log_hide_alert_cancel">ABORT</string>
+    <string name="event_log_hide_alert_ok">OK</string>
 
     <!-- Alerts -->
     <string name="alert_label_info">info</string>

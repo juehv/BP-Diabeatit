@@ -28,6 +28,20 @@
 -->
     </style>
 
+    <style name="PopupTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@color/d_primary</item>
+        <item name="android:actionModeStyle">@style/PopupTheme.Popup</item>
+    </style>
+
+    <style name="PopupTheme.Popup" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/d_primary</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:actionModeBackground">@color/d_primary</item>
+        <item name="actionModeSplitBackground">@color/d_primary</item>
+    </style>
+
     <style name="diabeatit.PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="android:windowBackground">@android:color/background_light</item>
         <item name="backgroundTint">@android:color/background_light</item>

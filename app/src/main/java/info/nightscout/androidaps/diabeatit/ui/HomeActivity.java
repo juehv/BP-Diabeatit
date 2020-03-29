@@ -63,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
 		toolbar.setTitle(getResources().getString(R.string.title_activity_home));
 		setSupportActionBar(toolbar);
 
-
 		getSystemService(NotificationManager.class).cancelAll();
 		NotificationStore.reset();
 
