@@ -196,7 +196,7 @@ public class MainApp extends Application {
             if (Config.APS) pluginsList.add(OpenAPSSMBPlugin.getPlugin());
             pluginsList.add(NSProfilePlugin.getPlugin());
             if (!Config.NSCLIENT) pluginsList.add(SimpleProfilePlugin.getPlugin());
-            if (!Config.NSCLIENT) pluginsList.add(LocalProfilePlugin.getPlugin());
+            // if (!Config.NSCLIENT) pluginsList.add(LocalProfilePlugin.getPlugin());
             pluginsList.add(TreatmentsPlugin.getPlugin());
             if (!Config.NSCLIENT) pluginsList.add(SafetyPlugin.getPlugin());
             if (!Config.NSCLIENT) pluginsList.add(VersionCheckerPlugin.INSTANCE);

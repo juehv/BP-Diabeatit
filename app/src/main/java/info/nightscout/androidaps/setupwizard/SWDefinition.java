@@ -435,7 +435,7 @@ public class SWDefinition {
                 .add(screenApsMode)
                 .add(screenLoop)
                 .add(screenSensitivity)
-                .add(getScreenObjectives)
+                //.add(getScreenObjectives)
         ;
     }
 
