@@ -17,15 +17,25 @@ import java.util.Locale;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.log.LogEvent;
 
+/**
+ * Represents an entry of a manual bolus event.
+ */
 @Entity
 public class BolusEvent extends LogEvent {
 
+	/** Amount administered in international units */
 	@ColumnInfo(name = "bolus")
 	public final double BOLUS;
+	/** Optional note that was supplied */
 	@ColumnInfo(name = "note")
 	public final String NOTE;
 
-
+	/**
+	 * Create a new bolus event
+	 * @param timestamp	Timestamp of administration
+	 * @param bolus		Amount of insulin administered in international units.
+	 * @param note		Optional note supplied
+	 */
 	public BolusEvent(Instant timestamp, double bolus, String note) {
 
 		super(R.string.mi_event_title, R.drawable.ic_fab_insulin, timestamp);
@@ -35,6 +45,15 @@ public class BolusEvent extends LogEvent {
 
 	}
 
+	/**
+	 * 	Create a new bolus event. Mainly used to create the object from the database
+	 * @param logEventId	Unique ID of this event, serves as primary key and is auto generated
+	 * @param TITLE			Title of this event
+	 * @param ICON			Resource ID of an icon that may be dispalyed for this event
+	 * @param TIMESTAMP		Timestamp of administration of the bolus
+	 * @param BOLUS			Amount of insulin administered in international units
+	 * @param NOTE			User supplied optional note
+	 */
 	public BolusEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, double BOLUS, String NOTE) {
 		super(logEventId, TITLE, ICON, TIMESTAMP);
 		this.BOLUS = BOLUS;

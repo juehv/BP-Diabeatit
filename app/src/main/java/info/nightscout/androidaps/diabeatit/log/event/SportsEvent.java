@@ -17,20 +17,42 @@ import java.util.Locale;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.log.LogEvent;
 
+/**
+ * Event representing an exercise event
+ */
 @Entity
 public class SportsEvent extends LogEvent {
 
+	/** Duration of the exercise */
 	@ColumnInfo(name = "duration")
 	public final int DURATION;
+	/** Description by the user */
 	@ColumnInfo(name = "description")
 	public final String DESCRIPTION;
 
+	/**
+	 * Create a new sports event, supplying all fields. This is mainly used by the database to
+	 * create an event from a table row.
+	 * @param logEventId		Unqiue ID of this event, serves as primary key and is auto-generated
+	 *                          by the database.
+	 * @param TITLE				Title of this event
+	 * @param ICON				Resource ID of an icon that may be displayed for this event
+	 * @param TIMESTAMP			Timestamp of the beginning of the exercise.
+	 * @param DURATION			Duration of the exercise
+	 * @param DESCRIPTION		Description of the exercise
+	 */
 	public SportsEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, int DURATION, String DESCRIPTION) {
 		super(logEventId, TITLE, ICON, TIMESTAMP);
 		this.DURATION = DURATION;
 		this.DESCRIPTION = DESCRIPTION;
 	}
 
+	/**
+	 * Create a new sports event
+	 * @param timestamp		Timestamp of the beginning of the exercise
+	 * @param duration		Duration of the exercise
+	 * @param description	Description the user provided
+	 */
 	public SportsEvent(Instant timestamp, int duration, String description) {
 
 		super(R.string.ms_event_title, R.drawable.ic_fab_sports, timestamp);

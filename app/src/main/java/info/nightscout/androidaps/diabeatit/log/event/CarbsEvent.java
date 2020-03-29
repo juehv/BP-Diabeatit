@@ -18,16 +18,33 @@ import java.util.Locale;
 import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.log.LogEvent;
 
+/**
+ * Event that represents a meal
+ */
 @Entity
 public class CarbsEvent extends LogEvent {
 
+	/** Optional, user supplied Image of the meal */
 	@ColumnInfo(name = "image")
 	public final Bitmap IMAGE;
+	/** Amount of carbs taken in, in grams */
 	@ColumnInfo(name = "carbs")
 	public final int CARBS;
+	/** Optional user supplied note */
 	@ColumnInfo(name = "notes")
 	public final String NOTE;
 
+	/**
+	 * Create a new carbs event. This constructor is mainly used to generate an object from the
+	 * database.
+	 * @param logEventId	Unique ID of this object, used as primary key and auto-generated
+	 * @param TITLE			Title for this event
+	 * @param ICON			Resource ID of an icon that may be displayed for this event
+	 * @param TIMESTAMP		Timestamp when the meal was taken
+	 * @param IMAGE			Optional image of the meal
+	 * @param CARBS			Amount of carbs in grams
+	 * @param NOTE			Optional note
+	 */
 	public CarbsEvent(long logEventId, int TITLE, int ICON, Instant TIMESTAMP, Bitmap IMAGE, int CARBS, String NOTE) {
 		super(logEventId, TITLE, ICON, TIMESTAMP);
 		this.IMAGE = IMAGE;
@@ -35,6 +52,13 @@ public class CarbsEvent extends LogEvent {
 		this.NOTE = NOTE;
 	}
 
+	/**
+	 * Create a new carbs event
+	 * @param timestamp		Timestamp when the meal was taken
+	 * @param image			Image of the meal (Optional)
+	 * @param carbs			Amount of carbs in grams
+	 * @param note			Optional note
+	 */
 	public CarbsEvent(Instant timestamp, Bitmap image, int carbs, String note) {
 
 		super(R.string.mc_event_title, R.drawable.ic_fab_carbs, timestamp);
