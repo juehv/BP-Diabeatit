@@ -226,7 +226,7 @@ allprojects {
 }
 
 dependencies {
-    wearApp project(':wear')
+    // wearApp project(':wear')
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.android.gms:play-services-wearable:17.0.0'
