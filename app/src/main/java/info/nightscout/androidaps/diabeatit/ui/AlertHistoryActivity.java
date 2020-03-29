@@ -64,4 +64,10 @@ public class AlertHistoryActivity extends AppCompatActivity {
 
   }
 
+	@Override
+	public void onBackPressed() {
+
+		finish();
+
+	}
 }
