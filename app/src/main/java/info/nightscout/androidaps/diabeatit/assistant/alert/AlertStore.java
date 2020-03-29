@@ -13,7 +13,6 @@ import java.util.List;
 import info.nightscout.androidaps.MainApp;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.db.DiabeatitDatabase;
-import kotlin.reflect.jvm.internal.calls.CallerImpl;
 
 public class AlertStore {
 
@@ -25,6 +24,7 @@ public class AlertStore {
 
   static {
 
+    // load existing alerts from the database. this will block the thread
     DiabeatitDatabase db = Room.databaseBuilder(
               MainApp.instance().getApplicationContext(),
               DiabeatitDatabase.class,
@@ -192,6 +192,10 @@ public class AlertStore {
 
   }
 
+  /**
+   * Dispatch a thread updating the alert in the database
+   * @param alert   Alert that needs to be updated
+   */
   private static void updateDatabaseEntry(Alert alert) {
     new Thread(() -> {
       DiabeatitDatabase db = Room.databaseBuilder(

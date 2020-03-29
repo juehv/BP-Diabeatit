@@ -35,7 +35,7 @@ public class FileDownloader {
 
   }
 
-	public static void download(Context context, String webUri, @Nullable String fileName, DownloadCallback callback) {
+  public static void download(Context context, String webUri, @Nullable String fileName, DownloadCallback callback) {
 
 		try {
 
