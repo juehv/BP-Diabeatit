@@ -78,7 +78,6 @@ public class BolusCalculatorTest {
         builder.setUseCob(true);
         builder.setIncludeBolusIOB(true);
         builder.setIncludeBasalIOB(true);
-        builder.setUseSuperBolus(false);
         builder.setUseTrend(false);
         BolusCalculator cal = builder.build();
 
@@ -103,7 +102,6 @@ public class BolusCalculatorTest {
         builder.setUseCob(true);
         builder.setIncludeBolusIOB(true);
         builder.setIncludeBasalIOB(true);
-        builder.setUseSuperBolus(false);
         builder.setUseTrend(false);
         BolusCalculator cal = builder.build();
 
@@ -129,7 +127,6 @@ public class BolusCalculatorTest {
         builder.setUseCob(true);
         builder.setIncludeBolusIOB(true);
         builder.setIncludeBasalIOB(true);
-        builder.setUseSuperBolus(false);
         builder.setUseTrend(false);
         BolusCalculator cal = builder.build();
 
