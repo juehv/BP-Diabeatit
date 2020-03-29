@@ -26,6 +26,9 @@ import javax.annotation.Nullable;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+/**
+ * Provides an abstraction of the Android download manager workflow
+ */
 public class FileDownloader {
 
   public interface DownloadCallback {
@@ -35,6 +38,14 @@ public class FileDownloader {
 
   }
 
+	/**
+	 * Downloads a file and moves it to the app's file storage folder.
+	 *
+	 * @param context App context.
+	 * @param webUri URI of the file as String.
+	 * @param fileName Target filename. If null is supplied, the filename will be guessed.
+	 * @param callback Callback to notify caller on completion/failure.
+	 */
   public static void download(Context context, String webUri, @Nullable String fileName, DownloadCallback callback) {
 
 		try {
@@ -52,6 +63,13 @@ public class FileDownloader {
 
 	}
 
+	/**
+	 * Builds the download request required by the system download manager.
+	 *
+	 * @param uri URI of the file as String.
+	 * @param fileName Target filename. If null is supplied, the filename will be guessed.
+	 * @return Download manager request.
+	 */
   private static DownloadManager.Request buildRequest(String uri, String fileName) {
 
 		if (fileName == null)
@@ -66,6 +84,14 @@ public class FileDownloader {
 
   }
 
+	/**
+	 * Builds the BroadcastReceiver required for listening for download completion intents.
+	 *
+	 * @param dm Download Manager instance.
+	 * @param id ID of the enqueued request.
+	 * @param callback Callback to notify caller on completion/failure.
+	 * @return Broadcast receiver that handles file moving and notifying the caller about completion/failure.
+	 */
   private static BroadcastReceiver buildReceiver(DownloadManager dm, long id, DownloadCallback callback) {
 
     return new BroadcastReceiver() {

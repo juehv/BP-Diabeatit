@@ -19,6 +19,9 @@ import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 
+/**
+ * Manages log events and database connection.
+ */
 public class NotificationStore {
 
 	public static final String DEFAULT_CHANNEL_ID = "default";
@@ -32,9 +35,17 @@ public class NotificationStore {
 
 	}
 
-	public static boolean createChannel(String id, String name, String description, int importance) {
+	/**
+	 * Creates an Android notification channel. If the channel ID already exists, the process will be aborted.
+	 *
+	 * @param id Unique name of the channel.
+	 * @param name Name for the Android notification settings.
+	 * @param description Description for the Android notification settings.
+	 * @param importance {@link NotificationManager} IMPORTANCE ordinal.
+	 */
+	public static void createChannel(String id, String name, String description, int importance) {
 
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || channels.containsKey(id)) return false;
+		if (channels.containsKey(id)) return;
 
 		NotificationChannel channel = new NotificationChannel(id, name, importance);
 		channel.setDescription(description);
@@ -43,10 +54,17 @@ public class NotificationStore {
 		notificationManager.createNotificationChannel(channel);
 
 		channels.put(id, channel);
-		return true;
 
 	}
 
+	/**
+	 * Creates a notification object.
+	 *
+	 * @param channel Notification channel ID.
+	 * @param alert Associated {@link Alert}.
+	 * @param autoCancel Flags if the notification should be destroyed on opening it.
+	 * @return Notification associated with the given alert.
+	 */
 	public static Notification createNotification(@Nullable String channel, Alert alert, boolean autoCancel) {
 
 		if (channel == null) channel = DEFAULT_CHANNEL_ID;
@@ -69,6 +87,13 @@ public class NotificationStore {
 
 	}
 
+	/**
+	 * Sends a notification for the given alert.
+	 *
+	 * @param channel Channel ID to use.
+	 * @param alert Associated {@link Alert}.
+	 * @return Session-unique notification ID.
+	 */
 	public static int sendNotification(@Nullable String channel, Alert alert) {
 
 		int id = nextId();
@@ -79,18 +104,31 @@ public class NotificationStore {
 
 	}
 
+	/**
+	 * Destroys the notification with the given ID.
+	 *
+	 * @param id The notification's ID.
+	 */
 	public static void removeNotification(int id) {
 
 		MainApp.instance().getSystemService(NotificationManager.class).cancel(id);
 
 	}
 
+	/**
+	 * Deletes all notification entries. This does not destroy their notifications first.
+	 */
 	public static void reset() {
 
 		activeNotifications.clear();
 
 	}
 
+	/**
+	 * Returns the next free notification ID.
+	 *
+	 * @return A free notification ID.
+	 */
 	private static int nextId() {
 
 		return activeNotifications.keySet().stream().reduce((a, b) -> a > b ? a : b).orElse(1) + 1;

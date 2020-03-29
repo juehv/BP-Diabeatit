@@ -116,6 +116,9 @@ public class Alert {
 		this.notify = notify;
 	}
 
+	/**
+	 * Sends an Android notification associated with this Alert. Any existing notification will be replaced.
+	 */
 	public void send() {
 
 		if (!notify || !active) return;
@@ -125,6 +128,9 @@ public class Alert {
 
 	}
 
+	/**
+	 * Destroy any associated Android notification.
+	 */
 	public void destroy() {
 
 		if (NOTIFICATION_ID < 0) return;
