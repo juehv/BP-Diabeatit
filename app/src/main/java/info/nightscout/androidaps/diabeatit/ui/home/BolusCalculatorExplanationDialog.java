@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 import info.nightscout.androidaps.R;
-import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
+import info.nightscout.androidaps.diabeatit.bolus.BolusCalculator;
 
 public class BolusCalculatorExplanationDialog extends DialogFragment {
 

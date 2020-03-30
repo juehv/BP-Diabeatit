@@ -28,11 +28,11 @@ import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.assistant.alert.Alert;
 import info.nightscout.androidaps.diabeatit.assistant.alert.AlertStore;
+import info.nightscout.androidaps.diabeatit.bolus.BolusCalculator;
+import info.nightscout.androidaps.diabeatit.bolus.BolusCalculatorBuilder;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 import info.nightscout.androidaps.interfaces.Constraint;
 import info.nightscout.androidaps.plugins.configBuilder.ProfileFunctions;
-import info.nightscout.androidaps.plugins.insulin.BolusCalculator;
-import info.nightscout.androidaps.plugins.insulin.BolusCalculatorBuilder;
 import info.nightscout.androidaps.setupwizard.SetupWizardActivity;
 
 public class BolusCalculatorFragment extends Fragment implements View.OnClickListener{

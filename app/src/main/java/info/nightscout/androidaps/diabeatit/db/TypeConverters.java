@@ -5,8 +5,6 @@ import android.graphics.BitmapFactory;
 
 import androidx.room.TypeConverter;
 
-import org.intellij.lang.annotations.JdkConstants;
-
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.Date;

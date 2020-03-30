@@ -1,8 +1,5 @@
 package info.nightscout.androidaps.diabeatit.predictions;
 
-import android.content.Context;
-
-import java.util.Calendar;
 import java.util.List;
 
 import info.nightscout.androidaps.MainApp;

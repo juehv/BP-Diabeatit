@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import info.nightscout.androidaps.MainApp;
-import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.diabeatit.StaticData;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
 

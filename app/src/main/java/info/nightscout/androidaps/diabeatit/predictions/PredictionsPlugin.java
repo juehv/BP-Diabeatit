@@ -21,9 +21,7 @@ import info.nightscout.androidaps.R;
 import info.nightscout.androidaps.db.BgReading;
 import info.nightscout.androidaps.db.DatabaseHelper;
 import info.nightscout.androidaps.diabeatit.StaticData;
-import info.nightscout.androidaps.diabeatit.db.AlertDao;
 import info.nightscout.androidaps.diabeatit.ui.HomeActivity;
-import info.nightscout.androidaps.utils.OKDialog;
 import info.nightscout.androidaps.utils.SP;
 
 import static android.app.AlertDialog.*;

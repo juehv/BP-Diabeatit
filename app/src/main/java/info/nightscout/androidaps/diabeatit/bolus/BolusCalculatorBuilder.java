@@ -1,8 +1,6 @@
 package info.nightscout.androidaps.diabeatit.bolus;
 
 import info.nightscout.androidaps.data.Profile;
-import info.nightscout.androidaps.diabeatit.predictions.PredictionInputs;
-import info.nightscout.androidaps.diabeatit.predictions.PredictionModel;
 
 /**
  * Builder class to make creating a {@link BolusCalculator} more convenient.
