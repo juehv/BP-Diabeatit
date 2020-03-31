@@ -320,7 +320,7 @@ public class ChartDataParser {
     }
 
     /**
-     * Format the axis and labels. Also sets the viewport to display the range from {@code starTime}
+     * Format the axis and labels. Also sets the viewport to display the range from {@code startTime}
      * to {@code endTime}.
      *
      * @param startTime     Beginning timestamp of the visible data
